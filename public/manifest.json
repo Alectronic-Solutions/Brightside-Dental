@@ -1,0 +1,17 @@
+{
+  "name": "Brightside Dental",
+  "short_name": "Brightside",
+  "description": "Brightside Dental in Lodi, CA — general, cosmetic, and emergency dental care. Accepting new patients.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0E1F3D",
+  "theme_color": "#2D9E8F",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

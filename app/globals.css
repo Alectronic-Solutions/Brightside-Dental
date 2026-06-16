@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-teal: #2d9e8f;
+  --color-teal-dark: #1e7268;
+  --color-teal-light: #e8f7f5;
+  --color-navy: #0e1f3d;
+  --color-navy-mid: #162c52;
+  --color-charcoal: #1c2b3a;
+  --color-white: #ffffff;
+  --color-off-white: #f8f9fa;
+  --color-warm-gray: #6b7280;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    /* offset for sticky nav when jumping to anchors */
+    scroll-padding-top: 96px;
+  }
+
+  body {
+    color: var(--color-charcoal);
+    background-color: var(--color-white);
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--color-charcoal);
+  }
+
+  /* Tighter tracking for the largest display headings */
+  .display {
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background-color: var(--color-teal);
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-6;
+  }
+
+  .section-y {
+    @apply py-20 md:py-28;
+  }
+
+  /* uppercase small caption helper */
+  .caption {
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+}
+
+/* Custom scrollbar for horizontal card rows */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
