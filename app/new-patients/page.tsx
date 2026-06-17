@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/Button";
 import { IMAGES } from "@/lib/images";
 
 export const metadata: Metadata = {
-  title: "New Patients — Welcome to Brightside Dental",
+  title: "New Patients | Welcome to Brightside Dental",
   description:
     "New to Brightside Dental in Lodi, CA? Learn what to expect on your first visit, our accepted insurance plans, CareCredit financing, and how to access the patient portal.",
   alternates: { canonical: "/new-patients" },
@@ -37,12 +37,12 @@ const TIMELINE = [
   {
     Icon: FileText,
     title: "Fill out forms",
-    detail: "We'll email you a secure link to complete your paperwork before you arrive — no clipboard in the waiting room.",
+    detail: "We'll email you a secure link to complete your paperwork before you arrive. No clipboard in the waiting room.",
   },
   {
     Icon: Stethoscope,
     title: "Your first appointment",
-    detail: "A full exam, digital X-rays, a cleaning, and a clear treatment plan — all explained in plain language.",
+    detail: "A full exam, digital X-rays, a cleaning, and a clear treatment plan. All explained in plain language.",
   },
   {
     Icon: RefreshCw,

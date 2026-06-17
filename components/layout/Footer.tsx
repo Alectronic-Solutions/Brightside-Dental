@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Facebook,
@@ -8,6 +10,7 @@ import {
   ShieldCheck,
   Accessibility,
   Star,
+  ArrowUp,
 } from "lucide-react";
 import { Logo } from "./Logo";
 import { PRACTICE } from "@/lib/constants";
@@ -21,18 +24,61 @@ const QUICK_LINKS = [
 ];
 
 const SOCIALS = [
-  { href: "https://facebook.com", label: "Facebook", Icon: Facebook },
-  { href: "https://instagram.com", label: "Instagram", Icon: Instagram },
-  { href: PRACTICE.mapsUrl, label: "Google Business Profile", Icon: Star },
+  { href: "https://facebook.com", label: "Follow us on Facebook", Icon: Facebook },
+  { href: "https://instagram.com", label: "Follow us on Instagram", Icon: Instagram },
+  { href: PRACTICE.mapsUrl, label: "View our Google Business Profile", Icon: Star },
 ];
+
+const RECOGNITION = [
+  "Lodi News-Sentinel",
+  "San Joaquin Magazine",
+  'Yelp "People Love Us"',
+  "Google Guaranteed",
+];
+
+function BackToTop() {
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="inline-flex items-center gap-1.5 text-xs text-white/45 transition-colors hover:text-teal"
+      aria-label="Back to top"
+    >
+      <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
+      Back to top
+    </button>
+  );
+}
 
 export function Footer() {
   return (
     <footer className="bg-navy text-white/70">
-      <div className="container-page py-16 md:py-20">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+      {/* As Seen In / Recognition bar */}
+      <div className="border-b border-white/[0.07]">
+        <div className="container-page py-5">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+            <span className="caption shrink-0 text-white/35">As seen in</span>
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+              {RECOGNITION.map((label) => (
+                <span
+                  key={label}
+                  className="rounded border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/55"
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Top teal accent */}
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-teal/50 to-transparent" />
+
+      <div className="container-page py-14 md:py-18">
+        {/* 1 col mobile → 2 col tablet → 4 col desktop */}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Col 1 — brand */}
-          <div className="lg:pr-6">
+          <div className="sm:col-span-2 lg:col-span-1 lg:pr-6">
             <Logo variant="light" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
               Modern, calm, judgment-free dental care for Lodi and San Joaquin
@@ -48,7 +94,7 @@ export function Footer() {
                   rel="noopener noreferrer"
                   className="grid h-10 w-10 place-items-center rounded-md border-hair border-subtle-dark text-white/70 transition-colors hover:border-teal hover:text-teal"
                 >
-                  <Icon className="h-[18px] w-[18px]" />
+                  <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
                 </a>
               ))}
             </div>
@@ -89,7 +135,7 @@ export function Footer() {
             <h3 className="caption text-teal-light/90">Visit Us</h3>
             <ul className="mt-5 space-y-4 text-sm">
               <li className="flex gap-3">
-                <MapPin className="mt-0.5 h-[18px] w-[18px] shrink-0 text-teal" />
+                <MapPin className="mt-0.5 h-[18px] w-[18px] shrink-0 text-teal" aria-hidden="true" />
                 <span className="text-white/75">
                   {PRACTICE.addressLine1}
                   <br />
@@ -101,7 +147,7 @@ export function Footer() {
                   href={PRACTICE.phoneHref}
                   className="flex items-center gap-3 text-white/75 transition-colors hover:text-white"
                 >
-                  <Phone className="h-[18px] w-[18px] shrink-0 text-teal" />
+                  <Phone className="h-[18px] w-[18px] shrink-0 text-teal" aria-hidden="true" />
                   {PRACTICE.phone}
                 </a>
               </li>
@@ -110,7 +156,7 @@ export function Footer() {
                   href={`mailto:${PRACTICE.email}`}
                   className="flex items-center gap-3 break-all text-white/75 transition-colors hover:text-white"
                 >
-                  <Mail className="h-[18px] w-[18px] shrink-0 text-teal" />
+                  <Mail className="h-[18px] w-[18px] shrink-0 text-teal" aria-hidden="true" />
                   {PRACTICE.email}
                 </a>
               </li>
@@ -132,20 +178,39 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t-hair border-subtle-dark">
-        <div className="container-page flex flex-col items-center justify-between gap-4 py-6 text-xs text-white/50 sm:flex-row">
-          <p>
-            © {new Date().getFullYear()} {PRACTICE.name}. All rights reserved.
-          </p>
+        <div className="container-page flex flex-col items-center justify-between gap-4 py-6 text-xs text-white/50 md:flex-row">
+          {/* Left: copyright + credit */}
+          <div className="flex flex-col items-center gap-1.5 text-center md:items-start md:text-left">
+            <p>
+              © {new Date().getFullYear()} {PRACTICE.name}. All rights reserved.
+            </p>
+            <p>
+              Site by{" "}
+              <a
+                href="https://alectronicsolutions.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/60 underline-offset-2 transition-colors hover:text-teal hover:underline"
+              >
+                Alectronic Solutions
+              </a>
+            </p>
+          </div>
+
+          {/* Center — compliance badges */}
           <div className="flex items-center gap-5">
             <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck className="h-4 w-4 text-teal" />
+              <ShieldCheck className="h-4 w-4 text-teal" aria-hidden="true" />
               HIPAA Compliant
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Accessibility className="h-4 w-4 text-teal" />
+              <Accessibility className="h-4 w-4 text-teal" aria-hidden="true" />
               ADA Accessible
             </span>
           </div>
+
+          {/* Right — back to top */}
+          <BackToTop />
         </div>
       </div>
     </footer>

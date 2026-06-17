@@ -60,8 +60,42 @@ export default async function ServiceDetailPage({
   };
   const heroImage = serviceImageMap[slug];
 
+  /* JSON-LD: FAQ schema */
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: content.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
+
+  /* JSON-LD: BreadcrumbList */
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.brightsidedental.com/" },
+      { "@type": "ListItem", position: 2, name: "Services", item: "https://www.brightsidedental.com/services" },
+      { "@type": "ListItem", position: 3, name: service.name, item: `https://www.brightsidedental.com/services/${slug}` },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
       <PageHero
         label="Services"
         title={service.name}
@@ -73,13 +107,28 @@ export default async function ServiceDetailPage({
         </Button>
       </PageHero>
 
-      <section className="bg-offwhite section-y">
+      {/* Mobile sticky CTA bar — hidden on lg+ where sidebar shows */}
+      <div className="fixed bottom-0 inset-x-0 z-40 flex items-center gap-3 border-t border-subtle bg-white/95 px-4 py-3 backdrop-blur-sm lg:hidden">
+        <Button href="/contact" size="lg" className="flex-1 group">
+          Book This Service
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]" aria-hidden="true" />
+        </Button>
+        <a
+          href={PRACTICE.phoneHref}
+          aria-label={`Call us at ${PRACTICE.phone}`}
+          className="grid h-12 w-12 shrink-0 place-items-center rounded-md border-hair border-teal text-teal transition-colors hover:bg-teal-light"
+        >
+          <Phone className="h-5 w-5" aria-hidden="true" />
+        </a>
+      </div>
+
+      <section className="bg-offwhite pb-24 pt-16 md:py-24 lg:section-y">
         <div className="container-page grid gap-12 lg:grid-cols-[280px_1fr] lg:gap-16">
-          {/* Sticky sidebar */}
-          <aside className="lg:sticky lg:top-24 lg:h-fit">
+          {/* Sticky sidebar — desktop only */}
+          <aside className="hidden lg:block lg:sticky lg:top-24 lg:h-fit">
             <div className="rounded-2xl border-hair border-subtle bg-white p-6 shadow-card">
               <p className="caption text-teal-dark">On this page</p>
-              <nav className="mt-4 space-y-1">
+              <nav className="mt-4 space-y-1" aria-label="Page sections">
                 {SECTIONS.map((s) => (
                   <a
                     key={s.id}
@@ -99,7 +148,7 @@ export default async function ServiceDetailPage({
 
               <dl className="mt-6 space-y-4 border-t-hair border-subtle pt-6 text-sm">
                 <div className="flex items-start gap-3">
-                  <Clock className="mt-0.5 h-4 w-4 shrink-0 text-teal" />
+                  <Clock className="mt-0.5 h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
                   <div>
                     <dt className="font-medium text-charcoal">Office hours</dt>
                     {Object.entries(PRACTICE.hours).map(([d, t]) => (
@@ -110,7 +159,7 @@ export default async function ServiceDetailPage({
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 shrink-0 text-teal" />
+                  <Phone className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
                   <a
                     href={PRACTICE.phoneHref}
                     className="font-medium text-teal-dark hover:text-teal"
@@ -131,6 +180,7 @@ export default async function ServiceDetailPage({
                     name={service.icon}
                     className="h-6 w-6"
                     strokeWidth={1.6}
+                    aria-hidden="true"
                   />
                 </span>
                 <h2 className="text-2xl font-semibold text-charcoal sm:text-3xl">
@@ -185,7 +235,7 @@ export default async function ServiceDetailPage({
                       className="flex items-start gap-3 rounded-xl border-hair border-subtle bg-white p-5"
                     >
                       <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-md bg-teal text-white">
-                        <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+                        <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
                       </span>
                       <span className="text-charcoal">{item}</span>
                     </li>
@@ -243,6 +293,7 @@ export default async function ServiceDetailPage({
                           name={r.icon}
                           className="h-5 w-5"
                           strokeWidth={1.6}
+                          aria-hidden="true"
                         />
                       </span>
                       <span className="min-w-0 flex-1">
@@ -253,7 +304,7 @@ export default async function ServiceDetailPage({
                           {r.tagline}
                         </span>
                       </span>
-                      <ArrowRight className="h-4 w-4 shrink-0 text-teal transition-transform group-hover:translate-x-0.5" />
+                      <ArrowRight className="h-4 w-4 shrink-0 text-teal transition-transform group-hover:translate-x-[3px]" aria-hidden="true" />
                     </Link>
                   ))}
                 </div>
@@ -270,12 +321,16 @@ export default async function ServiceDetailPage({
                 Same-week openings available.
               </p>
               <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Button href="/contact">Book an Appointment</Button>
+                <Button href="/contact" className="group w-full sm:w-auto">
+                  Book an Appointment
+                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]" aria-hidden="true" />
+                </Button>
                 <Button
                   href={PRACTICE.phoneHref}
                   variant="outline-white"
+                  className="w-full sm:w-auto"
                 >
-                  <Phone className="h-4 w-4" />
+                  <Phone className="h-4 w-4" aria-hidden="true" />
                   {PRACTICE.phone}
                 </Button>
               </div>

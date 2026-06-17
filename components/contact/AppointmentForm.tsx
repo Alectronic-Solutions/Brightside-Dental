@@ -23,7 +23,7 @@ interface FormValues {
 }
 
 const inputBase =
-  "w-full rounded-md border-hair bg-white px-4 py-2.5 text-charcoal placeholder:text-warmgray/60 transition-colors focus:outline-none focus:ring-2 focus:ring-teal/40";
+  "w-full rounded-md border-hair bg-white px-4 py-3 text-charcoal placeholder:text-warmgray/60 transition-colors focus:outline-none focus:ring-2 focus:ring-teal/40 min-h-[48px]";
 
 function makeConfirmationCode() {
   return "BD-" + Math.random().toString(36).slice(2, 6).toUpperCase();
@@ -124,7 +124,7 @@ export function AppointmentForm() {
                 What happens next
               </p>
               {[
-                { Icon: Clock, text: "We review your request and check availability — usually within the hour." },
+                { Icon: Clock, text: "We review your request and check availability, usually within the hour." },
                 { Icon: Phone, text: "Our team calls or texts you to confirm your appointment time." },
                 { Icon: Mail, text: "You receive a calendar invite and new patient forms by email." },
               ].map(({ Icon, text }, i) => (
@@ -316,7 +316,7 @@ export function AppointmentForm() {
               <textarea
                 rows={4}
                 placeholder="Tell us briefly what's going on…"
-                className={cn(inputBase, "resize-y border-subtle")}
+                className={cn(inputBase, "resize-none border-subtle")}
                 {...register("message")}
               />
             </Field>

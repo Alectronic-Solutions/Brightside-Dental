@@ -15,28 +15,34 @@ const STATS = [
 ];
 
 const DIFFERENTIATORS = [
-  "In-house financing and CareCredit accepted",
-  "Most major insurance plans accepted",
-  "Digital X-rays and same-day crowns (CEREC)",
-  "Nitrous oxide and sedation options available",
-  "HIPAA-compliant patient portal",
+  "In-house financing and CareCredit accepted. Apply in minutes, zero interest for 12 months.",
+  "Most major PPO insurance plans filed directly on your behalf",
+  "CEREC same-day crowns. Digital impressions. No goopy molds.",
+  "Nitrous oxide and oral sedation for nervous patients",
+  "HIPAA-compliant patient portal: records, bills, messages, all online",
 ];
 
 export function WhyBrightside() {
   return (
-    <section className="bg-teal-light section-y">
-      <div className="container-page grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+    <section className="relative bg-teal-light section-y">
+      {/* Diagonal stripe overlay at 4% opacity */}
+      <div
+        aria-hidden
+        className="diagonal-stripe pointer-events-none absolute inset-0 opacity-[0.04]"
+      />
+
+      <div className="container-page relative grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
         {/* Left: stat grid + photo */}
         <AnimatedSection>
           <SectionLabel>Why Brightside</SectionLabel>
-          <h2 className="max-w-md text-3xl text-charcoal sm:text-4xl">
+          <h2 className="max-w-md text-3xl text-charcoal sm:text-[2.25rem]">
             Care that earns its reputation, one visit at a time
           </h2>
 
           <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border-hair border-[rgba(30,114,104,0.18)] bg-[rgba(30,114,104,0.10)]">
             {STATS.map((stat) => (
-              <div key={stat.label} className="group bg-teal-light p-6 transition-colors hover:bg-white sm:p-8">
-                <p className="text-3xl font-semibold tracking-tightish text-teal-dark sm:text-[2.5rem]">
+              <div key={stat.label} className="group bg-teal-light p-5 transition-colors hover:bg-white sm:p-8">
+                <p className="text-2xl font-semibold tracking-tightish text-teal-dark sm:text-[2.5rem]">
                   {stat.literal ? (
                     stat.literal
                   ) : (
@@ -61,6 +67,7 @@ export function WhyBrightside() {
               alt={IMAGES.office.reception.alt}
               width={IMAGES.office.reception.width}
               height={IMAGES.office.reception.height}
+              loading="lazy"
               className="h-48 w-full object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
@@ -69,13 +76,18 @@ export function WhyBrightside() {
 
         {/* Right: differentiators */}
         <AnimatedSection delay={0.1}>
-          <ul className="space-y-4">
+          <h3 className="text-xl font-semibold text-charcoal">
+            What sets us apart
+          </h3>
+          <ul className="mt-6 divide-y divide-[rgba(30,114,104,0.12)]">
             {DIFFERENTIATORS.map((item) => (
-              <li key={item} className="flex items-start gap-4 rounded-xl bg-white/60 p-4">
-                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md bg-teal text-white">
-                  <Check className="h-4 w-4" strokeWidth={2.5} />
+              <li key={item} className="flex items-start gap-4 py-5 first:pt-0 last:pb-0">
+                <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-md bg-teal text-white">
+                  <Check className="h-3 w-3" strokeWidth={2.5} aria-hidden="true" />
                 </span>
-                <span className="text-[1.05rem] text-charcoal">{item}</span>
+                <span className="text-[1.02rem] leading-relaxed text-charcoal/80">
+                  {item}
+                </span>
               </li>
             ))}
           </ul>

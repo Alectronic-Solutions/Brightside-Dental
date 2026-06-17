@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 195" fill="none">
+  <!--
+    Delta Dental logo mark: a thick downward-pointing open arrow.
+
+    Outer shape: think of a large downward-pointing triangle (apex at bottom).
+    Inner cutout: a smaller upward-pointing triangle, creating the hollow center.
+    The result is a bold three-armed shape — left arm, right arm, and top bridge —
+    converging at a downward point. A rectangular "connector" sits at the top
+    center bridging the two upper arms.
+
+    Reference color: #3AAA35 (bright Delta green)
+  -->
+
+  <!-- Full outer filled triangle, pointing down -->
+  <polygon points="130,155 20,10 240,10" fill="#3AAA35"/>
+
+  <!-- White inner triangle (upward-pointing) cuts the hollow center -->
+  <polygon points="130,55 202,130 58,130" fill="white"/>
+
+  <!-- DELTA DENTAL wordmark -->
+  <text
+    x="130"
+    y="188"
+    font-family="'Arial Black', 'Franklin Gothic Heavy', Impact, Arial, sans-serif"
+    font-weight="900"
+    font-size="25"
+    fill="#3AAA35"
+    text-anchor="middle"
+    letter-spacing="2"
+  >DELTA DENTAL</text>
+</svg>

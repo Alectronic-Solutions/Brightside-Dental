@@ -110,14 +110,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <Navbar />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer />
       </body>
     </html>

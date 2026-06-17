@@ -18,13 +18,21 @@ const SERVICE_COLORS = [
   "from-[#FDF2F8] to-white",
 ];
 
+const BORDER_COLORS = [
+  "#2D9E8F",
+  "#6366F1",
+  "#F97316",
+  "#22C55E",
+  "#EC4899",
+];
+
 export function ServicesStrip() {
   return (
     <section className="bg-offwhite section-y">
       <div className="container-page">
         <AnimatedSection className="max-w-2xl">
           <SectionLabel>Our Services</SectionLabel>
-          <h2 className="text-3xl text-charcoal sm:text-4xl">
+          <h2 className="text-3xl text-charcoal sm:text-[2.25rem]">
             Everything your family needs under one roof
           </h2>
           <p className="mt-4 text-lg text-warmgray">
@@ -33,9 +41,9 @@ export function ServicesStrip() {
           </p>
         </AnimatedSection>
 
-        {/* Card grid */}
+        {/* Mobile: horizontal scroll with snap. Desktop: 5-col grid */}
         <motion.div
-          className="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2 lg:grid lg:grid-cols-5 lg:overflow-visible"
+          className="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 lg:grid lg:grid-cols-5 lg:overflow-visible lg:pb-0"
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.1 }}
@@ -52,7 +60,7 @@ export function ServicesStrip() {
                   transition: { duration: 0.5, ease: EASE },
                 },
               }}
-              className="min-w-[240px] flex-1 snap-start lg:min-w-0"
+              className="min-w-[260px] flex-shrink-0 snap-start sm:min-w-[280px] lg:min-w-0"
             >
               <Link
                 href={`/services/${service.slug}`}
@@ -60,19 +68,26 @@ export function ServicesStrip() {
               >
                 <motion.article
                   whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="flex h-full flex-col overflow-hidden rounded-2xl border-hair border-subtle bg-white shadow-card transition-shadow group-hover:shadow-card-hover"
+                  className="relative flex h-full flex-col overflow-hidden rounded-2xl border-hair border-subtle bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] transition-shadow group-hover:shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.06)]"
                 >
                   {/* Color gradient top band */}
                   <div
                     className={`bg-gradient-to-br ${SERVICE_COLORS[i]} h-2 w-full`}
                   />
 
+                  {/* Left border accent — appears on hover */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute bottom-0 left-0 top-2 w-[3px] origin-bottom scale-y-0 rounded-b-sm transition-transform duration-300 group-hover:scale-y-100"
+                    style={{ backgroundColor: BORDER_COLORS[i] }}
+                  />
+
                   <div className="flex flex-1 flex-col p-6">
-                    {/* Icon sits bare on the card, no box */}
                     <ServiceIcon
                       name={service.icon}
                       className="h-7 w-7 text-teal"
                       strokeWidth={1.6}
+                      aria-hidden="true"
                     />
                     <h3 className="mt-5 text-[1.05rem] font-semibold leading-snug text-charcoal">
                       {service.name}
@@ -82,7 +97,10 @@ export function ServicesStrip() {
                     </p>
                     <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-teal transition-colors group-hover:text-teal-dark">
                       Learn more
-                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                      <ArrowRight
+                        className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-[3px]"
+                        aria-hidden="true"
+                      />
                     </span>
                   </div>
                 </motion.article>

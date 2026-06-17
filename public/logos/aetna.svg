@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" fill="none">
+  <!-- Aetna "A" with purple/red gradient feel -->
+  <path d="M10 30 L18 10 L26 30" stroke="#7B2D8B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="13" y1="23" x2="23" y2="23" stroke="#7B2D8B" stroke-width="2.5"/>
+  <text x="33" y="26" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" fill="#7B2D8B">etna</text>
+</svg>

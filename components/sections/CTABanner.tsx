@@ -16,13 +16,13 @@ export function CTABanner({
 }: CTABannerProps) {
   return (
     <section className="relative overflow-hidden bg-navy section-y">
-      {/* Top glow */}
+      {/* Layered glows */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(55% 70% at 50% -10%, rgba(45,158,143,0.28), rgba(14,31,61,0) 70%)",
+            "radial-gradient(60% 80% at 50% -5%, rgba(45,158,143,0.35), transparent 65%), radial-gradient(40% 50% at 80% 100%, rgba(45,158,143,0.14), transparent 60%)",
         }}
       />
       {/* Subtle grid */}
@@ -38,20 +38,23 @@ export function CTABanner({
 
       <AnimatedSection className="container-page relative text-center">
         {/* Decorative teal line */}
-        <div className="mx-auto mb-8 h-px w-16 bg-teal/60" />
+        <div className="mx-auto mb-8 h-px w-12 bg-gradient-to-r from-transparent via-teal to-transparent" />
 
-        <h2 className="display mx-auto max-w-2xl text-3xl font-semibold tracking-[-0.02em] text-white sm:text-4xl lg:text-[2.8rem]">
+        <h2 className="display mx-auto max-w-2xl text-[clamp(1.6rem,4vw,2.8rem)] font-semibold leading-[1.1] tracking-[-0.025em] text-white">
           {heading}
         </h2>
         <p className="mx-auto mt-5 max-w-lg text-lg text-white/60">{subtext}</p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Button href="/contact" size="lg" className="group">
+          <Button href="/contact" size="lg" className="group w-full sm:w-auto">
             Book Online
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]"
+              aria-hidden="true"
+            />
           </Button>
-          <Button href={PRACTICE.phoneHref} size="lg" variant="outline-white">
-            <Phone className="h-4 w-4" />
+          <Button href={PRACTICE.phoneHref} size="lg" variant="outline-white" className="w-full sm:w-auto">
+            <Phone className="h-4 w-4" aria-hidden="true" />
             Call {PRACTICE.phone}
           </Button>
         </div>

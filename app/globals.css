@@ -12,6 +12,7 @@
   --color-white: #ffffff;
   --color-off-white: #f8f9fa;
   --color-warm-gray: #6b7280;
+  --color-body: #374151;
   --color-border: rgba(0, 0, 0, 0.08);
   --color-border-dark: rgba(255, 255, 255, 0.1);
 }
@@ -21,16 +22,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
-    /* offset for sticky nav when jumping to anchors */
     scroll-padding-top: 96px;
+    overflow-x: hidden;
+    /* Better tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    color: var(--color-charcoal);
+    color: var(--color-body);
     background-color: var(--color-white);
     font-family: var(--font-inter), system-ui, sans-serif;
     font-weight: 400;
     line-height: 1.7;
+    overflow-x: hidden;
   }
 
   h1,
@@ -38,14 +44,27 @@
   h3,
   h4 {
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
     line-height: 1.15;
     color: var(--color-charcoal);
+    /* Prevent orphan words in headings on small screens */
+    text-wrap: balance;
   }
 
-  /* Tighter tracking for the largest display headings */
-  .display {
-    letter-spacing: -0.02em;
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Ensure buttons and links have min touch target */
+  button, a {
+    min-height: 0; /* let explicit sizing take over */
+  }
+
+  /* Visible focus ring for all interactive elements */
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 2px;
+    border-radius: 3px;
   }
 
   ::selection {
@@ -56,20 +75,37 @@
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-6xl px-6;
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6;
   }
 
   .section-y {
-    @apply py-20 md:py-28;
+    @apply py-24 md:py-32;
   }
 
   /* uppercase small caption helper */
   .caption {
     font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
+}
+
+/* Skip-to-content link — first focusable element in <body> */
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 0;
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-teal);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 6px 0;
+}
+.skip-link:focus {
+  top: 0;
 }
 
 /* Custom scrollbar for horizontal card rows */
@@ -79,6 +115,77 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Premium page scrollbar */
+html::-webkit-scrollbar {
+  width: 5px;
+}
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background: rgba(45, 158, 143, 0.35);
+  border-radius: 99px;
+}
+html::-webkit-scrollbar-thumb:hover {
+  background: rgba(45, 158, 143, 0.6);
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(45, 158, 143, 0.35) transparent;
+}
+
+/* Nav link slide-in underline */
+.nav-link-hover {
+  position: relative;
+}
+.nav-link-hover::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background-color: var(--color-teal);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s ease;
+}
+.nav-link-hover:hover::after {
+  transform: scaleX(1);
+}
+
+/* Diagonal stripe pattern for Why Brightside section */
+.diagonal-stripe {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-4 44 L44 -4M-4 24 L24 -4M16 44 L44 16' stroke='%232D9E8F' stroke-width='1' fill='none' /%3E%3C/svg%3E");
+  background-size: 28px 28px;
+}
+
+/* Grain/noise texture for hero */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -1%); }
+  20% { transform: translate(1%, 2%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(2%, -1%); }
+  50% { transform: translate(-1%, 2%); }
+  60% { transform: translate(1%, -2%); }
+  70% { transform: translate(-2%, 1%); }
+  80% { transform: translate(2%, 2%); }
+  90% { transform: translate(-1%, -2%); }
+}
+
+.hero-grain::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  animation: grain 8s steps(10) infinite;
+  pointer-events: none;
 }
 
 /* Respect reduced motion preferences */

@@ -17,21 +17,22 @@ const fadeUp = {
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] overflow-hidden bg-navy">
-      {/* Background image with dark overlay */}
+    <section className="hero-grain relative min-h-[100svh] overflow-hidden bg-navy pt-[68px] sm:min-h-[92vh]">
+      {/* Background image */}
       <div className="absolute inset-0">
         <Image
           src={IMAGES.hero.src}
-          alt={IMAGES.hero.alt}
+          alt=""
+          aria-hidden="true"
           fill
           priority
           quality={90}
-          className="object-cover object-center opacity-20"
+          className="object-cover object-center opacity-[0.18]"
           sizes="100vw"
         />
       </div>
 
-      {/* Layered gradients for depth */}
+      {/* Layered gradients */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -60,7 +61,7 @@ export function Hero() {
         }}
       />
 
-      <div className="container-page relative grid min-h-[90vh] items-center gap-16 pb-24 pt-36 lg:grid-cols-[58fr_42fr] lg:gap-12">
+      <div className="container-page relative grid min-h-[calc(100svh-68px)] items-center gap-12 pb-20 pt-12 sm:min-h-[calc(92vh-68px)] md:pt-20 lg:grid-cols-[58fr_42fr] lg:gap-12 lg:pb-24">
         {/* Left content */}
         <motion.div
           initial="hidden"
@@ -76,14 +77,22 @@ export function Hero() {
 
           <motion.h1
             variants={fadeUp}
-            className="display mt-4 max-w-[18ch] text-[2.6rem] font-semibold leading-[1.06] tracking-[-0.02em] text-white sm:text-5xl lg:text-[3.6rem]"
+            className="display mt-4 max-w-[18ch] text-[2rem] font-semibold leading-[1.06] tracking-[-0.025em] text-white sm:text-5xl lg:text-[3.4rem]"
           >
-            Your smile deserves more than a routine checkup.
+            Your smile deserves more than a{" "}
+            <span className="relative inline-block">
+              routine checkup
+              <span
+                aria-hidden
+                className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-teal"
+              />
+            </span>
+            .
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className="mt-7 max-w-[52ch] text-[1.1rem] leading-[1.75] text-white/65"
+            className="mt-5 max-w-[52ch] text-[0.98rem] leading-[1.75] text-white/65 sm:mt-7 sm:text-[1.05rem]"
           >
             Brightside Dental combines clinical precision with a calm, modern
             experience. Accepting new patients with same-week appointments
@@ -92,41 +101,43 @@ export function Hero() {
 
           <motion.div
             variants={fadeUp}
-            className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
+            className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center"
           >
             <Button href="/contact" size="lg" className="group">
               Book an Appointment
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]"
+                aria-hidden="true"
+              />
             </Button>
             <Button href="/about" size="lg" variant="ghost">
               Meet Our Team
             </Button>
           </motion.div>
 
-          {/* Trust strip */}
-          <motion.div
-            variants={fadeUp}
-            className="mt-14 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border-hair border-subtle-dark"
-          >
-            <TrustStat
-              icon={<Star className="h-4 w-4 fill-teal text-teal" />}
-              value={`${PRACTICE.googleRating}`}
-              label="Google Rating"
-            />
-            <TrustStat
-              icon={<CalendarCheck className="h-4 w-4 text-teal" />}
-              value={`${PRACTICE.yearsInPractice} Yrs`}
-              label="In Practice"
-            />
-            <TrustStat
-              icon={<Users className="h-4 w-4 text-teal" />}
-              value={PRACTICE.patientsServed}
-              label="Patients Served"
-            />
+          {/* Trust stats — horizontal rule with inline stat blocks */}
+          <motion.div variants={fadeUp} className="mt-10 sm:mt-14">
+            <div className="flex items-stretch gap-px overflow-hidden rounded-xl border border-white/10">
+              <TrustStat
+                icon={<Star className="h-4 w-4 fill-teal text-teal" aria-hidden="true" />}
+                value={`${PRACTICE.googleRating}`}
+                label="Google Rating"
+              />
+              <TrustStat
+                icon={<CalendarCheck className="h-4 w-4 text-teal" aria-hidden="true" />}
+                value={`${PRACTICE.yearsInPractice} Yrs`}
+                label="In Practice"
+              />
+              <TrustStat
+                icon={<Users className="h-4 w-4 text-teal" aria-hidden="true" />}
+                value={PRACTICE.patientsServed}
+                label="Patients Served"
+              />
+            </div>
           </motion.div>
         </motion.div>
 
-        {/* Right photo column */}
+        {/* Right photo column — hidden on mobile */}
         <motion.div
           className="relative hidden lg:block"
           initial={{ opacity: 0, x: 32 }}
@@ -145,19 +156,18 @@ export function Hero() {
               className="w-full object-cover"
               sizes="(max-width: 1200px) 45vw, 520px"
             />
-            {/* subtle dark gradient at bottom */}
             <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy/60 to-transparent" />
           </div>
 
           {/* Floating rating chip */}
           <motion.div
-            className="absolute -left-6 top-10 z-10 flex items-center gap-3 rounded-2xl border-hair border-subtle-dark bg-navy-mid/95 px-5 py-4 shadow-card backdrop-blur-sm"
+            className="absolute -left-6 top-10 z-10 flex items-center gap-3 rounded-2xl border border-white/10 bg-navy-mid/95 px-5 py-4 shadow-card backdrop-blur-sm"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: EASE, delay: 0.7 }}
           >
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-teal/15">
-              <Star className="h-5 w-5 fill-teal text-teal" />
+              <Star className="h-5 w-5 fill-teal text-teal" aria-hidden="true" />
             </span>
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-teal-light/80">
@@ -171,12 +181,12 @@ export function Hero() {
 
           {/* Accepting patients chip */}
           <motion.div
-            className="absolute -right-4 bottom-12 z-10 flex items-center gap-3 rounded-2xl border-hair border-subtle-dark bg-navy-mid/95 px-5 py-4 shadow-card backdrop-blur-sm"
+            className="absolute -right-4 bottom-12 z-10 flex items-center gap-3 rounded-2xl border border-white/10 bg-navy-mid/95 px-5 py-4 shadow-card backdrop-blur-sm"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: EASE, delay: 0.85 }}
           >
-            <span className="relative flex h-2.5 w-2.5">
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal opacity-70" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-teal" />
             </span>
@@ -206,12 +216,12 @@ function TrustStat({
   label: string;
 }) {
   return (
-    <div className="flex flex-col gap-1.5 bg-white/5 px-5 py-5">
-      <span className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-white/50">
+    <div className="flex flex-1 flex-col gap-1 bg-white/[0.06] px-3 py-3.5 sm:gap-1.5 sm:px-5 sm:py-5">
+      <span className="flex items-center gap-1.5 text-[0.65rem] font-medium uppercase tracking-wider text-white/50 sm:text-[0.7rem]">
         {icon}
         {label}
       </span>
-      <span className="text-2xl font-semibold text-white">{value}</span>
+      <span className="text-lg font-semibold text-white sm:text-2xl">{value}</span>
     </div>
   );
 }

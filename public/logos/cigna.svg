@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" fill="none">
+  <!-- Cigna stylized C mark -->
+  <path d="M18 8 C8 8 4 15 4 20 C4 25 8 32 18 32 C22 32 25 31 27 29" stroke="#006DB7" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <text x="34" y="26" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" fill="#006DB7">cigna</text>
+</svg>

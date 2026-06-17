@@ -2,17 +2,13 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 
 interface LogoProps {
-  /** color theme — dark text for light bg, light text for dark bg */
   variant?: "dark" | "light";
   className?: string;
 }
 
-/**
- * Brightside Dental wordmark: a small geometric teal tooth mark + the name.
- * Rendered inline so it scales crisply and recolors per surface.
- */
 export function Logo({ variant = "dark", className }: LogoProps) {
   const wordColor = variant === "dark" ? "text-charcoal" : "text-white";
+  const subColor = variant === "dark" ? "text-warmgray" : "text-white/60";
 
   return (
     <Link
@@ -23,37 +19,30 @@ export function Logo({ variant = "dark", className }: LogoProps) {
         className,
       )}
     >
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-teal/10 transition-colors group-hover:bg-teal/15">
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden
-        >
-          <path
-            d="M12 5c-1.6-1.6-3.6-2.3-5.2-1.6C5 4.1 4 6 4 8.5c0 2.3.5 3.6 1.1 5.6.4 1.4.7 3 .9 4.5.2 1.4.9 2.2 1.7 2.2.9 0 1.3-.9 1.6-2.4.3-1.6.6-3.1 1.7-3.1s1.4 1.5 1.7 3.1c.3 1.5.7 2.4 1.6 2.4.8 0 1.5-.8 1.7-2.2.2-1.5.5-3.1.9-4.5C19.5 12.1 20 10.8 20 8.5c0-2.5-1-4.4-2.8-5.1C15.6 2.7 13.6 3.4 12 5Z"
-            stroke="#2D9E8F"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          />
-          <circle cx="16.2" cy="7.6" r="1.4" fill="#2D9E8F" />
-        </svg>
-      </span>
-      <span
-        className={cn(
-          "text-[1.05rem] font-semibold tracking-tightish",
-          wordColor,
-        )}
+      {/* Inline SVG tooth mark — no emoji, no broken image */}
+      <svg
+        aria-hidden="true"
+        width="36"
+        height="36"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="shrink-0"
       >
+        <rect width="36" height="36" rx="9" fill={variant === "dark" ? "rgba(45,158,143,0.10)" : "rgba(45,158,143,0.18)"} className="transition-colors group-hover:opacity-125" />
+        <path
+          d="M18 8.5c-2.4-2.4-5.4-3.4-7.8-2.4C7.6 7.3 6 10 6 13.7c0 3.4.7 5.4 1.6 8.4.6 2.1 1.1 4.5 1.4 6.8.3 2.1 1.4 3.3 2.6 3.3 1.4 0 2-.7 2.4-3.6.5-2.4.9-4.7 2.5-4.7s2 2.3 2.5 4.7c.4 2.2 1 3.6 2.4 3.6 1.2 0 2.3-1.2 2.6-3.3.3-2.3.8-4.7 1.4-6.8.9-3 1.6-5 1.6-8.4 0-3.7-1.6-6.4-4.2-7.6C20.4 5.1 20.4 5.1 18 8.5Z"
+          stroke="#2D9E8F"
+          strokeWidth="1.6"
+          strokeLinejoin="round"
+          fill="none"
+        />
+        <circle cx="22.5" cy="11" r="2" fill="#2D9E8F" />
+      </svg>
+
+      <span className={cn("text-[1.05rem] font-semibold tracking-tightish", wordColor)}>
         Brightside{" "}
-        <span className="font-normal text-warmgray">
-          {variant === "light" ? (
-            <span className="text-white/70">Dental</span>
-          ) : (
-            "Dental"
-          )}
-        </span>
+        <span className={cn("font-normal", subColor)}>Dental</span>
       </span>
     </Link>
   );

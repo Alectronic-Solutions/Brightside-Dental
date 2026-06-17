@@ -61,7 +61,7 @@ export function PageHero({ label, title, subtitle, children, bgImage }: PageHero
         className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-offwhite/20 to-transparent"
       />
 
-      <div className="container-page relative pb-16 pt-32 md:pb-20 md:pt-40">
+      <div className="container-page relative pb-14 pt-28 sm:pt-32 md:pb-20 md:pt-40">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,15 +69,15 @@ export function PageHero({ label, title, subtitle, children, bgImage }: PageHero
           className="max-w-3xl"
         >
           {label && <SectionLabel tone="light">{label}</SectionLabel>}
-          <h1 className="display mt-3 text-[2.25rem] font-semibold leading-[1.08] tracking-[-0.02em] text-white sm:text-5xl">
+          <h1 className="display mt-3 text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.02em] text-white sm:text-[2.25rem] md:text-5xl">
             {title}
           </h1>
           {subtitle && (
-            <p className="mt-5 max-w-2xl text-[1.05rem] leading-[1.75] text-white/65">
+            <p className="mt-4 max-w-2xl text-[0.97rem] leading-[1.75] text-white/65 sm:mt-5 sm:text-[1.05rem]">
               {subtitle}
             </p>
           )}
-          {children && <div className="mt-8">{children}</div>}
+          {children && <div className="mt-7 sm:mt-8">{children}</div>}
         </motion.div>
       </div>
     </section>

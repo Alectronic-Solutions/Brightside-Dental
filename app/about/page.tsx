@@ -10,7 +10,6 @@ import {
 import { CTABanner } from "@/components/sections/CTABanner";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
-import { OfficeIllustration } from "@/components/about/OfficeIllustration";
 import { PRACTICE } from "@/lib/constants";
 import { IMAGES } from "@/lib/images";
 
@@ -86,47 +85,76 @@ const CERTS = [
 export default function AboutPage() {
   return (
     <>
-      {/* Hero split */}
-      <section className="relative overflow-hidden bg-navy">
+      {/* Hero */}
+      <section className="relative min-h-[100svh] overflow-hidden bg-navy sm:min-h-[620px] md:min-h-[700px]">
+        {/* Full-bleed background photo */}
+        <Image
+          src={IMAGES.office.treatmentRoom.src}
+          alt={IMAGES.office.treatmentRoom.alt}
+          fill
+          priority
+          quality={90}
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        {/* Gradient overlay — dark on left, fades right */}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(100deg, rgba(14,31,61,0.97) 0%, rgba(14,31,61,0.85) 45%, rgba(14,31,61,0.4) 75%, rgba(14,31,61,0.2) 100%)",
+          }}
+        />
+        {/* Teal glow accent */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(55% 60% at 75% 35%, rgba(45,158,143,0.16), rgba(14,31,61,0) 70%)",
+              "radial-gradient(40% 50% at 20% 60%, rgba(45,158,143,0.18), transparent 70%)",
           }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.7) 0.5px, transparent 0.5px), linear-gradient(90deg, rgba(255,255,255,0.7) 0.5px, transparent 0.5px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-        <div className="container-page relative grid items-center gap-12 pb-20 pt-32 md:pb-28 md:pt-40 lg:grid-cols-2">
+
+        <div className="container-page relative grid items-center gap-12 pb-16 pt-28 sm:pt-36 md:pb-32 md:pt-44 lg:grid-cols-2">
+          {/* Left: text */}
           <AnimatedSection>
             <SectionLabel tone="light">Our Story</SectionLabel>
-            <h1 className="display text-[2.25rem] leading-[1.1] text-white sm:text-5xl">
+            <h1 className="display text-[2.5rem] leading-[1.08] text-white sm:text-5xl lg:text-[3.25rem]">
               We opened Brightside Dental in 2006 with a single belief.
             </h1>
             <p className="mt-6 max-w-xl text-[1.05rem] leading-[1.75] text-white/65">
               That going to the dentist should not feel like a punishment.
-              Two decades later, that belief still shapes everything. From how
+              Two decades later, that belief still shapes everything: from how
               we greet you at the door to how we explain a treatment plan in
               plain language, with no pressure and no surprises.
             </p>
-            <div className="mt-9 flex flex-wrap gap-8 border-t-hair border-subtle-dark pt-7">
+            <div className="mt-10 flex flex-wrap gap-10 border-t border-white/10 pt-8">
               <Stat value={`${PRACTICE.yearsInPractice} yrs`} label="In practice" />
               <Stat value={PRACTICE.patientsServed} label="Patients served" />
               <Stat value={`${PRACTICE.googleRating}★`} label="Google rating" />
             </div>
           </AnimatedSection>
 
-          <div className="order-first lg:order-last">
-            <OfficeIllustration />
-          </div>
+          {/* Right: photo collage */}
+          <AnimatedSection className="hidden lg:grid lg:grid-cols-2 lg:gap-3" delay={0.15}>
+            <div className="space-y-3">
+              <div className="relative h-52 overflow-hidden rounded-2xl">
+                <Image src={IMAGES.office.reception.src} alt={IMAGES.office.reception.alt} fill className="object-cover" sizes="240px" />
+              </div>
+              <div className="relative h-36 overflow-hidden rounded-2xl">
+                <Image src={IMAGES.office.waiting.src} alt={IMAGES.office.waiting.alt} fill className="object-cover" sizes="240px" />
+              </div>
+            </div>
+            <div className="space-y-3 pt-8">
+              <div className="relative h-36 overflow-hidden rounded-2xl">
+                <Image src={IMAGES.office.consultation.src} alt={IMAGES.office.consultation.alt} fill className="object-cover" sizes="240px" />
+              </div>
+              <div className="relative h-52 overflow-hidden rounded-2xl">
+                <Image src={IMAGES.office.smile1.src} alt={IMAGES.office.smile1.alt} fill className="object-cover object-top" sizes="240px" />
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
@@ -149,7 +177,7 @@ export default function AboutPage() {
               <AnimatedSection
                 key={member.name}
                 delay={i * 0.08}
-                className="overflow-hidden rounded-2xl border-hair border-subtle bg-white shadow-card"
+                className="group overflow-hidden rounded-2xl border-hair border-subtle bg-white shadow-card transition-shadow hover:shadow-card-hover"
               >
                 {/* Headshot */}
                 <div className="relative h-56 w-full overflow-hidden">
@@ -201,9 +229,7 @@ export default function AboutPage() {
                 delay={i * 0.08}
                 className="rounded-2xl border-hair border-subtle bg-offwhite p-7 transition-shadow hover:shadow-card"
               >
-                <div className="grid h-12 w-12 place-items-center rounded-xl bg-teal/10 text-teal">
-                  <value.Icon className="h-6 w-6" strokeWidth={1.5} />
-                </div>
+                <value.Icon className="h-7 w-7 text-teal" strokeWidth={1.5} />
                 <h3 className="mt-5 text-xl font-semibold text-charcoal">
                   {value.title}
                 </h3>
