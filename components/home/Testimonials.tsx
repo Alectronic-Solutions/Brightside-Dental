@@ -103,14 +103,14 @@ export function Testimonials() {
           >
             {/* Card */}
             <div className="relative overflow-hidden rounded-2xl">
-              <AnimatePresence initial={false} mode="sync">
+              <AnimatePresence initial={false} mode="wait">
                 <motion.div
                   key={index}
                   variants={FADE}
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                   className="relative flex flex-col rounded-2xl border-hair border-subtle bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.08)] sm:p-8"
                 >
                   {/* Decorative large quote mark — 8% opacity teal, top-right */}
