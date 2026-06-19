@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { Star, ChevronLeft, ChevronRight, ExternalLink, Play, Pause } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
@@ -58,15 +57,18 @@ const TESTIMONIALS = [
 
 const AUTO_INTERVAL = 7000;
 
-const FADE = {
-  enter: { opacity: 0 },
-  center: { opacity: 1 },
-  exit: { opacity: 0 },
-};
-
 export function Testimonials() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Track the tallest card so the container never collapses
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [containerHeight, setContainerHeight] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    const heights = cardRefs.current.map((el) => el?.offsetHeight ?? 0);
+    const max = Math.max(...heights);
+    if (max > 0) setContainerHeight(max);
+  }, []);
 
   useEffect(() => {
     if (paused) return;
@@ -79,8 +81,6 @@ export function Testimonials() {
   const go = (next: number) => setIndex(next);
   const prev = () => go((index - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
   const next = () => go((index + 1) % TESTIMONIALS.length);
-
-  const t = TESTIMONIALS[index];
 
   return (
     <section className="bg-white section-y">
@@ -101,19 +101,29 @@ export function Testimonials() {
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >
-            {/* Card */}
-            <div className="relative overflow-hidden rounded-2xl">
-              <AnimatePresence initial={false} mode="wait">
-                <motion.div
-                  key={index}
-                  variants={FADE}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="relative flex flex-col rounded-2xl border-hair border-subtle bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.08)] sm:p-8"
+            {/* Card stack — all cards rendered, only active one is visible */}
+            <div
+              className="relative"
+              style={{ height: containerHeight ?? "auto" }}
+            >
+              {TESTIMONIALS.map((t, i) => (
+                <div
+                  key={i}
+                  ref={(el) => { cardRefs.current[i] = el; }}
+                  aria-hidden={i !== index}
+                  className={cn(
+                    "rounded-2xl border-hair border-subtle bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] sm:p-8",
+                    // Once height is measured, stack absolutely so nothing shifts
+                    containerHeight !== undefined
+                      ? "absolute inset-0"
+                      : i === 0
+                      ? "relative"
+                      : "absolute inset-0",
+                    "transition-opacity duration-700 ease-in-out",
+                    i === index ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+                  )}
                 >
-                  {/* Decorative large quote mark — 8% opacity teal, top-right */}
+                  {/* Decorative quote mark */}
                   <span
                     aria-hidden
                     className="pointer-events-none absolute right-5 top-4 select-none font-serif text-[120px] leading-none text-teal"
@@ -122,12 +132,10 @@ export function Testimonials() {
                     &ldquo;
                   </span>
 
-                  {/* Quote text */}
                   <p className="relative z-10 text-[0.97rem] leading-[1.8] text-charcoal/85 sm:text-[1.06rem] sm:leading-[1.85]">
                     &ldquo;{t.quote}&rdquo;
                   </p>
 
-                  {/* Footer */}
                   <div className="mt-8 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-light text-teal-dark">
@@ -149,8 +157,8 @@ export function Testimonials() {
                       <GoogleG />
                     </div>
                   </div>
-                </motion.div>
-              </AnimatePresence>
+                </div>
+              ))}
             </div>
 
             {/* Controls */}

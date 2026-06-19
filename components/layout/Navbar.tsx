@@ -30,7 +30,11 @@ export function Navbar() {
     pathname.startsWith("/services/") ||
     pathname === "/about" ||
     pathname === "/new-patients" ||
-    pathname === "/contact";
+    pathname === "/contact" ||
+    pathname === "/privacy-policy" ||
+    pathname === "/terms-of-use" ||
+    pathname === "/accessibility" ||
+    pathname === "/sitemap-page";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);

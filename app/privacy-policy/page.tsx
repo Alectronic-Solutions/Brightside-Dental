@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ShieldCheck } from "lucide-react";
+import { PageHero } from "@/components/sections/PageHero";
 import { PRACTICE } from "@/lib/constants";
+import { IMAGES } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -25,35 +27,20 @@ const SECTIONS = [
           Information You Provide Directly
         </h4>
         <ul className="mb-5 space-y-2 text-gray-600">
-          <li className="flex gap-2">
-            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
-            <span>
-              <strong className="text-gray-800">Contact information:</strong>{" "}
-              name, email address, phone number, and mailing address.
-            </span>
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
-            <span>
-              <strong className="text-gray-800">Appointment requests:</strong>{" "}
-              preferred date and time, service requested, and insurance carrier.
-            </span>
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
-            <span>
-              <strong className="text-gray-800">Patient forms:</strong> health
-              history, dental history, and insurance information submitted
-              through our new-patient intake process.
-            </span>
-          </li>
-          <li className="flex gap-2">
-            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
-            <span>
-              <strong className="text-gray-800">Communications:</strong>{" "}
-              messages sent to us via our contact form, email, or phone.
-            </span>
-          </li>
+          {[
+            { label: "Contact information", desc: "name, email address, phone number, and mailing address." },
+            { label: "Appointment requests", desc: "preferred date and time, service requested, and insurance carrier." },
+            { label: "Patient forms", desc: "health history, dental history, and insurance information submitted through our new-patient intake process." },
+            { label: "Communications", desc: "messages sent to us via our contact form, email, or phone." },
+          ].map(({ label, desc }) => (
+            <li key={label} className="flex gap-2">
+              <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
+              <span>
+                <strong className="text-gray-800">{label}:</strong>{" "}
+                {desc}
+              </span>
+            </li>
+          ))}
         </ul>
         <h4 className="mb-2 font-semibold text-navy">
           Information Collected Automatically
@@ -87,7 +74,7 @@ const SECTIONS = [
             "Comply with applicable laws, including HIPAA and California dental board regulations.",
           ].map((item) => (
             <li key={item} className="flex gap-2">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
+              <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
               <span>{item}</span>
             </li>
           ))}
@@ -109,8 +96,8 @@ const SECTIONS = [
           Insurance Portability and Accountability Act (HIPAA). Your protected
           health information (PHI) is governed by our{" "}
           <strong className="text-gray-800">Notice of Privacy Practices</strong>
-          , which is provided to all patients at their first visit and available
-          at our front desk on request.
+          , provided to all patients at their first visit and available at our
+          front desk on request.
         </p>
         <ul className="space-y-2 text-gray-600">
           {[
@@ -120,7 +107,7 @@ const SECTIONS = [
             "You may file a complaint with us or with the U.S. Department of Health and Human Services if you believe your rights have been violated.",
           ].map((item) => (
             <li key={item} className="flex gap-2">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
+              <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
               <span>{item}</span>
             </li>
           ))}
@@ -162,9 +149,9 @@ const SECTIONS = [
             { label: "Payment processors", desc: "for collecting co-pays and balances." },
           ].map(({ label, desc }) => (
             <li key={label} className="flex gap-2">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
+              <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
               <span>
-                <strong className="text-gray-800">{label}</strong> {desc}
+                <strong className="text-gray-800">{label}:</strong>{" "}{desc}
               </span>
             </li>
           ))}
@@ -203,28 +190,22 @@ const SECTIONS = [
           {[
             "Know what personal information we collect, use, disclose, or sell.",
             "Request deletion of your personal information.",
-            "Opt out of the sale of personal information (we do not sell personal information).",
+            "Opt out of the sale of personal information. We do not sell personal information.",
             "Non-discrimination for exercising your CCPA rights.",
           ].map((item) => (
             <li key={item} className="flex gap-2">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
+              <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
               <span>{item}</span>
             </li>
           ))}
         </ul>
         <p className="text-gray-600">
           To submit a request, contact us at{" "}
-          <a
-            href={`mailto:${PRACTICE.email}`}
-            className="font-medium text-teal hover:underline"
-          >
+          <a href={`mailto:${PRACTICE.email}`} className="font-medium text-teal hover:underline">
             {PRACTICE.email}
           </a>{" "}
           or call{" "}
-          <a
-            href={PRACTICE.phoneHref}
-            className="font-medium text-teal hover:underline"
-          >
+          <a href={PRACTICE.phoneHref} className="font-medium text-teal hover:underline">
             {PRACTICE.phone}
           </a>
           . We will respond within 45 days.
@@ -264,8 +245,7 @@ const SECTIONS = [
       <p className="text-gray-600">
         We may update this Privacy Policy periodically. When we do, we will
         revise the effective date shown at the top of this page. We encourage
-        you to review this page whenever you visit our site to stay informed
-        about how we protect your information.
+        you to review this page whenever you visit our site.
       </p>
     ),
   },
@@ -273,89 +253,72 @@ const SECTIONS = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="bg-white">
-      {/* Page hero */}
-      <div className="border-b border-gray-100 bg-gray-50">
-        <div className="container-page max-w-4xl py-16 md:py-20">
-          <div className="flex items-start gap-5">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-teal/10">
-              <ShieldCheck className="h-6 w-6 text-teal" aria-hidden="true" />
-            </div>
-            <div>
-              <p className="caption mb-2 text-teal">Legal</p>
-              <h1 className="text-4xl font-bold tracking-tight text-navy md:text-5xl">
-                Privacy Policy
-              </h1>
-              <p className="mt-3 text-gray-500">
-                Effective date: {LAST_UPDATED}
-              </p>
-            </div>
+    <main>
+      <PageHero
+        label="Legal"
+        title="Privacy Policy"
+        subtitle={`Effective ${LAST_UPDATED}. We are committed to protecting your privacy and handling your information with care.`}
+        bgImage={{ src: IMAGES.office.consultation.src, alt: IMAGES.office.consultation.alt }}
+      />
+
+      <div className="bg-white">
+        <div className="container-page max-w-4xl py-14 md:py-20">
+          <div className="space-y-0">
+            {SECTIONS.map(({ number, title, content }) => (
+              <div
+                key={number}
+                className="grid gap-4 border-b border-gray-100 py-10 sm:gap-6 md:grid-cols-[4rem_1fr]"
+              >
+                <div>
+                  <span className="font-mono text-xl font-bold text-teal/30 sm:text-2xl">
+                    {number}
+                  </span>
+                </div>
+                <div>
+                  <h2 className="mb-4 text-lg font-semibold text-navy sm:text-xl">
+                    {title}
+                  </h2>
+                  {content}
+                </div>
+              </div>
+            ))}
           </div>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-gray-600">
-            {PRACTICE.name} is committed to protecting your privacy. This
-            policy explains how we collect, use, and safeguard your information
-            when you visit our website or receive care at our practice.
-          </p>
-        </div>
-      </div>
 
-      {/* Sections */}
-      <div className="container-page max-w-4xl py-16 md:py-20">
-        <div className="space-y-10">
-          {SECTIONS.map(({ number, title, content }) => (
-            <div
-              key={number}
-              className="grid gap-6 border-b border-gray-100 pb-10 md:grid-cols-[5rem_1fr]"
-            >
-              <div className="pt-0.5">
-                <span className="font-mono text-2xl font-bold text-teal/30">
-                  {number}
-                </span>
+          <div className="mt-12 rounded-xl border border-gray-200 bg-gray-50 p-6 sm:p-8">
+            <div className="flex items-start gap-4">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-teal/10">
+                <ShieldCheck className="h-5 w-5 text-teal" aria-hidden="true" />
               </div>
-              <div>
-                <h2 className="mb-4 text-xl font-semibold text-navy">
-                  {title}
+              <div className="min-w-0 flex-1">
+                <h2 className="mb-1 text-lg font-semibold text-navy">
+                  Questions or Concerns?
                 </h2>
-                {content}
+                <p className="mb-6 text-sm text-gray-600">
+                  If you have any questions about this Privacy Policy or how we
+                  handle your information, please reach out directly.
+                </p>
+                <div className="grid gap-4 text-sm text-gray-700 sm:grid-cols-2">
+                  <div>
+                    <p className="font-semibold text-navy">{PRACTICE.name}</p>
+                    <p>{PRACTICE.addressLine1}</p>
+                    <p>{PRACTICE.addressLine2}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p>
+                      Phone:{" "}
+                      <a href={PRACTICE.phoneHref} className="font-medium text-teal hover:underline">
+                        {PRACTICE.phone}
+                      </a>
+                    </p>
+                    <p>
+                      Email:{" "}
+                      <a href={`mailto:${PRACTICE.email}`} className="font-medium text-teal hover:underline">
+                        {PRACTICE.email}
+                      </a>
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Contact block */}
-        <div className="mt-14 rounded-xl border border-gray-200 bg-gray-50 p-8">
-          <h2 className="mb-2 text-xl font-semibold text-navy">
-            Questions or Concerns?
-          </h2>
-          <p className="mb-6 text-gray-600">
-            If you have any questions about this Privacy Policy or how we
-            handle your information, please reach out to us directly.
-          </p>
-          <div className="grid gap-2 text-sm text-gray-700 sm:grid-cols-2">
-            <div>
-              <p className="font-semibold text-navy">{PRACTICE.name}</p>
-              <p>{PRACTICE.addressLine1}</p>
-              <p>{PRACTICE.addressLine2}</p>
-            </div>
-            <div className="space-y-1">
-              <p>
-                Phone:{" "}
-                <a
-                  href={PRACTICE.phoneHref}
-                  className="font-medium text-teal hover:underline"
-                >
-                  {PRACTICE.phone}
-                </a>
-              </p>
-              <p>
-                Email:{" "}
-                <a
-                  href={`mailto:${PRACTICE.email}`}
-                  className="font-medium text-teal hover:underline"
-                >
-                  {PRACTICE.email}
-                </a>
-              </p>
             </div>
           </div>
         </div>
