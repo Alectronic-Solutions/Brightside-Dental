@@ -12,18 +12,18 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 const SERVICE_COLORS = [
   "from-[#E8F7F5] to-white",
-  "from-[#EEF2FF] to-white",
-  "from-[#FFF7ED] to-white",
-  "from-[#F0FDF4] to-white",
-  "from-[#FDF2F8] to-white",
+  "from-[#D6F0EC] to-white",
+  "from-[#E8F0FA] to-white",
+  "from-[#D4E4F7] to-white",
+  "from-[#EEF6F5] to-white",
 ];
 
 const BORDER_COLORS = [
   "#2D9E8F",
-  "#6366F1",
-  "#F97316",
-  "#22C55E",
-  "#EC4899",
+  "#1E7268",
+  "#162C52",
+  "#0E1F3D",
+  "#2D9E8F",
 ];
 
 export function ServicesStrip() {
@@ -72,13 +72,13 @@ export function ServicesStrip() {
                 >
                   {/* Color gradient top band */}
                   <div
-                    className={`bg-gradient-to-br ${SERVICE_COLORS[i]} h-2 w-full`}
+                    className={`bg-gradient-to-br ${SERVICE_COLORS[i]} h-[3px] w-full`}
                   />
 
                   {/* Left border accent — appears on hover */}
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute bottom-0 left-0 top-2 w-[3px] origin-bottom scale-y-0 rounded-b-sm transition-transform duration-300 group-hover:scale-y-100"
+                    className="pointer-events-none absolute bottom-0 left-0 top-[3px] w-[3px] rounded-sm opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                     style={{ backgroundColor: BORDER_COLORS[i] }}
                   />
 

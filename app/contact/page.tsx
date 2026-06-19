@@ -50,7 +50,7 @@ export default function ContactPage() {
         />
         <div className="container-page relative">
           <SectionLabel tone="light">Contact</SectionLabel>
-          <h1 className="display max-w-2xl text-[2rem] leading-[1.1] text-white sm:text-5xl">
+          <h1 className="mt-3 max-w-2xl text-display-sm font-bold text-white">
             Book your visit. We&apos;ll confirm within the hour.
           </h1>
           <p className="mt-5 max-w-xl text-lg text-white/70">
@@ -64,24 +64,16 @@ export default function ContactPage() {
         <div className="container-page grid gap-10 lg:grid-cols-2 lg:gap-14">
           {/* Left column */}
           <div className="space-y-6">
-            {/* Map placeholder */}
+            {/* Map */}
             <div className="overflow-hidden rounded-2xl border-hair border-subtle shadow-card">
-              <div className="relative grid h-64 place-items-center bg-navy">
-                <div
-                  aria-hidden
-                  className="absolute inset-0 opacity-[0.07]"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(rgba(255,255,255,0.8) 0.5px, transparent 0.5px), linear-gradient(90deg, rgba(255,255,255,0.8) 0.5px, transparent 0.5px)",
-                    backgroundSize: "32px 32px",
-                  }}
+              <div className="relative h-64 overflow-hidden">
+                <iframe
+                  title="Brightside Dental location — 1420 S Lower Sacramento Rd, Lodi, CA"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=-121.2816%2C38.105%2C-121.2616%2C38.125&layer=mapnik&marker=38.115%2C-121.2716"
+                  className="h-full w-full border-0"
+                  loading="lazy"
+                  aria-label="Map showing Brightside Dental at 1420 S Lower Sacramento Rd, Lodi, CA"
                 />
-                <div className="relative flex flex-col items-center gap-3 px-6 text-center">
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-teal text-white">
-                    <MapPin className="h-6 w-6" aria-hidden="true" />
-                  </span>
-                  <p className="font-medium text-white">{PRACTICE.address}</p>
-                </div>
               </div>
               <div className="bg-white p-4">
                 <Button
@@ -90,7 +82,7 @@ export default function ContactPage() {
                   className="w-full"
                 >
                   <Navigation className="h-4 w-4" aria-hidden="true" />
-                  Get Directions
+                  Get Directions in Google Maps
                 </Button>
               </div>
             </div>

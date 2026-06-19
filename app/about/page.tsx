@@ -10,6 +10,7 @@ import {
 import { CTABanner } from "@/components/sections/CTABanner";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { PhotoCollage } from "@/components/about/PhotoCollage";
 import { PRACTICE } from "@/lib/constants";
 import { IMAGES } from "@/lib/images";
 
@@ -87,6 +88,8 @@ export default function AboutPage() {
     <>
       {/* Hero */}
       <section className="relative min-h-[100svh] overflow-hidden bg-navy sm:min-h-[620px] md:min-h-[700px]">
+        {/* Teal accent dash */}
+        <span aria-hidden className="absolute left-0 top-[42%] z-10 hidden h-12 w-1 -translate-y-1/2 rounded-r-full bg-teal lg:block" />
         {/* Full-bleed background photo */}
         <Image
           src={IMAGES.office.treatmentRoom.src}
@@ -120,7 +123,7 @@ export default function AboutPage() {
           {/* Left: text */}
           <AnimatedSection>
             <SectionLabel tone="light">Our Story</SectionLabel>
-            <h1 className="display text-[2.5rem] leading-[1.08] text-white sm:text-5xl lg:text-[3.25rem]">
+            <h1 className="mt-3 text-display font-bold text-white">
               We opened Brightside Dental in 2006 with a single belief.
             </h1>
             <p className="mt-6 max-w-xl text-[1.05rem] leading-[1.75] text-white/65">
@@ -136,25 +139,8 @@ export default function AboutPage() {
             </div>
           </AnimatedSection>
 
-          {/* Right: photo collage */}
-          <AnimatedSection className="hidden lg:grid lg:grid-cols-2 lg:gap-3" delay={0.15}>
-            <div className="space-y-3">
-              <div className="relative h-52 overflow-hidden rounded-2xl">
-                <Image src={IMAGES.office.reception.src} alt={IMAGES.office.reception.alt} fill className="object-cover" sizes="240px" />
-              </div>
-              <div className="relative h-36 overflow-hidden rounded-2xl">
-                <Image src={IMAGES.office.waiting.src} alt={IMAGES.office.waiting.alt} fill className="object-cover" sizes="240px" />
-              </div>
-            </div>
-            <div className="space-y-3 pt-8">
-              <div className="relative h-36 overflow-hidden rounded-2xl">
-                <Image src={IMAGES.office.consultation.src} alt={IMAGES.office.consultation.alt} fill className="object-cover" sizes="240px" />
-              </div>
-              <div className="relative h-52 overflow-hidden rounded-2xl">
-                <Image src={IMAGES.office.smile1.src} alt={IMAGES.office.smile1.alt} fill className="object-cover object-top" sizes="240px" />
-              </div>
-            </div>
-          </AnimatedSection>
+          {/* Right: photo collage — each image staggers in independently */}
+          <PhotoCollage />
         </div>
       </section>
 
@@ -306,6 +292,7 @@ export default function AboutPage() {
       <CTABanner
         heading="Come see the difference for yourself."
         subtext="The best way to understand how we are different is to experience it. Book your first visit today."
+        variant="teal"
       />
     </>
   );

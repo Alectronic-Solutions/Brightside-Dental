@@ -41,8 +41,8 @@ export function WhyBrightside() {
 
           <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border-hair border-[rgba(30,114,104,0.18)] bg-[rgba(30,114,104,0.10)]">
             {STATS.map((stat) => (
-              <div key={stat.label} className="group bg-teal-light p-5 transition-colors hover:bg-white sm:p-8">
-                <p className="text-2xl font-semibold tracking-tightish text-teal-dark sm:text-[2.5rem]">
+              <div key={stat.label} className="group bg-white/70 p-5 transition-colors duration-200 hover:bg-white sm:p-8">
+                <p className="text-2xl font-semibold tracking-tightish text-teal-dark sm:text-stat">
                   {stat.literal ? (
                     stat.literal
                   ) : (

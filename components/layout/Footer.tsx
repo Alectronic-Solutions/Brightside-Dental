@@ -29,13 +29,6 @@ const SOCIALS = [
   { href: PRACTICE.mapsUrl, label: "View our Google Business Profile", Icon: Star },
 ];
 
-const RECOGNITION = [
-  "Lodi News-Sentinel",
-  "San Joaquin Magazine",
-  'Yelp "People Love Us"',
-  "Google Guaranteed",
-];
-
 function BackToTop() {
   return (
     <button
@@ -52,25 +45,6 @@ function BackToTop() {
 export function Footer() {
   return (
     <footer className="bg-navy text-white/70">
-      {/* As Seen In / Recognition bar */}
-      <div className="border-b border-white/[0.07]">
-        <div className="container-page py-5">
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
-            <span className="caption shrink-0 text-white/35">As seen in</span>
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-              {RECOGNITION.map((label) => (
-                <span
-                  key={label}
-                  className="rounded border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/55"
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Top teal accent */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-teal/50 to-transparent" />
 
@@ -102,7 +76,7 @@ export function Footer() {
 
           {/* Col 2 — quick links */}
           <div>
-            <h3 className="caption text-teal-light/90">Quick Links</h3>
+            <h3 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Quick Links</h3>
             <ul className="mt-5 space-y-3 text-sm">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
@@ -119,7 +93,7 @@ export function Footer() {
 
           {/* Col 3 — hours */}
           <div>
-            <h3 className="caption text-teal-light/90">Office Hours</h3>
+            <h3 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Office Hours</h3>
             <ul className="mt-5 space-y-3 text-sm">
               {Object.entries(PRACTICE.hours).map(([days, time]) => (
                 <li key={days} className="flex justify-between gap-4">
@@ -132,7 +106,7 @@ export function Footer() {
 
           {/* Col 4 — contact */}
           <div>
-            <h3 className="caption text-teal-light/90">Visit Us</h3>
+            <h3 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Visit Us</h3>
             <ul className="mt-5 space-y-4 text-sm">
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-[18px] w-[18px] shrink-0 text-teal" aria-hidden="true" />

@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
-import Image from "next/image";
+import { Star, ChevronLeft, ChevronRight, ExternalLink, Play, Pause } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { cn } from "@/lib/cn";
@@ -38,7 +37,6 @@ const TESTIMONIALS = [
     quote: "I've been putting off dental work for years because of anxiety. Dr. Chen made the whole thing calm and judgment-free. She explained every step before doing it. I actually look forward to coming in now, which is something I never thought I'd say about a dentist.",
     name: "Sarah M.",
     location: "Lodi",
-    avatar: "https://api.dicebear.com/9.x/notionists/svg?seed=Sarah&backgroundColor=d1e9ff&radius=50",
     rating: 5,
     timeAgo: "2 weeks ago",
   },
@@ -46,7 +44,6 @@ const TESTIMONIALS = [
     quote: "Got a crown done in one visit with their CEREC machine. I didn't even need to take time off work. Walked in at noon, walked out at 2:30 with a permanent crown. That's just not something you expect from a dental office in Lodi.",
     name: "David R.",
     location: "Woodbridge",
-    avatar: "https://api.dicebear.com/9.x/notionists/svg?seed=David&backgroundColor=d4edda&radius=50",
     rating: 5,
     timeAgo: "1 month ago",
   },
@@ -54,7 +51,6 @@ const TESTIMONIALS = [
     quote: "Switched to Brightside after my old dentist retired. Jordan in the front office went through my insurance line by line and actually found coverage I didn't know I had. The office looks like a spa, the team remembers your name, and there's zero pressure to do anything.",
     name: "Marisol G.",
     location: "Lodi",
-    avatar: "https://api.dicebear.com/9.x/notionists/svg?seed=Marisol&backgroundColor=fde8e8&radius=50",
     rating: 5,
     timeAgo: "3 weeks ago",
   },
@@ -141,15 +137,10 @@ export function Testimonials() {
                   {/* Footer */}
                   <div className="mt-8 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full bg-offwhite">
-                        <Image
-                          src={t.avatar}
-                          alt={t.name}
-                          width={44}
-                          height={44}
-                          className="h-full w-full object-cover"
-                          unoptimized
-                        />
+                      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-light text-teal-dark">
+                        <span className="text-base font-semibold" aria-hidden>
+                          {t.name.charAt(0)}
+                        </span>
                       </div>
                       <div>
                         <p className="font-semibold text-charcoal">{t.name}</p>
@@ -179,7 +170,19 @@ export function Testimonials() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPaused((p) => !p)}
+                  aria-label={paused ? "Resume auto-advance" : "Pause auto-advance"}
+                  aria-pressed={paused}
+                  className="grid h-10 w-10 place-items-center rounded-full border-hair border-subtle text-warmgray transition-colors hover:border-charcoal hover:text-charcoal"
+                >
+                  {paused ? (
+                    <Play className="h-3.5 w-3.5" aria-hidden="true" />
+                  ) : (
+                    <Pause className="h-3.5 w-3.5" aria-hidden="true" />
+                  )}
+                </button>
                 <button
                   onClick={prev}
                   aria-label="Previous review"

@@ -77,14 +77,14 @@ export function Hero() {
 
           <motion.h1
             variants={fadeUp}
-            className="display mt-4 max-w-[18ch] text-[2rem] font-semibold leading-[1.06] tracking-[-0.025em] text-white sm:text-5xl lg:text-[3.4rem]"
+            className="mt-4 max-w-[18ch] text-display font-bold text-white"
           >
             Your smile deserves more than a{" "}
             <span className="relative inline-block">
               routine checkup
               <span
                 aria-hidden
-                className="absolute -bottom-1 left-0 h-[2px] w-full rounded-full bg-teal"
+                className="absolute -bottom-0.5 left-0 h-[3px] w-full rounded-full bg-gradient-to-r from-teal via-teal to-teal/40"
               />
             </span>
             .
@@ -115,9 +115,9 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* Trust stats — horizontal rule with inline stat blocks */}
+          {/* Trust stats — frosted glass bar */}
           <motion.div variants={fadeUp} className="mt-10 sm:mt-14">
-            <div className="flex items-stretch gap-px overflow-hidden rounded-xl border border-white/10">
+            <div className="flex items-stretch divide-x divide-white/[0.12] overflow-hidden rounded-2xl border border-white/[0.12] bg-white/[0.04] backdrop-blur-sm">
               <TrustStat
                 icon={<Star className="h-4 w-4 fill-teal text-teal" aria-hidden="true" />}
                 value={`${PRACTICE.googleRating}`}
@@ -134,6 +134,17 @@ export function Hero() {
                 label="Patients Served"
               />
             </div>
+          </motion.div>
+
+          {/* Mobile accepting-patients indicator (floating chips are desktop-only) */}
+          <motion.div variants={fadeUp} className="mt-4 flex items-center gap-2 lg:hidden">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal opacity-70" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-teal" />
+            </span>
+            <span className="text-xs font-medium text-white/70">
+              Accepting new patients · Same-week availability
+            </span>
           </motion.div>
         </motion.div>
 
@@ -216,12 +227,14 @@ function TrustStat({
   label: string;
 }) {
   return (
-    <div className="flex flex-1 flex-col gap-1 bg-white/[0.06] px-3 py-3.5 sm:gap-1.5 sm:px-5 sm:py-5">
-      <span className="flex items-center gap-1.5 text-[0.65rem] font-medium uppercase tracking-wider text-white/50 sm:text-[0.7rem]">
-        {icon}
+    <div className="flex flex-1 flex-col gap-2 px-4 py-4 sm:px-6 sm:py-5">
+      <span className="text-[0.68rem] font-medium uppercase tracking-[0.09em] text-white/45">
         {label}
       </span>
-      <span className="text-lg font-semibold text-white sm:text-2xl">{value}</span>
+      <span className="flex items-center gap-2 text-lg font-semibold text-white sm:text-2xl">
+        {icon}
+        {value}
+      </span>
     </div>
   );
 }

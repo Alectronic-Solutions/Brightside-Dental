@@ -93,6 +93,7 @@ export default function NewPatientsPage() {
         title="Welcome to Brightside. Let's make this easy."
         subtitle="Your first visit sets the tone for everything that follows. We have stripped out the friction: the long forms, the unclear costs, the rushed exams. Your first appointment will feel calm, clear, and unhurried."
         bgImage={{ src: IMAGES.office.reception.src, alt: IMAGES.office.reception.alt }}
+        variant="centered"
       />
 
       {/* First visit timeline */}
@@ -294,6 +295,7 @@ export default function NewPatientsPage() {
       <CTABanner
         heading="Ready to become a patient?"
         subtext="Booking takes two minutes, and we'll confirm within the hour. We can't wait to meet you."
+        variant="minimal"
       />
     </>
   );

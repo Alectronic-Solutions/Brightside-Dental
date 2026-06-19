@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 import type { ElementType, ReactNode } from "react";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -17,6 +17,7 @@ interface AnimatedSectionProps extends Omit<HTMLMotionProps<"div">, "ref"> {
 
 /**
  * Scroll-triggered fade-up wrapper. Animates once when ~15% into view.
+ * Respects prefers-reduced-motion: skips y travel and sets duration to 0.
  */
 export function AnimatedSection({
   children,
@@ -26,14 +27,19 @@ export function AnimatedSection({
   className,
   ...rest
 }: AnimatedSectionProps) {
+  const prefersReduced = useReducedMotion();
   const Comp = motion(as as ElementType);
   return (
     <Comp
       className={className}
-      initial={{ opacity: 0, y }}
+      initial={{ opacity: 0, y: prefersReduced ? 0 : y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, ease: EASE, delay }}
+      transition={{
+        duration: prefersReduced ? 0 : 0.5,
+        ease: EASE,
+        delay: prefersReduced ? 0 : delay,
+      }}
       {...rest}
     >
       {children}
@@ -54,6 +60,7 @@ export function AnimatedGroup({
   className?: string;
   stagger?: number;
 } & Omit<HTMLMotionProps<"div">, "ref">) {
+  const prefersReduced = useReducedMotion();
   return (
     <motion.div
       className={className}
@@ -62,7 +69,9 @@ export function AnimatedGroup({
       viewport={{ once: true, amount: 0.15 }}
       variants={{
         hidden: {},
-        show: { transition: { staggerChildren: stagger } },
+        show: {
+          transition: { staggerChildren: prefersReduced ? 0 : stagger },
+        },
       }}
       {...rest}
     >
@@ -81,15 +90,16 @@ export function AnimatedItem({
   className?: string;
   y?: number;
 } & Omit<HTMLMotionProps<"div">, "ref">) {
+  const prefersReduced = useReducedMotion();
   return (
     <motion.div
       className={className}
       variants={{
-        hidden: { opacity: 0, y },
+        hidden: { opacity: 0, y: prefersReduced ? 0 : y },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.5, ease: EASE },
+          transition: { duration: prefersReduced ? 0 : 0.5, ease: EASE },
         },
       }}
       {...rest}
