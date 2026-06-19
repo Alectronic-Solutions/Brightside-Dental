@@ -183,6 +183,14 @@ export function Footer() {
             </span>
           </div>
 
+          {/* Center-right — legal links */}
+          <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-x-5 gap-y-1.5">
+            <Link href="/privacy-policy" className="transition-colors hover:text-teal">Privacy Policy</Link>
+            <Link href="/terms-of-use" className="transition-colors hover:text-teal">Terms of Use</Link>
+            <Link href="/accessibility" className="transition-colors hover:text-teal">Accessibility</Link>
+            <Link href="/sitemap-page" className="transition-colors hover:text-teal">Site Map</Link>
+          </nav>
+
           {/* Right — back to top */}
           <BackToTop />
         </div>
