@@ -29,6 +29,14 @@ export const metadata: Metadata = {
     "dental implants Lodi CA",
   ],
   authors: [{ name: PRACTICE.name }],
+  icons: {
+    icon: [
+      { url: "/Brightside-Dental/favicon.ico", sizes: "48x48" },
+      { url: "/Brightside-Dental/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/Brightside-Dental/favicon-16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [{ url: "/Brightside-Dental/apple-touch-icon.png" }],
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -51,7 +59,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
-  manifest: "/manifest.json",
+  manifest: "/Brightside-Dental/manifest.json",
 };
 
 export const viewport: Viewport = {
@@ -64,7 +72,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "Dentist"],
   name: "Brightside Dental",
-  url: "https://www.brightsidedental.com",
+  url: SITE_URL,
   telephone: "+12095550182",
   address: {
     "@type": "PostalAddress",
@@ -110,10 +118,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="48x48" />
-        <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/favicon-16.png" type="image/png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

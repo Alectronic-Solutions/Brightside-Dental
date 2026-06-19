@@ -82,4 +82,4 @@ export function getService(slug: string): Service | undefined {
   return SERVICES.find((s) => s.slug === slug);
 }
 
-export const SITE_URL = "https://www.brightsidedental.com";
+export const SITE_URL = "https://alectronic-solutions.github.io/Brightside-Dental";
