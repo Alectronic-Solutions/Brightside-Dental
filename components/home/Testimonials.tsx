@@ -58,31 +58,25 @@ const TESTIMONIALS = [
 
 const AUTO_INTERVAL = 7000;
 
-const SLIDE = {
-  enter: (d: number) => ({ x: d > 0 ? 48 : -48, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (d: number) => ({ x: d > 0 ? -48 : 48, opacity: 0 }),
+const FADE = {
+  enter: { opacity: 0 },
+  center: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 export function Testimonials() {
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     if (paused) return;
     const id = setInterval(() => {
-      setDirection(1);
       setIndex((i) => (i + 1) % TESTIMONIALS.length);
     }, AUTO_INTERVAL);
     return () => clearInterval(id);
   }, [paused]);
 
-  const go = (next: number) => {
-    const d = next > index ? 1 : -1;
-    setDirection(d);
-    setIndex(next);
-  };
+  const go = (next: number) => setIndex(next);
   const prev = () => go((index - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
   const next = () => go((index + 1) % TESTIMONIALS.length);
 
@@ -109,15 +103,14 @@ export function Testimonials() {
           >
             {/* Card */}
             <div className="relative overflow-hidden rounded-2xl">
-              <AnimatePresence custom={direction} initial={false} mode="popLayout">
+              <AnimatePresence initial={false} mode="sync">
                 <motion.div
                   key={index}
-                  custom={direction}
-                  variants={SLIDE}
+                  variants={FADE}
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
                   className="relative flex flex-col rounded-2xl border-hair border-subtle bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.08)] sm:p-8"
                 >
                   {/* Decorative large quote mark — 8% opacity teal, top-right */}
