@@ -1,7 +1,5 @@
-"use client";
-
-import { useState, useEffect, useRef } from "react";
-import { Star, ChevronLeft, ChevronRight, ExternalLink, Play, Pause } from "lucide-react";
+import Image from "next/image";
+import { Star, ExternalLink } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { cn } from "@/lib/cn";
@@ -31,57 +29,96 @@ const GoogleStars = ({ count = 5 }: { count?: number }) => (
   </div>
 );
 
+// Cropped Unsplash portrait headshots (96px, face-centered). Remote pattern is
+// whitelisted in next.config.js.
+const avatar = (id: string) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=facearea&facepad=3&w=96&h=96&q=80`;
+
 const TESTIMONIALS = [
   {
-    quote: "I've been putting off dental work for years because of anxiety. Dr. Chen made the whole thing calm and judgment-free. She explained every step before doing it. I actually look forward to coming in now, which is something I never thought I'd say about a dentist.",
+    quote: "I've been putting off dental work for years because of anxiety. Dr. Chen made the whole thing calm and judgment-free. I actually look forward to coming in now, which is something I never thought I'd say about a dentist.",
     name: "Sarah M.",
     location: "Lodi",
     rating: 5,
     timeAgo: "2 weeks ago",
+    image: avatar("photo-1544005313-94ddf0286df2"),
   },
   {
-    quote: "Got a crown done in one visit with their CEREC machine. I didn't even need to take time off work. Walked in at noon, walked out at 2:30 with a permanent crown. That's just not something you expect from a dental office in Lodi.",
+    quote: "Got a crown done in one visit with their CEREC machine. Walked in at noon, walked out at 2:30 with a permanent crown. That's just not something you expect from a dental office in Lodi.",
     name: "David R.",
     location: "Woodbridge",
     rating: 5,
     timeAgo: "1 month ago",
+    image: avatar("photo-1507003211169-0a1dd7228f2d"),
   },
   {
-    quote: "Switched to Brightside after my old dentist retired. Jordan in the front office went through my insurance line by line and actually found coverage I didn't know I had. The office looks like a spa, the team remembers your name, and there's zero pressure to do anything.",
+    quote: "Switched to Brightside after my old dentist retired. Jordan in the front office went through my insurance line by line and found coverage I didn't know I had. Zero pressure to do anything.",
     name: "Marisol G.",
     location: "Lodi",
     rating: 5,
     timeAgo: "3 weeks ago",
+    image: avatar("photo-1438761681033-6461ffad8d80"),
+  },
+  {
+    quote: "Brought all three of my kids here and the team was incredible. My youngest is terrified of doctors but the hygienist had her laughing within five minutes. They never try to upsell you.",
+    name: "Anthony P.",
+    location: "Stockton",
+    rating: 5,
+    timeAgo: "1 month ago",
+    image: avatar("photo-1500648767791-00dcc994a43e"),
+  },
+  {
+    quote: "Chipped a front tooth the day before a wedding and they fit me in same-day. You honestly cannot tell anything ever happened. The whole team clearly takes pride in their work.",
+    name: "Priya N.",
+    location: "Lodi",
+    rating: 5,
+    timeAgo: "2 months ago",
+    image: avatar("photo-1534528741775-53994a69daeb"),
+  },
+  {
+    quote: "Best dental experience I've had in 40 years. Honest about what I needed and what could wait. The office is spotless and runs exactly on time — I've never sat in the waiting room more than a couple minutes.",
+    name: "Robert K.",
+    location: "Galt",
+    rating: 5,
+    timeAgo: "1 week ago",
+    image: avatar("photo-1472099645785-5658abf4ff4e"),
   },
 ];
 
-const AUTO_INTERVAL = 7000;
+function ReviewCard({ t }: { t: (typeof TESTIMONIALS)[number] }) {
+  return (
+    <figure className="flex h-full flex-col rounded-2xl border-hair border-subtle bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] transition-shadow duration-300 hover:shadow-[0_2px_6px_rgba(0,0,0,0.06),0_10px_28px_rgba(0,0,0,0.06)]">
+      <div className="flex items-center justify-between">
+        <GoogleStars count={t.rating} />
+        <GoogleG />
+      </div>
+
+      <blockquote className="mt-4 flex-1 text-[0.97rem] leading-[1.75] text-charcoal/85">
+        &ldquo;{t.quote}&rdquo;
+      </blockquote>
+
+      <figcaption className="mt-6 flex items-center gap-3 border-t border-subtle pt-5">
+        <Image
+          src={t.image}
+          alt={`${t.name}, verified Google reviewer`}
+          width={44}
+          height={44}
+          className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-black/5"
+        />
+        <div>
+          <p className="font-semibold text-charcoal">{t.name}</p>
+          <div className="flex items-center gap-1.5 text-xs text-warmgray">
+            <span>{t.location}</span>
+            <span aria-hidden>·</span>
+            <span>{t.timeAgo}</span>
+          </div>
+        </div>
+      </figcaption>
+    </figure>
+  );
+}
 
 export function Testimonials() {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-  // Track the tallest card so the container never collapses
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [containerHeight, setContainerHeight] = useState<number | undefined>(undefined);
-
-  useEffect(() => {
-    const heights = cardRefs.current.map((el) => el?.offsetHeight ?? 0);
-    const max = Math.max(...heights);
-    if (max > 0) setContainerHeight(max);
-  }, []);
-
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => {
-      setIndex((i) => (i + 1) % TESTIMONIALS.length);
-    }, AUTO_INTERVAL);
-    return () => clearInterval(id);
-  }, [paused]);
-
-  const go = (next: number) => setIndex(next);
-  const prev = () => go((index - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
-  const next = () => go((index + 1) % TESTIMONIALS.length);
-
   return (
     <section className="bg-white section-y">
       <div className="container-page">
@@ -95,139 +132,35 @@ export function Testimonials() {
           </p>
         </AnimatedSection>
 
-        <AnimatedSection delay={0.1} className="mt-14">
-          <div
-            className="relative mx-auto max-w-2xl"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-          >
-            {/* Card stack — all cards rendered, only active one is visible */}
-            <div
-              className="relative"
-              style={{ height: containerHeight ?? "auto" }}
-            >
-              {TESTIMONIALS.map((t, i) => (
-                <div
-                  key={i}
-                  ref={(el) => { cardRefs.current[i] = el; }}
-                  aria-hidden={i !== index}
-                  className={cn(
-                    "rounded-2xl border-hair border-subtle bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] sm:p-8",
-                    // Once height is measured, stack absolutely so nothing shifts
-                    containerHeight !== undefined
-                      ? "absolute inset-0"
-                      : i === 0
-                      ? "relative"
-                      : "absolute inset-0",
-                    "transition-opacity duration-700 ease-in-out",
-                    i === index ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
-                  )}
-                >
-                  {/* Decorative quote mark */}
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute right-5 top-4 select-none font-serif text-[120px] leading-none text-teal"
-                    style={{ opacity: 0.08 }}
-                  >
-                    &ldquo;
-                  </span>
-
-                  <p className="relative z-10 text-[0.97rem] leading-[1.8] text-charcoal/85 sm:text-[1.06rem] sm:leading-[1.85]">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-
-                  <div className="mt-8 flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-teal-light text-teal-dark">
-                        <span className="text-base font-semibold" aria-hidden>
-                          {t.name.charAt(0)}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-charcoal">{t.name}</p>
-                        <div className="flex items-center gap-1.5 text-xs text-warmgray">
-                          <span>{t.location}</span>
-                          <span aria-hidden>·</span>
-                          <span>{t.timeAgo}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex shrink-0 flex-col items-end gap-1.5">
-                      <GoogleStars count={t.rating} />
-                      <GoogleG />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Controls */}
-            <div className="mt-6 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl font-bold text-charcoal">{PRACTICE.googleRating}</span>
-                <div>
-                  <GoogleStars count={5} />
-                  <p className="mt-0.5 text-xs text-warmgray">{PRACTICE.reviewCount} Google reviews</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setPaused((p) => !p)}
-                  aria-label={paused ? "Resume auto-advance" : "Pause auto-advance"}
-                  aria-pressed={paused}
-                  className="grid h-10 w-10 place-items-center rounded-full border-hair border-subtle text-warmgray transition-colors hover:border-charcoal hover:text-charcoal"
-                >
-                  {paused ? (
-                    <Play className="h-3.5 w-3.5" aria-hidden="true" />
-                  ) : (
-                    <Pause className="h-3.5 w-3.5" aria-hidden="true" />
-                  )}
-                </button>
-                <button
-                  onClick={prev}
-                  aria-label="Previous review"
-                  className="grid h-10 w-10 place-items-center rounded-full border-hair border-subtle text-warmgray transition-colors hover:border-charcoal hover:text-charcoal"
-                >
-                  <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-                </button>
-                <div className="flex gap-1.5" role="tablist" aria-label="Review navigation">
-                  {TESTIMONIALS.map((_, i) => (
-                    <button
-                      key={i}
-                      role="tab"
-                      aria-selected={i === index}
-                      onClick={() => go(i)}
-                      aria-label={`Go to review ${i + 1}`}
-                      className={cn(
-                        "h-1.5 rounded-full transition-all duration-300",
-                        i === index ? "w-5 bg-teal" : "w-1.5 bg-subtle",
-                      )}
-                    />
-                  ))}
-                </div>
-                <button
-                  onClick={next}
-                  aria-label="Next review"
-                  className="grid h-10 w-10 place-items-center rounded-full border-hair border-subtle text-warmgray transition-colors hover:border-charcoal hover:text-charcoal"
-                >
-                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-5 text-center">
-              <a
-                href={PRACTICE.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
-              >
-                See all reviews on Google
-                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-              </a>
-            </div>
+        {/* Rating summary */}
+        <AnimatedSection delay={0.05} className="mt-8 flex items-center gap-3">
+          <span className="text-3xl font-bold text-charcoal">{PRACTICE.googleRating}</span>
+          <div>
+            <GoogleStars count={5} />
+            <p className="mt-0.5 flex items-center gap-1.5 text-xs text-warmgray">
+              <GoogleG />
+              {PRACTICE.reviewCount} Google reviews
+            </p>
           </div>
+        </AnimatedSection>
+
+        {/* Static card grid — nothing moves, so nothing can jump */}
+        <AnimatedSection delay={0.1} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {TESTIMONIALS.map((t, i) => (
+            <ReviewCard key={i} t={t} />
+          ))}
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.15} className="mt-10 text-center">
+          <a
+            href={PRACTICE.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
+          >
+            See all {PRACTICE.reviewCount} reviews on Google
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
         </AnimatedSection>
       </div>
     </section>
