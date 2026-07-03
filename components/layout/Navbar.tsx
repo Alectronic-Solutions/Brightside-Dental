@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Phone, X } from "lucide-react";
 import { Logo } from "./Logo";
@@ -24,6 +24,7 @@ export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const hasDarkHero =
     DARK_HERO_ROUTES.includes(pathname) ||
@@ -45,14 +46,48 @@ export function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
+    document.documentElement.style.overscrollBehavior = open ? "contain" : "";
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overscrollBehavior = "";
     };
   }, [open]);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // Escape-to-close + focus trap while the mobile panel is open.
+  useEffect(() => {
+    if (!open) return;
+
+    const panel = panelRef.current;
+    const focusables = panel?.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled])',
+    );
+    focusables?.[0]?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !focusables || focusables.length === 0) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   const solid = scrolled || !hasDarkHero;
   const linkColor = solid ? "text-charcoal/80" : "text-white/85";
@@ -147,11 +182,39 @@ export function Navbar() {
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
           className={cn(
-            "grid h-11 w-11 place-items-center rounded-md transition-colors lg:hidden",
-            solid ? "text-charcoal hover:bg-black/5" : "text-white hover:bg-white/10",
+            "relative z-[60] grid h-11 w-11 place-items-center rounded-md transition-colors lg:hidden",
+            open
+              ? "text-white hover:bg-white/10"
+              : solid
+                ? "text-charcoal hover:bg-black/5"
+                : "text-white hover:bg-white/10",
           )}
         >
-          <Menu className="h-6 w-6" aria-hidden="true" />
+          <AnimatePresence initial={false} mode="wait">
+            {open ? (
+              <motion.span
+                key="close"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="grid place-items-center"
+              >
+                <X className="h-6 w-6" aria-hidden="true" />
+              </motion.span>
+            ) : (
+              <motion.span
+                key="menu"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="grid place-items-center"
+              >
+                <Menu className="h-6 w-6" aria-hidden="true" />
+              </motion.span>
+            )}
+          </AnimatePresence>
         </button>
       </nav>
 
@@ -160,22 +223,15 @@ export function Navbar() {
         {open && (
           <motion.div
             key="mobile-menu"
-            initial={{ opacity: 0, y: -20 }}
+            ref={panelRef}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-50 flex flex-col bg-navy lg:hidden"
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-50 flex flex-col overscroll-contain bg-navy lg:hidden"
           >
             <div className="container-page flex h-[68px] items-center justify-between">
               <Logo variant="light" />
-              <button
-                type="button"
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-                className="grid h-11 w-11 place-items-center rounded-md text-white hover:bg-white/10"
-              >
-                <X className="h-6 w-6" aria-hidden="true" />
-              </button>
             </div>
 
             {/* Accepting new patients pill — mobile */}
@@ -197,7 +253,7 @@ export function Navbar() {
               animate="show"
               variants={{
                 hidden: {},
-                show: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+                show: { transition: { staggerChildren: 0.05, delayChildren: 0 } },
               }}
             >
               {NAV_LINKS.map((link) => (
