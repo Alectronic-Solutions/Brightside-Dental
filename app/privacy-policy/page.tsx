@@ -19,14 +19,14 @@ const SECTIONS = [
     title: "Information We Collect",
     content: (
       <>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-warmgray">
           We collect information you provide directly and certain data gathered
           automatically when you use our website.
         </p>
         <h4 className="mb-2 font-semibold text-navy">
           Information You Provide Directly
         </h4>
-        <ul className="mb-5 space-y-2 text-gray-600">
+        <ul className="mb-5 space-y-2 text-warmgray">
           {[
             { label: "Contact information", desc: "name, email address, phone number, and mailing address." },
             { label: "Appointment requests", desc: "preferred date and time, service requested, and insurance carrier." },
@@ -36,7 +36,7 @@ const SECTIONS = [
             <li key={label} className="flex gap-2">
               <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
               <span>
-                <strong className="text-gray-800">{label}:</strong>{" "}
+                <strong className="text-charcoal">{label}:</strong>{" "}
                 {desc}
               </span>
             </li>
@@ -45,7 +45,7 @@ const SECTIONS = [
         <h4 className="mb-2 font-semibold text-navy">
           Information Collected Automatically
         </h4>
-        <p className="text-gray-600">
+        <p className="text-warmgray">
           When you visit our website, our hosting provider may automatically
           collect certain technical data including your IP address, browser
           type, referring URL, pages visited, and the date and time of your
@@ -60,11 +60,11 @@ const SECTIONS = [
     title: "How We Use Your Information",
     content: (
       <>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-warmgray">
           We use the information we collect to provide and improve our services.
           Specifically, we use it to:
         </p>
-        <ul className="mb-5 space-y-2 text-gray-600">
+        <ul className="mb-5 space-y-2 text-warmgray">
           {[
             "Schedule and confirm appointments.",
             "Communicate treatment plans, reminders, and follow-up care.",
@@ -79,7 +79,7 @@ const SECTIONS = [
             </li>
           ))}
         </ul>
-        <div className="rounded-lg border border-teal/20 bg-teal/5 px-5 py-4 text-sm text-gray-700">
+        <div className="rounded-lg border border-teal/20 bg-teal/5 px-5 py-4 text-sm text-charcoal">
           We do <strong>not</strong> sell, rent, or trade your personal
           information to third parties for marketing purposes.
         </div>
@@ -91,15 +91,15 @@ const SECTIONS = [
     title: "HIPAA Notice of Privacy Practices",
     content: (
       <>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-warmgray">
           As a dental practice, we are a covered entity under the Health
           Insurance Portability and Accountability Act (HIPAA). Your protected
           health information (PHI) is governed by our{" "}
-          <strong className="text-gray-800">Notice of Privacy Practices</strong>
+          <strong className="text-charcoal">Notice of Privacy Practices</strong>
           , provided to all patients at their first visit and available at our
           front desk on request.
         </p>
-        <ul className="space-y-2 text-gray-600">
+        <ul className="space-y-2 text-warmgray">
           {[
             "We use and disclose PHI for treatment, payment, and health care operations without your authorization.",
             "We will obtain your written authorization before using PHI for marketing or research.",
@@ -120,13 +120,13 @@ const SECTIONS = [
     title: "Cookies and Tracking",
     content: (
       <>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-warmgray">
           Our website may use cookies, which are small text files stored on
           your device, to remember your preferences and analyze site traffic.
           You can disable cookies through your browser settings; however, some
           features of our site may not function as intended if you do.
         </p>
-        <p className="text-gray-600">
+        <p className="text-warmgray">
           We do not use third-party advertising cookies or cross-site tracking
           technologies.
         </p>
@@ -138,11 +138,11 @@ const SECTIONS = [
     title: "Third-Party Service Providers",
     content: (
       <>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-warmgray">
           We work with trusted vendors who help us operate our website and
           practice, including:
         </p>
-        <ul className="mb-5 space-y-2 text-gray-600">
+        <ul className="mb-5 space-y-2 text-warmgray">
           {[
             { label: "Practice management software", desc: "for scheduling, charting, and billing." },
             { label: "Web hosting", desc: "for serving this website." },
@@ -151,12 +151,12 @@ const SECTIONS = [
             <li key={label} className="flex gap-2">
               <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-teal" />
               <span>
-                <strong className="text-gray-800">{label}:</strong>{" "}{desc}
+                <strong className="text-charcoal">{label}:</strong>{" "}{desc}
               </span>
             </li>
           ))}
         </ul>
-        <p className="text-gray-600">
+        <p className="text-warmgray">
           These providers are contractually bound to use your information only
           as necessary to provide services to us and are prohibited from using
           it for their own purposes.
@@ -168,7 +168,7 @@ const SECTIONS = [
     number: "06",
     title: "Data Security",
     content: (
-      <p className="text-gray-600">
+      <p className="text-warmgray">
         We implement administrative, technical, and physical safeguards to
         protect your information from unauthorized access, use, or disclosure.
         Our office systems are encrypted, password-protected, and accessible
@@ -183,10 +183,10 @@ const SECTIONS = [
     title: "California Privacy Rights (CCPA / CPRA)",
     content: (
       <>
-        <p className="mb-4 text-gray-600">
+        <p className="mb-4 text-warmgray">
           If you are a California resident, you have the right to:
         </p>
-        <ul className="mb-5 space-y-2 text-gray-600">
+        <ul className="mb-5 space-y-2 text-warmgray">
           {[
             "Know what personal information we collect, use, disclose, or sell.",
             "Request deletion of your personal information.",
@@ -199,7 +199,7 @@ const SECTIONS = [
             </li>
           ))}
         </ul>
-        <p className="text-gray-600">
+        <p className="text-warmgray">
           To submit a request, contact us at{" "}
           <a href={`mailto:${PRACTICE.email}`} className="font-medium text-teal hover:underline">
             {PRACTICE.email}
@@ -217,7 +217,7 @@ const SECTIONS = [
     number: "08",
     title: "Children's Privacy",
     content: (
-      <p className="text-gray-600">
+      <p className="text-warmgray">
         Our website is not directed to children under 13, and we do not
         knowingly collect personal information from children through our
         website. Patient health information for minors is handled through our
@@ -229,7 +229,7 @@ const SECTIONS = [
     number: "09",
     title: "Links to Third-Party Websites",
     content: (
-      <p className="text-gray-600">
+      <p className="text-warmgray">
         Our website may contain links to third-party websites such as Google
         Maps, insurance carrier portals, or dental association resources. We
         are not responsible for the privacy practices of those sites and
@@ -242,7 +242,7 @@ const SECTIONS = [
     number: "10",
     title: "Changes to This Policy",
     content: (
-      <p className="text-gray-600">
+      <p className="text-warmgray">
         We may update this Privacy Policy periodically. When we do, we will
         revise the effective date shown at the top of this page. We encourage
         you to review this page whenever you visit our site.
@@ -267,7 +267,7 @@ export default function PrivacyPolicyPage() {
             {SECTIONS.map(({ number, title, content }) => (
               <div
                 key={number}
-                className="grid gap-4 border-b border-gray-100 py-10 sm:gap-6 md:grid-cols-[4rem_1fr]"
+                className="grid gap-4 border-b border-subtle py-10 sm:gap-6 md:grid-cols-[4rem_1fr]"
               >
                 <div>
                   <span className="font-mono text-xl font-bold text-teal/30 sm:text-2xl">
@@ -284,7 +284,7 @@ export default function PrivacyPolicyPage() {
             ))}
           </div>
 
-          <div className="mt-12 rounded-xl border border-gray-200 bg-gray-50 p-6 sm:p-8">
+          <div className="mt-12 rounded-xl border border-subtle bg-offwhite p-6 sm:p-8">
             <div className="flex items-start gap-4">
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-teal/10">
                 <ShieldCheck className="h-5 w-5 text-teal" aria-hidden="true" />
@@ -293,11 +293,11 @@ export default function PrivacyPolicyPage() {
                 <h2 className="mb-1 text-lg font-semibold text-navy">
                   Questions or Concerns?
                 </h2>
-                <p className="mb-6 text-sm text-gray-600">
+                <p className="mb-6 text-sm text-warmgray">
                   If you have any questions about this Privacy Policy or how we
                   handle your information, please reach out directly.
                 </p>
-                <div className="grid gap-4 text-sm text-gray-700 sm:grid-cols-2">
+                <div className="grid gap-4 text-sm text-charcoal sm:grid-cols-2">
                   <div>
                     <p className="font-semibold text-navy">{PRACTICE.name}</p>
                     <p>{PRACTICE.addressLine1}</p>

@@ -60,13 +60,13 @@ export default function SitemapPage() {
           <div className="space-y-12 md:space-y-16">
             {SECTIONS.map(({ heading, description, links }) => (
               <section key={heading}>
-                <div className="mb-5 flex items-baseline gap-3 border-b border-gray-100 pb-4">
+                <div className="mb-5 flex items-baseline gap-3 border-b border-subtle pb-4">
                   <MapIcon className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
                   <div>
                     <h2 className="text-base font-semibold text-navy sm:text-lg">
                       {heading}
                     </h2>
-                    <p className="mt-0.5 text-xs text-gray-500 sm:text-sm">
+                    <p className="mt-0.5 text-xs text-warmgray sm:text-sm">
                       {description}
                     </p>
                   </div>
@@ -76,7 +76,7 @@ export default function SitemapPage() {
                     <li key={href}>
                       <Link
                         href={href}
-                        className="group flex items-start gap-3 rounded-lg border border-gray-100 bg-gray-50 px-4 py-3.5 transition-colors hover:border-teal/30 hover:bg-teal/5"
+                        className="group flex items-start gap-3 rounded-lg border border-subtle bg-offwhite px-4 py-3.5 transition-colors hover:border-teal/30 hover:bg-teal/5"
                       >
                         <ChevronRight
                           className="mt-0.5 h-4 w-4 shrink-0 text-teal/40 transition-colors group-hover:text-teal"
@@ -87,7 +87,7 @@ export default function SitemapPage() {
                             {label}
                           </span>
                           {desc && (
-                            <span className="mt-0.5 block text-xs text-gray-500">
+                            <span className="mt-0.5 block text-xs text-warmgray">
                               {desc}
                             </span>
                           )}

@@ -61,7 +61,7 @@ export default function AccessibilityPage() {
       <div className="bg-white">
         <div className="container-page max-w-4xl py-14 md:py-20">
           {/* Our Standard */}
-          <div className="grid gap-4 border-b border-gray-100 py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
+          <div className="grid gap-4 border-b border-subtle py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
             <div>
               <span className="font-mono text-xl font-bold text-teal/30 sm:text-2xl">01</span>
             </div>
@@ -69,9 +69,9 @@ export default function AccessibilityPage() {
               <h2 className="mb-4 text-lg font-semibold text-navy sm:text-xl">
                 Our Standard
               </h2>
-              <p className="text-gray-600">
+              <p className="text-warmgray">
                 {PRACTICE.name} aims to conform to the{" "}
-                <strong className="text-gray-800">
+                <strong className="text-charcoal">
                   Web Content Accessibility Guidelines (WCAG) 2.1, Level AA
                 </strong>{" "}
                 published by the World Wide Web Consortium (W3C). These
@@ -83,7 +83,7 @@ export default function AccessibilityPage() {
           </div>
 
           {/* Website features */}
-          <div className="grid gap-4 border-b border-gray-100 py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
+          <div className="grid gap-4 border-b border-subtle py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
             <div>
               <span className="font-mono text-xl font-bold text-teal/30 sm:text-2xl">02</span>
             </div>
@@ -95,7 +95,7 @@ export default function AccessibilityPage() {
                 {FEATURES.map(({ heading, body }) => (
                   <li
                     key={heading}
-                    className="rounded-lg border border-gray-100 bg-gray-50 p-4 sm:p-5"
+                    className="rounded-lg border border-subtle bg-offwhite p-4 sm:p-5"
                   >
                     <div className="mb-2 flex items-center gap-2">
                       <CheckCircle2
@@ -104,7 +104,7 @@ export default function AccessibilityPage() {
                       />
                       <h3 className="text-sm font-semibold text-navy">{heading}</h3>
                     </div>
-                    <p className="text-sm leading-relaxed text-gray-600">{body}</p>
+                    <p className="text-sm leading-relaxed text-warmgray">{body}</p>
                   </li>
                 ))}
               </ul>
@@ -112,7 +112,7 @@ export default function AccessibilityPage() {
           </div>
 
           {/* Physical office */}
-          <div className="grid gap-4 border-b border-gray-100 py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
+          <div className="grid gap-4 border-b border-subtle py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
             <div>
               <span className="font-mono text-xl font-bold text-teal/30 sm:text-2xl">03</span>
             </div>
@@ -120,13 +120,13 @@ export default function AccessibilityPage() {
               <h2 className="mb-4 text-lg font-semibold text-navy sm:text-xl">
                 Physical Office Accessibility
               </h2>
-              <p className="mb-5 text-gray-600">
+              <p className="mb-5 text-warmgray">
                 Our Lodi office is designed to be physically accessible for all
                 patients.
               </p>
               <ul className="space-y-3">
                 {OFFICE_FEATURES.map((item) => (
-                  <li key={item} className="flex gap-3 text-gray-600">
+                  <li key={item} className="flex gap-3 text-warmgray">
                     <CheckCircle2
                       className="mt-0.5 h-4 w-4 shrink-0 text-teal"
                       aria-hidden="true"
@@ -139,7 +139,7 @@ export default function AccessibilityPage() {
           </div>
 
           {/* Known limitations */}
-          <div className="grid gap-4 border-b border-gray-100 py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
+          <div className="grid gap-4 border-b border-subtle py-10 sm:gap-6 md:grid-cols-[4rem_1fr]">
             <div>
               <span className="font-mono text-xl font-bold text-teal/30 sm:text-2xl">04</span>
             </div>
@@ -147,7 +147,7 @@ export default function AccessibilityPage() {
               <h2 className="mb-4 text-lg font-semibold text-navy sm:text-xl">
                 Known Limitations
               </h2>
-              <p className="text-gray-600">
+              <p className="text-warmgray">
                 While we work hard to keep our website accessible, some
                 third-party content or embedded tools, such as maps or
                 scheduling widgets provided by external vendors, may not fully
@@ -159,7 +159,7 @@ export default function AccessibilityPage() {
           </div>
 
           {/* Contact block */}
-          <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-6 sm:p-8">
+          <div className="mt-4 rounded-xl border border-subtle bg-offwhite p-6 sm:p-8">
             <div className="flex items-start gap-4">
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-teal/10">
                 <Accessibility className="h-5 w-5 text-teal" aria-hidden="true" />
@@ -168,7 +168,7 @@ export default function AccessibilityPage() {
                 <h2 className="mb-1 text-lg font-semibold text-navy">
                   Report an Issue
                 </h2>
-                <p className="mb-6 text-sm text-gray-600">
+                <p className="mb-6 text-sm text-warmgray">
                   If you experience difficulty accessing content or need an
                   accommodation not listed here, please reach out. We respond
                   within two business days.
@@ -180,7 +180,7 @@ export default function AccessibilityPage() {
                   >
                     <Phone className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
                     <div>
-                      <p className="text-xs text-gray-500">Call us</p>
+                      <p className="text-xs text-warmgray">Call us</p>
                       <p>{PRACTICE.phone}</p>
                     </div>
                   </a>
@@ -190,7 +190,7 @@ export default function AccessibilityPage() {
                   >
                     <Mail className="h-4 w-4 shrink-0 text-teal" aria-hidden="true" />
                     <div>
-                      <p className="text-xs text-gray-500">Email us</p>
+                      <p className="text-xs text-warmgray">Email us</p>
                       <p className="break-all">{PRACTICE.email}</p>
                     </div>
                   </a>
