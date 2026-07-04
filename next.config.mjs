@@ -2,6 +2,9 @@
 const nextConfig = {
   output: "export",
   basePath: "/Brightside-Dental",
+  env: {
+    NEXT_PUBLIC_BASE_PATH: "/Brightside-Dental",
+  },
   reactStrictMode: true,
   images: {
     unoptimized: true,

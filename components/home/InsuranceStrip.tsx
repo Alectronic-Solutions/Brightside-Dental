@@ -1,15 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { CreditCard, CheckCircle } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const INSURERS = [
-  "Delta Dental",
-  "Cigna",
-  "Aetna",
-  "MetLife",
-  "BlueCross BlueShield",
-  "United Concordia",
+  { name: "Delta Dental", logo: `${BASE_PATH}/logos/delta-dental.svg` },
+  { name: "Cigna", logo: `${BASE_PATH}/logos/cigna.svg` },
+  { name: "Aetna", logo: `${BASE_PATH}/logos/aetna.svg` },
+  { name: "MetLife", logo: `${BASE_PATH}/logos/metlife.svg` },
+  { name: "BlueCross BlueShield", logo: `${BASE_PATH}/logos/bluecross.svg` },
+  { name: "United Concordia", logo: `${BASE_PATH}/logos/united-concordia.png` },
 ];
 
 export function InsuranceStrip() {
@@ -29,14 +32,20 @@ export function InsuranceStrip() {
               </p>
             </div>
 
-            {/* Center: insurer name pills */}
+            {/* Center: insurer logos */}
             <div className="flex flex-wrap items-center gap-2">
-              {INSURERS.map((name) => (
+              {INSURERS.map(({ name, logo }) => (
                 <span
                   key={name}
-                  className="rounded-md border-hair border-subtle bg-offwhite px-3.5 py-2 text-sm font-medium text-warmgray transition-colors hover:border-teal/40 hover:text-charcoal"
+                  className="flex h-11 items-center rounded-md border-hair border-subtle bg-offwhite px-3.5 py-2 transition-colors hover:border-teal/40"
                 >
-                  {name}
+                  <Image
+                    src={logo}
+                    alt={name}
+                    width={120}
+                    height={28}
+                    className="h-6 w-auto object-contain sm:h-7"
+                  />
                 </span>
               ))}
               <span className="rounded-md bg-teal-light px-3.5 py-2 text-sm font-medium text-teal-dark">

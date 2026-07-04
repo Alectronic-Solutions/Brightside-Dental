@@ -1,12 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Star, CalendarCheck, Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { SectionLabel } from "@/components/ui/SectionLabel";
 import { PRACTICE } from "@/lib/constants";
-import { IMAGES } from "@/lib/images";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -15,38 +14,163 @@ const fadeUp = {
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
 };
 
-export function Hero() {
-  return (
-    <section className="hero-grain relative min-h-[100svh] overflow-hidden bg-navy pt-[68px] sm:min-h-[92vh]">
-      {/* Background image */}
-      <div className="absolute inset-0">
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+const HERO_CLIPS = [
+  { webm: "hero-dental.webm", mp4: "hero-dental.mp4" },
+  { webm: "hero-dental-2.webm", mp4: "hero-dental-2.mp4" },
+  { webm: "hero-dental-3.webm", mp4: "hero-dental-3.mp4" },
+] as const;
+
+// How much of the tail of each clip to cut off by starting the crossfade early,
+// so viewers never see a clip's ending — just a smooth dissolve into the next one.
+const CROSSFADE_S = 1.1;
+
+function HeroVideoBackground() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [reducedMotion, setReducedMotion] = useState(true);
+  const [activeClip, setActiveClip] = useState(0);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(query.matches);
+    const handleChange = () => setReducedMotion(query.matches);
+    query.addEventListener("change", handleChange);
+    return () => query.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const current = videoRefs.current[activeClip];
+    if (!current) return;
+
+    let switching = false;
+
+    const handleTimeUpdate = () => {
+      if (switching) return;
+      const { duration, currentTime } = current;
+      if (!duration || Number.isNaN(duration)) return;
+      if (duration - currentTime <= CROSSFADE_S) {
+        switching = true;
+        const nextIndex = (activeClip + 1) % HERO_CLIPS.length;
+        const nextVideo = videoRefs.current[nextIndex];
+        if (nextVideo) {
+          nextVideo.currentTime = 0;
+          nextVideo.play().catch(() => {});
+        }
+        setActiveClip(nextIndex);
+        // Let the crossfade finish before resetting this clip for its next turn.
+        setTimeout(() => {
+          current.pause();
+          current.currentTime = 0;
+        }, CROSSFADE_S * 1000 + 100);
+      }
+    };
+
+    current.currentTime = 0;
+    current.play().catch(() => {});
+    current.addEventListener("timeupdate", handleTimeUpdate);
+    return () => current.removeEventListener("timeupdate", handleTimeUpdate);
+  }, [reducedMotion, activeClip]);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.02, 1.12]);
+
+  if (reducedMotion) {
+    return (
+      <div ref={sectionRef} className="absolute inset-0">
         <Image
-          src={IMAGES.hero.src}
+          src={`${BASE_PATH}/videos/hero-dental-poster.jpg`}
           alt=""
           aria-hidden="true"
           fill
           priority
           quality={90}
-          className="object-cover object-center opacity-[0.18]"
+          className="object-cover object-center opacity-[0.62]"
           sizes="100vw"
         />
       </div>
+    );
+  }
 
-      {/* Layered gradients */}
+  return (
+    <div ref={sectionRef} className="absolute inset-0 overflow-hidden">
+      <motion.div
+        className="absolute inset-x-0 -top-[10%] h-[120%]"
+        style={{ y, scale }}
+      >
+        {HERO_CLIPS.map((clip, index) => (
+          <video
+            key={clip.mp4}
+            ref={(el) => {
+              videoRefs.current[index] = el;
+            }}
+            muted
+            playsInline
+            preload="auto"
+            poster={
+              index === 0 ? `${BASE_PATH}/videos/hero-dental-poster.jpg` : undefined
+            }
+            className="absolute inset-0 h-full w-full object-cover object-center transition-opacity ease-in-out"
+            style={{
+              opacity: index === activeClip ? 0.62 : 0,
+              transitionDuration: `${CROSSFADE_S * 1000}ms`,
+            }}
+          >
+            <source src={`${BASE_PATH}/videos/${clip.webm}`} type="video/webm" />
+            <source src={`${BASE_PATH}/videos/${clip.mp4}`} type="video/mp4" />
+          </video>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+export function Hero() {
+  return (
+    <section className="hero-grain relative overflow-hidden bg-navy pt-[68px] sm:min-h-[92vh]">
+      {/* Background video (parallax) */}
+      <HeroVideoBackground />
+
+      {/* Cinematic scrim — concentrated behind the text column, easing clear over the video */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(110deg, rgba(14,31,61,0.97) 0%, rgba(14,31,61,0.85) 50%, rgba(14,31,61,0.60) 100%)",
+            "linear-gradient(100deg, rgba(9,20,40,0.97) 0%, rgba(9,20,40,0.93) 30%, rgba(9,20,40,0.75) 48%, rgba(9,20,40,0.35) 68%, rgba(9,20,40,0.08) 88%)",
         }}
       />
+      {/* Bottom-up scrim for CTA/trust-bar contrast */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(65% 80% at 80% 40%, rgba(45,158,143,0.18), transparent 65%)",
+            "linear-gradient(to top, rgba(9,20,40,0.95) 0%, rgba(9,20,40,0.5) 35%, rgba(9,20,40,0.15) 70%, transparent 100%)",
+        }}
+      />
+      {/* Teal accent glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(45% 55% at 82% 35%, rgba(45,158,143,0.16), transparent 65%)",
+        }}
+      />
+      {/* Vignette for filmic depth */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(14,31,61,0.25) 100%)",
         }}
       />
 
@@ -61,23 +185,23 @@ export function Hero() {
         }}
       />
 
-      <div className="container-page relative grid min-h-[calc(100svh-68px)] items-center gap-12 pb-20 pt-12 sm:min-h-[calc(92vh-68px)] md:pt-20 lg:grid-cols-[58fr_42fr] lg:gap-12 lg:pb-24">
-        {/* Left content */}
+      <div className="container-page relative grid items-center gap-12 pb-16 pt-12 sm:min-h-[calc(92vh-68px)] sm:pb-20 md:pt-20 lg:pb-24">
+        {/* Content */}
         <motion.div
           initial="hidden"
           animate="show"
           variants={{ show: { transition: { staggerChildren: 0.1 } } }}
-          className="flex flex-col"
+          className="flex max-w-2xl flex-col"
         >
           <motion.div variants={fadeUp}>
-            <SectionLabel tone="light">
+            <span className="inline-flex w-fit items-center rounded-md border border-teal/30 bg-teal/20 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-white backdrop-blur-sm">
               Lodi&apos;s Highest-Rated Dental Practice
-            </SectionLabel>
+            </span>
           </motion.div>
 
           <motion.h1
             variants={fadeUp}
-            className="mt-4 max-w-[18ch] text-display font-bold text-white"
+            className="mt-4 max-w-[18ch] text-display font-bold text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]"
           >
             Your smile deserves more than a{" "}
             <span className="relative inline-block">
@@ -92,7 +216,7 @@ export function Hero() {
 
           <motion.p
             variants={fadeUp}
-            className="mt-5 max-w-[52ch] text-[0.98rem] leading-[1.75] text-white/65 sm:mt-7 sm:text-[1.05rem]"
+            className="mt-5 max-w-[52ch] text-[0.98rem] leading-[1.75] text-white/80 [text-shadow:0_1px_12px_rgba(0,0,0,0.4)] sm:mt-7 sm:text-[1.05rem]"
           >
             Brightside Dental combines clinical precision with a calm, modern
             experience. Accepting new patients with same-week appointments
@@ -136,8 +260,8 @@ export function Hero() {
             </div>
           </motion.div>
 
-          {/* Mobile accepting-patients indicator (floating chips are desktop-only) */}
-          <motion.div variants={fadeUp} className="mt-4 flex items-center gap-2 lg:hidden">
+          {/* Accepting-patients indicator */}
+          <motion.div variants={fadeUp} className="mt-4 flex items-center gap-2">
             <span className="relative flex h-2 w-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal opacity-70" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-teal" />
@@ -147,71 +271,16 @@ export function Hero() {
             </span>
           </motion.div>
         </motion.div>
-
-        {/* Right photo column — hidden on mobile */}
-        <motion.div
-          className="relative hidden lg:block"
-          initial={{ opacity: 0, x: 32 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
-        >
-          {/* Main photo */}
-          <div className="relative overflow-hidden rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.45)]">
-            <Image
-              src={IMAGES.heroSecondary.src}
-              alt={IMAGES.heroSecondary.alt}
-              width={IMAGES.heroSecondary.width}
-              height={IMAGES.heroSecondary.height}
-              priority
-              quality={90}
-              className="w-full object-cover"
-              sizes="(max-width: 1200px) 45vw, 520px"
-            />
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy/60 to-transparent" />
-          </div>
-
-          {/* Floating rating chip */}
-          <motion.div
-            className="absolute -left-6 top-10 z-10 flex items-center gap-3 rounded-2xl border border-white/10 bg-navy-mid/95 px-5 py-4 shadow-card backdrop-blur-sm"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: EASE, delay: 0.7 }}
-          >
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-teal/15">
-              <Star className="h-5 w-5 fill-teal text-teal" aria-hidden="true" />
-            </span>
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-teal-light/80">
-                Google Rating
-              </p>
-              <p className="text-lg font-semibold text-white">
-                {PRACTICE.googleRating} / 5.0
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Accepting patients chip */}
-          <motion.div
-            className="absolute -right-4 bottom-12 z-10 flex items-center gap-3 rounded-2xl border border-white/10 bg-navy-mid/95 px-5 py-4 shadow-card backdrop-blur-sm"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: EASE, delay: 0.85 }}
-          >
-            <span className="relative flex h-2.5 w-2.5 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal opacity-70" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-teal" />
-            </span>
-            <p className="text-sm font-medium text-white">
-              Accepting new patients
-            </p>
-          </motion.div>
-        </motion.div>
       </div>
 
-      {/* Bottom gradient fade into next section */}
+      {/* Bottom gradient fade into next section — darkens first so no seam shows against the video */}
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F8F9FA] to-transparent"
+        className="absolute inset-x-0 bottom-0 h-40"
+        style={{
+          background:
+            "linear-gradient(to top, #F8F9FA 0%, rgba(9,20,40,0.7) 45%, transparent 100%)",
+        }}
       />
     </section>
   );
@@ -227,11 +296,11 @@ function TrustStat({
   label: string;
 }) {
   return (
-    <div className="flex flex-1 flex-col gap-2 px-4 py-4 sm:px-6 sm:py-5">
-      <span className="text-[0.68rem] font-medium uppercase tracking-[0.09em] text-white/45">
+    <div className="flex flex-1 flex-col gap-2 px-2.5 py-4 sm:px-6 sm:py-5">
+      <span className="text-[0.62rem] font-medium uppercase tracking-[0.06em] text-white/45 sm:text-[0.68rem] sm:tracking-[0.09em]">
         {label}
       </span>
-      <span className="flex items-center gap-2 text-lg font-semibold text-white sm:text-2xl">
+      <span className="flex items-center gap-1.5 whitespace-nowrap text-base font-semibold text-white sm:gap-2 sm:text-2xl">
         {icon}
         {value}
       </span>
