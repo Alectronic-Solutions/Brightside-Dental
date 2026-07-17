@@ -1,7 +1,7 @@
 export const PRACTICE = {
   name: "Brightside Dental",
-  phone: "(209) 555-0182",
-  phoneHref: "tel:+12095550182",
+  phone: "(209) 366-4287",
+  phoneHref: "tel:+12093664287",
   address: "1420 S Lower Sacramento Rd, Lodi, CA 95242",
   addressLine1: "1420 S Lower Sacramento Rd",
   addressLine2: "Lodi, CA 95242",
@@ -15,7 +15,7 @@ export const PRACTICE = {
   email: "hello@brightsidedental.com",
   googleRating: 4.9,
   reviewCount: 312,
-  yearsInPractice: 18,
+  yearsInPractice: 20,
   patientsServed: "8,400+",
   founded: 2006,
 } as const;
@@ -56,7 +56,7 @@ export const SERVICES: Service[] = [
     slug: "dental-implants",
     name: "Dental Implants",
     icon: "anchor",
-    tagline: "Permanent. Comfortable. Life-changing.",
+    tagline: "A permanent fix that feels like your own tooth",
     description:
       "Replace missing teeth with implants that look, feel, and function like natural teeth.",
   },
@@ -64,7 +64,7 @@ export const SERVICES: Service[] = [
     slug: "invisalign",
     name: "Invisalign",
     icon: "smile",
-    tagline: "Straight teeth. No metal. No compromise.",
+    tagline: "Straighten your teeth without anyone noticing you're doing it",
     description:
       "Clear aligner therapy for teens and adults. Virtually invisible, fully removable.",
   },
@@ -82,4 +82,6 @@ export function getService(slug: string): Service | undefined {
   return SERVICES.find((s) => s.slug === slug);
 }
 
-export const SITE_URL = "https://alectronic-solutions.github.io/Brightside-Dental";
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  "https://alectronic-solutions.github.io/Brightside-Dental";

@@ -13,6 +13,7 @@ export function Logo({ variant = "dark", className }: LogoProps) {
   return (
     <Link
       href="/"
+      prefetch={false}
       aria-label="Brightside Dental home"
       className={cn(
         "group inline-flex items-center gap-2.5 focus-visible:outline-none",

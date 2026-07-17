@@ -14,6 +14,9 @@ const NAV_LINKS = [
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
   { href: "/new-patients", label: "New Patients" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/reviews", label: "Reviews" },
+  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -24,6 +27,9 @@ const DARK_HERO_ROUTES = [
   "/about",
   "/new-patients",
   "/contact",
+  "/gallery",
+  "/faq",
+  "/reviews",
   "/privacy-policy",
   "/terms-of-use",
   "/accessibility",
@@ -158,7 +164,7 @@ export function Navbar() {
         <Logo variant={solid ? "dark" : "light"} />
 
         {/* Center links — desktop */}
-        <div className="hidden items-center gap-7 lg:flex">
+        <div className="hidden items-center gap-5 xl:gap-6 lg:flex">
           {NAV_LINKS.map((link) => {
             const active =
               pathname === link.href || pathname.startsWith(link.href + "/");

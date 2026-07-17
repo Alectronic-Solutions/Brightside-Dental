@@ -1,9 +1,14 @@
 "use client";
 
+import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { PRACTICE } from "@/lib/constants";
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 type CTAVariant = "default" | "teal" | "minimal";
 
@@ -11,6 +16,31 @@ interface CTABannerProps {
   heading?: string;
   subtext?: string;
   variant?: CTAVariant;
+}
+
+function ParallaxBackground() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-30%", "30%"]);
+
+  return (
+    <div ref={sectionRef} className="absolute inset-0 overflow-hidden">
+      <motion.div className="absolute inset-x-0 -top-[35%] h-[170%]" style={{ y }}>
+        <Image
+          src={`${BASE_PATH}/cta-teeth-figurine.jpg`}
+          alt=""
+          aria-hidden="true"
+          fill
+          quality={85}
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+      </motion.div>
+    </div>
+  );
 }
 
 export function CTABanner({
@@ -27,6 +57,12 @@ export function CTABanner({
         isTeal ? "bg-teal-dark" : "bg-navy"
       }`}
     >
+      {/* Parallax background photo */}
+      <ParallaxBackground />
+
+      {/* Dark scrim so text stays legible over the photo */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-navy/85" />
+
       {/* Layered glows — default only */}
       {variant === "default" && (
         <div

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   HeartHandshake,
   ReceiptText,
@@ -204,7 +206,7 @@ export default function AboutPage() {
           <AnimatedSection className="max-w-2xl">
             <SectionLabel>What We Stand For</SectionLabel>
             <h2 className="text-3xl text-charcoal sm:text-4xl">
-              Three things we refuse to compromise on
+              What we won&apos;t cut corners on
             </h2>
           </AnimatedSection>
 
@@ -231,11 +233,23 @@ export default function AboutPage() {
       {/* Office gallery with real images */}
       <section className="bg-offwhite section-y">
         <div className="container-page">
-          <AnimatedSection className="max-w-2xl">
-            <SectionLabel>Take a Look Around</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
-              An office that feels nothing like a clinic
-            </h2>
+          <AnimatedSection className="flex flex-wrap items-end justify-between gap-4">
+            <div className="max-w-2xl">
+              <SectionLabel>Take a Look Around</SectionLabel>
+              <h2 className="text-3xl text-charcoal sm:text-4xl">
+                An office that feels nothing like a clinic
+              </h2>
+            </div>
+            <Link
+              href="/gallery"
+              className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
+            >
+              See the full gallery
+              <ArrowRight
+                className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-[3px]"
+                aria-hidden="true"
+              />
+            </Link>
           </AnimatedSection>
 
           <AnimatedSection

@@ -20,6 +20,9 @@ const SECTIONS = [
       { href: "/", label: "Home", desc: "Brightside Dental overview and quick links." },
       { href: "/about", label: "About Us", desc: "Meet Dr. Chen and our team." },
       { href: "/services", label: "Services", desc: "All dental services we offer." },
+      { href: "/gallery", label: "Gallery", desc: "Photos of our office, our team, and smile transformations." },
+      { href: "/reviews", label: "Reviews", desc: "Real patient reviews, filterable by service." },
+      { href: "/faq", label: "FAQ", desc: "Answers to common questions about insurance, cost, and care." },
       { href: "/new-patients", label: "New Patients", desc: "Forms, insurance, and what to expect." },
       { href: "/contact", label: "Contact and Directions", desc: "Hours, location, and how to reach us." },
     ],
@@ -76,6 +79,7 @@ export default function SitemapPage() {
                     <li key={href}>
                       <Link
                         href={href}
+                        prefetch={href === "/" ? false : undefined}
                         className="group flex items-start gap-3 rounded-lg border border-subtle bg-offwhite px-4 py-3.5 transition-colors hover:border-teal/30 hover:bg-teal/5"
                       >
                         <ChevronRight

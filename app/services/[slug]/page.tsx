@@ -8,7 +8,7 @@ import { Accordion } from "@/components/ui/Accordion";
 import { BeforeAfter } from "@/components/ui/BeforeAfter";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { ServiceIcon } from "@/components/ui/ServiceIcon";
-import { SERVICES, getService, PRACTICE } from "@/lib/constants";
+import { SERVICES, getService, PRACTICE, SITE_URL } from "@/lib/constants";
 import { getServiceContent } from "@/lib/service-content";
 import { IMAGES } from "@/lib/images";
 
@@ -79,9 +79,9 @@ export default async function ServiceDetailPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.brightsidedental.com/" },
-      { "@type": "ListItem", position: 2, name: "Services", item: "https://www.brightsidedental.com/services" },
-      { "@type": "ListItem", position: 3, name: service.name, item: `https://www.brightsidedental.com/services/${slug}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/services` },
+      { "@type": "ListItem", position: 3, name: service.name, item: `${SITE_URL}/services/${slug}` },
     ],
   };
 

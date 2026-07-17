@@ -10,7 +10,7 @@ import { IMAGES } from "@/lib/images";
 export const metadata: Metadata = {
   title: "Contact & Book an Appointment in Lodi, CA",
   description:
-    "Book your appointment at Brightside Dental in Lodi, CA. Request a visit online, find our hours and location at 1420 S Lower Sacramento Rd, or call (209) 555-0182.",
+    "Book your appointment at Brightside Dental in Lodi, CA. Request a visit online, find our hours and location at 1420 S Lower Sacramento Rd, or call (209) 366-4287.",
   alternates: { canonical: "/contact" },
 };
 

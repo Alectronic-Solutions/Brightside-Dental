@@ -11,6 +11,12 @@ export const IMAGES = {
     width: 1200,
     height: 900,
   },
+  ogImage: {
+    src: "https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=1200&h=630&fit=crop&q=85",
+    alt: "Brightside Dental modern treatment room with natural light",
+    width: 1200,
+    height: 630,
+  },
   heroSecondary: {
     src: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=85",
     alt: "Patient smiling after dental treatment",

@@ -26,11 +26,16 @@ const HERO_CLIPS = [
 // so viewers never see a clip's ending — just a smooth dissolve into the next one.
 const CROSSFADE_S = 1.1;
 
+// How far ahead of the crossfade to start buffering the next clip, so it's
+// ready in time without forcing every clip to load up front on page load.
+const PRELOAD_LEAD_S = 4;
+
 function HeroVideoBackground() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [reducedMotion, setReducedMotion] = useState(true);
   const [activeClip, setActiveClip] = useState(0);
+  const [preloadedClips, setPreloadedClips] = useState<Set<number>>(new Set([0]));
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -47,13 +52,21 @@ function HeroVideoBackground() {
 
     let switching = false;
 
+    const nextIndex = (activeClip + 1) % HERO_CLIPS.length;
+
     const handleTimeUpdate = () => {
-      if (switching) return;
       const { duration, currentTime } = current;
       if (!duration || Number.isNaN(duration)) return;
+
+      if (!switching && duration - currentTime <= PRELOAD_LEAD_S) {
+        setPreloadedClips((prev) =>
+          prev.has(nextIndex) ? prev : new Set(prev).add(nextIndex),
+        );
+      }
+
+      if (switching) return;
       if (duration - currentTime <= CROSSFADE_S) {
         switching = true;
-        const nextIndex = (activeClip + 1) % HERO_CLIPS.length;
         const nextVideo = videoRefs.current[nextIndex];
         if (nextVideo) {
           nextVideo.currentTime = 0;
@@ -104,28 +117,31 @@ function HeroVideoBackground() {
         className="absolute inset-x-0 -top-[10%] h-[120%]"
         style={{ y, scale }}
       >
-        {HERO_CLIPS.map((clip, index) => (
-          <video
-            key={clip.mp4}
-            ref={(el) => {
-              videoRefs.current[index] = el;
-            }}
-            muted
-            playsInline
-            preload="auto"
-            poster={
-              index === 0 ? `${BASE_PATH}/videos/hero-dental-poster.jpg` : undefined
-            }
-            className="absolute inset-0 h-full w-full object-cover object-center transition-opacity ease-in-out"
-            style={{
-              opacity: index === activeClip ? 0.62 : 0,
-              transitionDuration: `${CROSSFADE_S * 1000}ms`,
-            }}
-          >
-            <source src={`${BASE_PATH}/videos/${clip.webm}`} type="video/webm" />
-            <source src={`${BASE_PATH}/videos/${clip.mp4}`} type="video/mp4" />
-          </video>
-        ))}
+        {HERO_CLIPS.map((clip, index) => {
+          const shouldPreload = index === activeClip || preloadedClips.has(index);
+          return (
+            <video
+              key={clip.mp4}
+              ref={(el) => {
+                videoRefs.current[index] = el;
+              }}
+              muted
+              playsInline
+              preload={shouldPreload ? "auto" : "none"}
+              poster={
+                index === 0 ? `${BASE_PATH}/videos/hero-dental-poster.jpg` : undefined
+              }
+              className="absolute inset-0 h-full w-full object-cover object-center transition-opacity ease-in-out"
+              style={{
+                opacity: index === activeClip ? 0.62 : 0,
+                transitionDuration: `${CROSSFADE_S * 1000}ms`,
+              }}
+            >
+              <source src={`${BASE_PATH}/videos/${clip.webm}`} type="video/webm" />
+              <source src={`${BASE_PATH}/videos/${clip.mp4}`} type="video/mp4" />
+            </video>
+          );
+        })}
       </motion.div>
     </div>
   );
@@ -218,9 +234,9 @@ export function Hero() {
             variants={fadeUp}
             className="mt-5 max-w-[52ch] text-[0.98rem] leading-[1.75] text-white/80 [text-shadow:0_1px_12px_rgba(0,0,0,0.4)] sm:mt-7 sm:text-[1.05rem]"
           >
-            Brightside Dental combines clinical precision with a calm, modern
-            experience. Accepting new patients with same-week appointments
-            available.
+            No lecture about flossing, no surprise bill at checkout — just
+            straightforward dental care from a team that explains what&apos;s
+            happening and why. Accepting new patients now.
           </motion.p>
 
           <motion.div
@@ -261,14 +277,16 @@ export function Hero() {
           </motion.div>
 
           {/* Accepting-patients indicator */}
-          <motion.div variants={fadeUp} className="mt-4 flex items-center gap-2">
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-teal" />
-            </span>
-            <span className="text-xs font-medium text-white/70">
-              Accepting new patients · Same-week availability
-            </span>
+          <motion.div variants={fadeUp} className="mt-5 sm:mt-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/[0.12] bg-navy/70 px-3.5 py-2 backdrop-blur-sm sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:backdrop-blur-none">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal opacity-70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-teal" />
+              </span>
+              <span className="text-xs font-medium text-white/90 sm:text-white/70">
+                Accepting new patients · Same-week availability
+              </span>
+            </div>
           </motion.div>
         </motion.div>
       </div>

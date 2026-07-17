@@ -49,14 +49,16 @@ export function BeforeAfter({ beforeLabel, afterLabel }: BeforeAfterProps) {
       ref={containerRef}
       className="relative aspect-[16/10] w-full select-none overflow-hidden rounded-2xl border-hair border-subtle"
     >
-      {/* BEFORE — neutral gray base */}
-      <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-[#e9ecef] to-[#d6dbe0]">
+      {/* BEFORE — neutral gray base. Content pinned to the left third so it
+          never collides with the AFTER label near the seam. */}
+      <div className="absolute inset-0 flex items-center justify-start bg-gradient-to-br from-[#e9ecef] to-[#d6dbe0] pl-8 sm:pl-12">
         <Placeholder label={beforeLabel} tone="gray" />
       </div>
 
-      {/* AFTER — teal-tinted, clipped from the right */}
+      {/* AFTER — teal-tinted, clipped from the right. Content pinned to the
+          right third for the same reason. */}
       <div
-        className="absolute inset-0 grid place-items-center bg-gradient-to-br from-teal-light to-[#cdeee9]"
+        className="absolute inset-0 flex items-center justify-end bg-gradient-to-br from-teal-light to-[#cdeee9] pr-8 sm:pr-12"
         style={{ clipPath: `inset(0 0 0 ${pos}%)` }}
       >
         <Placeholder label={afterLabel} tone="teal" />
@@ -103,7 +105,7 @@ function Placeholder({
   tone: "gray" | "teal";
 }) {
   return (
-    <div className="flex flex-col items-center gap-3 px-6 text-center">
+    <div className="flex w-24 flex-col items-center gap-3 text-center sm:w-28">
       {/* simple geometric smile glyph */}
       <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden>
         <rect

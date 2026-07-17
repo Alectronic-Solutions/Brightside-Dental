@@ -19,6 +19,9 @@ const QUICK_LINKS = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/reviews", label: "Reviews" },
+  { href: "/faq", label: "FAQ" },
   { href: "/new-patients", label: "New Patients" },
   { href: "/contact", label: "Contact" },
 ];
@@ -82,6 +85,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    prefetch={link.href === "/" ? false : undefined}
                     className="text-white/65 transition-colors hover:text-white"
                   >
                     {link.label}

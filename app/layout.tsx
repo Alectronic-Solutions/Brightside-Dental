@@ -4,6 +4,9 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PRACTICE, SITE_URL } from "@/lib/constants";
+import { IMAGES } from "@/lib/images";
+
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,11 +34,11 @@ export const metadata: Metadata = {
   authors: [{ name: PRACTICE.name }],
   icons: {
     icon: [
-      { url: "/Brightside-Dental/favicon.ico", sizes: "48x48" },
-      { url: "/Brightside-Dental/favicon-32.png", type: "image/png", sizes: "32x32" },
-      { url: "/Brightside-Dental/favicon-16.png", type: "image/png", sizes: "16x16" },
+      { url: `${BASE_PATH}/favicon.ico`, sizes: "48x48" },
+      { url: `${BASE_PATH}/favicon-32.png`, type: "image/png", sizes: "32x32" },
+      { url: `${BASE_PATH}/favicon-16.png`, type: "image/png", sizes: "16x16" },
     ],
-    apple: [{ url: "/Brightside-Dental/apple-touch-icon.png" }],
+    apple: [{ url: `${BASE_PATH}/apple-touch-icon.png` }],
   },
   openGraph: {
     type: "website",
@@ -45,12 +48,21 @@ export const metadata: Metadata = {
     title: "Brightside Dental | Lodi, CA",
     description:
       "General, cosmetic, and emergency dental care in Lodi, CA. Accepting new patients. Same-week appointments available.",
+    images: [
+      {
+        url: IMAGES.ogImage.src,
+        width: IMAGES.ogImage.width,
+        height: IMAGES.ogImage.height,
+        alt: IMAGES.ogImage.alt,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Brightside Dental | Lodi, CA",
     description:
       "General, cosmetic, and emergency dental care in Lodi, CA. Accepting new patients.",
+    images: [IMAGES.ogImage.src],
   },
   robots: {
     index: true,
@@ -59,7 +71,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
-  manifest: "/Brightside-Dental/manifest.json",
+  manifest: `${BASE_PATH}/manifest.json`,
 };
 
 export const viewport: Viewport = {
@@ -73,7 +85,7 @@ const jsonLd = {
   "@type": ["LocalBusiness", "Dentist"],
   name: "Brightside Dental",
   url: SITE_URL,
-  telephone: "+12095550182",
+  telephone: "+12093664287",
   address: {
     "@type": "PostalAddress",
     streetAddress: "1420 S Lower Sacramento Rd",
@@ -116,7 +128,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"

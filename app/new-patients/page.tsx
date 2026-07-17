@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   CalendarCheck,
   FileText,
@@ -161,6 +163,16 @@ export default function NewPatientsPage() {
             <p className="mt-6 text-sm text-warmgray">
               Do not see yours? Call us. We work with most PPO plans.
             </p>
+            <Link
+              href="/faq"
+              className="group mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
+            >
+              Have more questions? See all FAQs
+              <ArrowRight
+                className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-[3px]"
+                aria-hidden="true"
+              />
+            </Link>
           </AnimatedSection>
         </div>
       </section>

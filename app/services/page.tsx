@@ -129,6 +129,19 @@ export default function ServicesPage() {
               </AnimatedSection>
             );
           })}
+
+          <AnimatedSection delay={0.1} className="pt-4 text-center">
+            <Link
+              href="/faq"
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
+            >
+              Have more questions? See all FAQs
+              <ArrowRight
+                className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-[3px]"
+                aria-hidden="true"
+              />
+            </Link>
+          </AnimatedSection>
         </div>
       </section>
 
