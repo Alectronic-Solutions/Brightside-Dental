@@ -30,6 +30,11 @@ const CROSSFADE_S = 1.1;
 // ready in time without forcing every clip to load up front on page load.
 const PRELOAD_LEAD_S = 4;
 
+type ConnectionInfo = {
+  effectiveType?: string;
+  saveData?: boolean;
+};
+
 function HeroVideoBackground() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -39,8 +44,15 @@ function HeroVideoBackground() {
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(query.matches);
-    const handleChange = () => setReducedMotion(query.matches);
+    const connection = (navigator as Navigator & { connection?: ConnectionInfo }).connection;
+    const shouldUsePoster = () =>
+      query.matches ||
+      connection?.saveData === true ||
+      connection?.effectiveType === "slow-2g" ||
+      connection?.effectiveType === "2g";
+
+    setReducedMotion(shouldUsePoster());
+    const handleChange = () => setReducedMotion(shouldUsePoster());
     query.addEventListener("change", handleChange);
     return () => query.removeEventListener("change", handleChange);
   }, []);
@@ -103,7 +115,6 @@ function HeroVideoBackground() {
           aria-hidden="true"
           fill
           priority
-          quality={90}
           className="object-cover object-center opacity-[0.62]"
           sizes="100vw"
         />

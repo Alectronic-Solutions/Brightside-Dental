@@ -34,7 +34,6 @@ function ParallaxBackground() {
           alt=""
           aria-hidden="true"
           fill
-          quality={85}
           className="object-cover object-center"
           sizes="100vw"
         />

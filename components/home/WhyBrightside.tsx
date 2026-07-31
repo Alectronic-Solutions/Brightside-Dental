@@ -19,7 +19,7 @@ const DIFFERENTIATORS = [
   "Most major PPO insurance plans filed directly on your behalf",
   "CEREC same-day crowns. Digital impressions. No goopy molds.",
   "Nitrous oxide and oral sedation for nervous patients",
-  "HIPAA-compliant patient portal: records, bills, messages, all online",
+  "HIPAA-ready portal experience shown for demo purposes",
 ];
 
 export function WhyBrightside() {

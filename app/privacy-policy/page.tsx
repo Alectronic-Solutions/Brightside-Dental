@@ -7,13 +7,32 @@ import { IMAGES } from "@/lib/images";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How Brightside Dental collects, uses, and protects your personal and health information in accordance with HIPAA and California law.",
+    "Demo privacy and HIPAA-readiness information for Brightside Dental.",
   alternates: { canonical: "/privacy-policy" },
 };
 
 const LAST_UPDATED = "June 1, 2025";
 
 const SECTIONS = [
+  {
+    number: "00",
+    title: "Demo Site & HIPAA Readiness",
+    content: (
+      <div className="rounded-lg border border-teal/20 bg-teal/5 px-5 py-4 text-warmgray">
+        <p>
+          This is a demonstration website. Its appointment form does not transmit,
+          store, or create patient records, and visitors should not enter protected
+          health information (PHI), insurance details, or other sensitive data.
+        </p>
+        <p className="mt-3">
+          Before a live launch, Brightside Dental would need a HIPAA-compliant intake
+          and patient-portal vendor, a signed Business Associate Agreement where
+          required, access controls, an incident-response process, and a finalized
+          Notice of Privacy Practices reviewed by qualified counsel.
+        </p>
+      </div>
+    ),
+  },
   {
     number: "01",
     title: "Information We Collect",

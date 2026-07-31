@@ -179,7 +179,7 @@ export function Footer() {
           <div className="flex items-center gap-5">
             <span className="inline-flex items-center gap-1.5">
               <ShieldCheck className="h-4 w-4 text-teal" aria-hidden="true" />
-              HIPAA Compliant
+              HIPAA-ready demo
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Accessibility className="h-4 w-4 text-teal" aria-hidden="true" />

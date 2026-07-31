@@ -28,7 +28,7 @@ export function AnimatedSection({
   ...rest
 }: AnimatedSectionProps) {
   const prefersReduced = useReducedMotion();
-  const Comp = motion(as as ElementType);
+  const Comp = motion.create(as as ElementType);
   return (
     <Comp
       className={className}

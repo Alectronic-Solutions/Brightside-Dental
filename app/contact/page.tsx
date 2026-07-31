@@ -51,11 +51,11 @@ export default function ContactPage() {
         <div className="container-page relative">
           <SectionLabel tone="light">Contact</SectionLabel>
           <h1 className="mt-3 max-w-2xl text-display-sm font-bold text-white">
-            Book your visit. We&apos;ll confirm within the hour.
+            Explore the booking experience.
           </h1>
           <p className="mt-5 max-w-xl text-lg text-white/70">
-            Request an appointment below, or reach us directly. New patients are
-            always welcome.
+            This interactive demo shows the booking flow. It does not submit,
+            store, or send patient information.
           </p>
         </div>
       </section>

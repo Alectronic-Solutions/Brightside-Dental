@@ -84,10 +84,10 @@ export function AppointmentForm() {
                 transition={{ delay: 0.25, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
                 <h3 className="mt-5 text-2xl font-semibold text-charcoal">
-                  Appointment request received
+                  Demo appointment request received
                 </h3>
                 <p className="mt-2 text-warmgray">
-                  A confirmation has been sent to{" "}
+                  In this demo, no confirmation is sent to{" "}
                   <span className="font-medium text-charcoal">{submittedEmail}</span>
                 </p>
               </motion.div>
@@ -109,7 +109,7 @@ export function AppointmentForm() {
                 </span>
               </div>
               <p className="mt-2 text-sm text-teal-dark/70">
-                Save this number. Reference it if you need to reschedule or have questions.
+                This is a demo-only reference number. No appointment was created.
               </p>
             </motion.div>
 
@@ -121,12 +121,12 @@ export function AppointmentForm() {
               className="mt-6 space-y-3"
             >
               <p className="text-xs font-medium uppercase tracking-wider text-warmgray">
-                What happens next
+                In a live implementation
               </p>
               {[
-                { Icon: Clock, text: "We review your request and check availability, usually within the hour." },
-                { Icon: Phone, text: "Our team calls or texts you to confirm your appointment time." },
-                { Icon: Mail, text: "You receive a calendar invite and new patient forms by email." },
+                { Icon: Clock, text: "The practice would review the request and check availability." },
+                { Icon: Phone, text: "The team would call or text to confirm an appointment time." },
+                { Icon: Mail, text: "A secure system would send follow-up forms and reminders." },
               ].map(({ Icon, text }, i) => (
                 <div key={i} className="flex items-start gap-3 rounded-lg border-hair border-subtle bg-white p-4">
                   <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md bg-teal/10 text-teal">
@@ -144,7 +144,7 @@ export function AppointmentForm() {
               transition={{ delay: 0.6, duration: 0.4 }}
               className="mt-6 text-center text-sm text-warmgray"
             >
-              Need to reach us now?{" "}
+              Want to see a real scheduling integration?{" "}
               <a href={PRACTICE.phoneHref} className="font-medium text-teal-dark hover:underline">
                 {PRACTICE.phone}
               </a>
@@ -158,7 +158,7 @@ export function AppointmentForm() {
                   setSubmitted(false);
                 }}
               >
-                Submit another request
+              Try the demo again
               </Button>
             </div>
           </motion.div>
@@ -177,7 +177,7 @@ export function AppointmentForm() {
                 Request an appointment
               </h2>
               <p className="mt-1 text-sm text-warmgray">
-                Fill this out and we&apos;ll be in touch within the hour.
+                Interactive demo only — submitting this form does not send or store any information.
               </p>
             </div>
 
@@ -333,8 +333,8 @@ export function AppointmentForm() {
                   })}
                 />
                 <span className="text-sm text-warmgray">
-                  I understand this form is for appointment requests only and is
-                  not a secure medical communication channel.
+                  I understand this is a demo form. Do not enter medical, insurance,
+                  or other sensitive information.
                 </span>
               </label>
               {errors.consent && (
