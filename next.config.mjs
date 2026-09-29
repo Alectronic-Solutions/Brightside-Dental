@@ -6,6 +6,8 @@ const basePath = process.env.NODE_ENV === "production" ? "/Brightside-Dental" : 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
+  // Keep production compilation separate from a running development preview.
+  distDir: process.env.NODE_ENV === "production" ? ".next" : ".next-dev",
   basePath,
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,

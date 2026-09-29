@@ -28,7 +28,7 @@ export function BeforeAfter({ beforeLabel, afterLabel }: BeforeAfterProps) {
 
   const onPointerDown = (e: React.PointerEvent) => {
     dragging.current = true;
-    (e.target as Element).setPointerCapture?.(e.pointerId);
+    (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
     updateFromClientX(e.clientX);
   };
   const onPointerMove = (e: React.PointerEvent) => {
@@ -40,14 +40,19 @@ export function BeforeAfter({ beforeLabel, afterLabel }: BeforeAfterProps) {
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) e.preventDefault();
     if (e.key === "ArrowLeft") setPos((p) => Math.max(0, p - 4));
     if (e.key === "ArrowRight") setPos((p) => Math.min(100, p + 4));
+    if (e.key === "ArrowDown") setPos((p) => Math.max(0, p - 4));
+    if (e.key === "ArrowUp") setPos((p) => Math.min(100, p + 4));
+    if (e.key === "Home") setPos(0);
+    if (e.key === "End") setPos(100);
   };
 
   return (
     <div
       ref={containerRef}
-      className="relative aspect-[16/10] w-full select-none overflow-hidden rounded-2xl border-hair border-subtle"
+      className="relative aspect-[16/10] min-h-64 w-full select-none overflow-hidden rounded-2xl border-hair border-subtle"
     >
       {/* BEFORE — neutral gray base. Content pinned to the left third so it
           never collides with the AFTER label near the seam. */}
@@ -84,14 +89,21 @@ export function BeforeAfter({ beforeLabel, afterLabel }: BeforeAfterProps) {
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(pos)}
+          aria-valuetext={`${Math.round(pos)}% before, ${100 - Math.round(pos)}% after`}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          style={{ touchAction: "none" }}
           onKeyDown={onKeyDown}
           className="absolute left-1/2 top-1/2 grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize place-items-center rounded-full border-hair border-subtle bg-white text-teal shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal"
         >
           <ChevronsLeftRight className="h-5 w-5" />
         </button>
+      </div>
+      <div className="absolute inset-x-0 bottom-2 z-20 flex justify-center gap-2">
+        <button type="button" onClick={() => setPos(100)} className="min-h-11 rounded-md bg-white px-3 text-sm text-charcoal">Show before</button>
+        <button type="button" onClick={() => setPos(0)} className="min-h-11 rounded-md bg-white px-3 text-sm text-charcoal">Show after</button>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { IMAGES } from "@/lib/images";
 
 const OFFICE_PHOTOS = [
   { label: "Reception", image: IMAGES.office.reception, h: "h-52" },
-  { label: "Treatment Room", image: IMAGES.office.treatmentRoom, h: "h-68" },
+  { label: "Treatment Room", image: IMAGES.office.treatmentRoom, h: "h-[17rem]" },
   { label: "Consultation Suite", image: IMAGES.office.consultation, h: "h-60" },
   { label: "Modern Equipment", image: IMAGES.office.equipment, h: "h-48" },
   { label: "Patient Lounge", image: IMAGES.office.waiting, h: "h-64" },

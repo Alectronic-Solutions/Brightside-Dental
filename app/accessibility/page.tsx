@@ -50,7 +50,7 @@ const OFFICE_FEATURES = [
 
 export default function AccessibilityPage() {
   return (
-    <main>
+    <>
       <PageHero
         label="Our Commitment"
         title="Accessibility Statement"
@@ -200,6 +200,6 @@ export default function AccessibilityPage() {
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }

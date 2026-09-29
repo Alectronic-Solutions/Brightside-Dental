@@ -6,10 +6,11 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { CountUp } from "@/components/ui/CountUp";
 import { IMAGES } from "@/lib/images";
+import { PRACTICE } from "@/lib/constants";
 
 const STATS = [
   { value: 4.9, decimals: 1, suffix: "★", label: "Google Rating" },
-  { value: 18, decimals: 0, suffix: "", label: "Years in Practice" },
+  { value: PRACTICE.yearsInPractice, decimals: 0, suffix: "", label: "Years in Practice" },
   { value: 8400, decimals: 0, suffix: "+", label: "Patients Served" },
   { value: 0, decimals: 0, suffix: "", label: "Same-Day Emergencies", literal: "Same-Day" },
 ];
@@ -19,7 +20,7 @@ const DIFFERENTIATORS = [
   "Most major PPO insurance plans filed directly on your behalf",
   "CEREC same-day crowns. Digital impressions. No goopy molds.",
   "Nitrous oxide and oral sedation for nervous patients",
-  "HIPAA-ready portal experience shown for demo purposes",
+  "Demo booking experience with no patient records collected",
 ];
 
 export function WhyBrightside() {

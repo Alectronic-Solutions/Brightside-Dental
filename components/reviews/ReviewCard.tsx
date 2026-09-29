@@ -13,7 +13,7 @@ export const GoogleG = () => (
 );
 
 export const GoogleStars = ({ count = 5 }: { count?: number }) => (
-  <div className="flex gap-0.5" aria-label={`${count} out of 5 stars`}>
+    <div role="img" className="flex gap-0.5" aria-label={`${count} out of 5 stars`}>
     {Array.from({ length: 5 }).map((_, i) => (
       <Star
         key={i}

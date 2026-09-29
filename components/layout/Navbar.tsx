@@ -41,6 +41,14 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1280px)");
+    const closeOnDesktop = () => { if (desktop.matches) setOpen(false); };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
 
   const hasDarkHero =
     DARK_HERO_ROUTES.includes(pathname) || pathname.startsWith("/services/");
@@ -57,6 +65,9 @@ export function Navbar() {
 
     const scrollY = window.scrollY;
     const { body } = document;
+    const background = Array.from(document.querySelectorAll<HTMLElement>("main, footer"));
+    const previousInert = background.map(element => element.inert);
+    background.forEach(element => { element.inert = true; });
     const prev = {
       position: body.style.position,
       top: body.style.top,
@@ -75,6 +86,7 @@ export function Navbar() {
     document.documentElement.style.overscrollBehavior = "contain";
 
     return () => {
+      background.forEach((element, index) => { element.inert = previousInert[index]; });
       body.style.position = prev.position;
       body.style.top = prev.top;
       body.style.left = prev.left;
@@ -95,6 +107,7 @@ export function Navbar() {
     if (!open) return;
 
     const panel = panelRef.current;
+    const trigger = triggerRef.current;
     const focusables = panel?.querySelectorAll<HTMLElement>(
       'a[href], button:not([disabled])',
     );
@@ -119,7 +132,10 @@ export function Navbar() {
     };
 
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      trigger?.focus({ preventScroll: true });
+    };
   }, [open]);
 
   const solid = scrolled || !hasDarkHero;
@@ -160,11 +176,11 @@ export function Navbar() {
         </a>
       </div>
 
-      <nav className="container-page flex h-[68px] items-center justify-between">
+      <nav inert={open} aria-label="Main navigation" className="container-page flex h-[68px] items-center justify-between">
         <Logo variant={solid ? "dark" : "light"} />
 
         {/* Center links — desktop */}
-        <div className="hidden items-center gap-5 xl:gap-6 lg:flex">
+        <div className="hidden items-center gap-5 xl:flex">
           {NAV_LINKS.map((link) => {
             const active =
               pathname === link.href || pathname.startsWith(link.href + "/");
@@ -172,6 +188,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
                   "nav-link-hover relative text-[0.92rem] font-medium transition-colors hover:opacity-100",
                   linkColor,
@@ -191,7 +208,7 @@ export function Navbar() {
         </div>
 
         {/* Right — phone + CTA (desktop) */}
-        <div className="hidden items-center gap-3.5 lg:flex">
+        <div className="hidden items-center gap-3.5 xl:flex">
           <a
             href={PRACTICE.phoneHref}
             aria-label={`Call Brightside Dental at ${PRACTICE.phone}`}
@@ -210,12 +227,14 @@ export function Navbar() {
 
         {/* Mobile hamburger */}
         <button
+          ref={triggerRef}
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
+          aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
           className={cn(
-            "relative z-[60] grid h-11 w-11 place-items-center rounded-md transition-colors lg:hidden",
+            "relative grid h-11 w-11 place-items-center rounded-md transition-colors xl:hidden",
             open
               ? "text-white hover:bg-white/10"
               : solid
@@ -256,15 +275,22 @@ export function Navbar() {
         {open && (
           <motion.div
             key="mobile-menu"
+            id="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
             ref={panelRef}
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-50 flex flex-col overscroll-contain bg-navy lg:hidden"
+            className="fixed inset-0 z-50 flex h-dvh flex-col overscroll-contain bg-navy pb-[env(safe-area-inset-bottom)] xl:hidden"
           >
-            <div className="container-page flex h-[68px] items-center justify-between">
+            <div className="container-page flex h-[68px] shrink-0 items-center justify-between">
               <Logo variant="light" />
+              <button type="button" onClick={() => setOpen(false)} aria-label="Close menu" className="grid h-11 w-11 place-items-center rounded-md text-white hover:bg-white/10">
+                <X className="h-6 w-6" aria-hidden="true" />
+              </button>
             </div>
 
             {/* Accepting new patients pill — mobile */}
@@ -281,7 +307,7 @@ export function Navbar() {
             </div>
 
             <motion.div
-              className="container-page flex flex-1 flex-col gap-1 pt-4 overflow-y-auto"
+              className="container-page flex min-h-0 flex-1 flex-col gap-1 pt-4 overflow-y-auto"
               initial="hidden"
               animate="show"
               variants={{
@@ -299,6 +325,8 @@ export function Navbar() {
                 >
                   <Link
                     href={link.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={pathname === link.href ? "page" : undefined}
                     className="block border-b-hair border-subtle-dark py-4 text-2xl font-medium text-white"
                   >
                     {link.label}

@@ -36,7 +36,7 @@ function BackToTop() {
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="inline-flex items-center gap-1.5 text-xs text-white/45 transition-colors hover:text-teal"
+      className="inline-flex min-h-11 items-center gap-1.5 text-xs text-white/75 transition-colors hover:text-white"
       aria-label="Back to top"
     >
       <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
@@ -179,11 +179,11 @@ export function Footer() {
           <div className="flex items-center gap-5">
             <span className="inline-flex items-center gap-1.5">
               <ShieldCheck className="h-4 w-4 text-teal" aria-hidden="true" />
-              HIPAA-ready demo
+              Demo · No patient records
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Accessibility className="h-4 w-4 text-teal" aria-hidden="true" />
-              ADA Accessible
+              Accessibility information
             </span>
           </div>
 

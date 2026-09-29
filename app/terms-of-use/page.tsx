@@ -191,7 +191,7 @@ const SECTIONS = [
 
 export default function TermsOfUsePage() {
   return (
-    <main>
+    <>
       <PageHero
         label="Legal"
         title="Terms of Use"
@@ -260,6 +260,6 @@ export default function TermsOfUsePage() {
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }

@@ -81,7 +81,7 @@ const CERTS = [
   { label: "ADA", Icon: Award },
   { label: "CDA", Icon: Award },
   { label: "OSHA Compliant", Icon: ShieldCheck },
-  { label: "HIPAA Compliant", Icon: ShieldCheck },
+  { label: "Demo Practice", Icon: ShieldCheck },
   { label: "Invisalign Preferred Provider", Icon: Award },
 ];
 

@@ -41,12 +41,17 @@ function HeroVideoBackground() {
   const [reducedMotion, setReducedMotion] = useState(true);
   const [activeClip, setActiveClip] = useState(0);
   const [preloadedClips, setPreloadedClips] = useState<Set<number>>(new Set([0]));
+  const [paused, setPaused] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mobile = window.matchMedia("(max-width: 767px)");
     const connection = (navigator as Navigator & { connection?: ConnectionInfo }).connection;
     const shouldUsePoster = () =>
       query.matches ||
+      mobile.matches ||
       connection?.saveData === true ||
       connection?.effectiveType === "slow-2g" ||
       connection?.effectiveType === "2g";
@@ -54,11 +59,34 @@ function HeroVideoBackground() {
     setReducedMotion(shouldUsePoster());
     const handleChange = () => setReducedMotion(shouldUsePoster());
     query.addEventListener("change", handleChange);
-    return () => query.removeEventListener("change", handleChange);
+    mobile.addEventListener("change", handleChange);
+    return () => {
+      query.removeEventListener("change", handleChange);
+      mobile.removeEventListener("change", handleChange);
+    };
   }, []);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    let intersects = true;
+    const update = () => setVisible(intersects && !document.hidden);
+    const observer = new IntersectionObserver(([entry]) => {
+      intersects = entry.isIntersecting;
+      update();
+    });
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    document.addEventListener("visibilitychange", update);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", update);
+      if (fadeTimer.current) clearTimeout(fadeTimer.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion || paused || !visible) {
+      videoRefs.current.forEach(video => video?.pause());
+      return;
+    }
     const current = videoRefs.current[activeClip];
     if (!current) return;
 
@@ -78,26 +106,31 @@ function HeroVideoBackground() {
 
       if (switching) return;
       if (duration - currentTime <= CROSSFADE_S) {
-        switching = true;
         const nextVideo = videoRefs.current[nextIndex];
+        if (!nextVideo || nextVideo.readyState < 2) return;
+        switching = true;
         if (nextVideo) {
           nextVideo.currentTime = 0;
           nextVideo.play().catch(() => {});
         }
         setActiveClip(nextIndex);
         // Let the crossfade finish before resetting this clip for its next turn.
-        setTimeout(() => {
+        fadeTimer.current = setTimeout(() => {
           current.pause();
           current.currentTime = 0;
         }, CROSSFADE_S * 1000 + 100);
       }
     };
 
-    current.currentTime = 0;
     current.play().catch(() => {});
     current.addEventListener("timeupdate", handleTimeUpdate);
-    return () => current.removeEventListener("timeupdate", handleTimeUpdate);
-  }, [reducedMotion, activeClip]);
+    const restart = () => { current.currentTime = 0; current.play().catch(() => {}); };
+    current.addEventListener("ended", restart);
+    return () => {
+      current.removeEventListener("timeupdate", handleTimeUpdate);
+      current.removeEventListener("ended", restart);
+    };
+  }, [reducedMotion, activeClip, paused, visible]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -110,7 +143,7 @@ function HeroVideoBackground() {
     return (
       <div ref={sectionRef} className="absolute inset-0">
         <Image
-          src={`${BASE_PATH}/videos/hero-dental-poster.jpg`}
+          src={`${BASE_PATH}/videos/hero-dental-poster.webp`}
           alt=""
           aria-hidden="true"
           fill
@@ -130,6 +163,7 @@ function HeroVideoBackground() {
       >
         {HERO_CLIPS.map((clip, index) => {
           const shouldPreload = index === activeClip || preloadedClips.has(index);
+          if (!shouldPreload) return null;
           return (
             <video
               key={clip.mp4}
@@ -137,10 +171,11 @@ function HeroVideoBackground() {
                 videoRefs.current[index] = el;
               }}
               muted
+              aria-hidden="true"
               playsInline
               preload={shouldPreload ? "auto" : "none"}
               poster={
-                index === 0 ? `${BASE_PATH}/videos/hero-dental-poster.jpg` : undefined
+                index === 0 ? `${BASE_PATH}/videos/hero-dental-poster.webp` : undefined
               }
               className="absolute inset-0 h-full w-full object-cover object-center transition-opacity ease-in-out"
               style={{
@@ -148,12 +183,15 @@ function HeroVideoBackground() {
                 transitionDuration: `${CROSSFADE_S * 1000}ms`,
               }}
             >
-              <source src={`${BASE_PATH}/videos/${clip.webm}`} type="video/webm" />
-              <source src={`${BASE_PATH}/videos/${clip.mp4}`} type="video/mp4" />
+              {shouldPreload && <source src={`${BASE_PATH}/videos/${clip.webm}`} type="video/webm" />}
+              {shouldPreload && <source src={`${BASE_PATH}/videos/${clip.mp4}`} type="video/mp4" />}
             </video>
           );
         })}
       </motion.div>
+      <button type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} className="absolute bottom-24 right-5 z-20 min-h-11 rounded-md bg-navy/90 px-4 text-sm text-white">
+        {paused ? "Play background video" : "Pause background video"}
+      </button>
     </div>
   );
 }
@@ -212,10 +250,10 @@ export function Hero() {
         }}
       />
 
-      <div className="container-page relative grid items-center gap-12 pb-16 pt-12 sm:min-h-[calc(92vh-68px)] sm:pb-20 md:pt-20 lg:pb-24">
+      <div className="container-page relative z-10 grid items-center gap-12 pb-16 pt-12 sm:min-h-[calc(92vh-68px)] sm:pb-20 md:pt-20 lg:pb-24">
         {/* Content */}
         <motion.div
-          initial="hidden"
+          initial={false}
           animate="show"
           variants={{ show: { transition: { staggerChildren: 0.1 } } }}
           className="flex max-w-2xl flex-col"

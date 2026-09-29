@@ -5,9 +5,11 @@
 
 # testing
 /coverage
+/.playwright-cli/
 
 # next.js
 /.next/
+/.next-dev/
 /out/
 
 # production

@@ -243,21 +243,20 @@ export default function NewPatientsPage() {
                   New patient forms
                 </h2>
                 <p className="mt-3 max-w-xl leading-relaxed text-warmgray">
-                  Save time in the waiting room. Download your forms ahead of
-                  time, or let us email you a secure link to complete everything
-                  online before your visit.
+                  Preview the appointment experience with fictional information.
+                  Patient intake forms would be provided through a secure service
+                  in a live practice.
                 </p>
                 <p className="mt-4 flex items-start gap-2 text-sm text-warmgray">
                   <Lock className="mt-0.5 h-4 w-4 shrink-0 text-teal" />
-                  Your information is protected under HIPAA. We never share your
-                  records without your written consent, and all online forms are
-                  encrypted end to end.
+                  This demo does not collect patient records or provide medical
+                  intake forms. No emails are sent.
                 </p>
               </div>
               <div className="flex flex-col gap-3">
                 <Button href="/contact" size="lg">
                   <Download className="h-4 w-4" />
-                  Download Forms (PDF)
+                  Preview Demo Form
                 </Button>
                 <Button href="/contact" size="lg" variant="outline">
                   Email Me a Secure Link

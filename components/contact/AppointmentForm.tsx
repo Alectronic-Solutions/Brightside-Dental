@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useCallback, useId, cloneElement, isValidElement, type ReactElement } from "react";
 import { useForm } from "react-hook-form";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Phone, Mail, Clock } from "lucide-react";
@@ -33,6 +33,7 @@ export function AppointmentForm() {
   const [submitted, setSubmitted] = useState(false);
   const [confirmationCode, setConfirmationCode] = useState("");
   const [submittedEmail, setSubmittedEmail] = useState("");
+  const focusSuccess = useCallback((node: HTMLHeadingElement | null) => { node?.focus(); }, []);
   const {
     register,
     handleSubmit,
@@ -83,7 +84,7 @@ export function AppointmentForm() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h3 className="mt-5 text-2xl font-semibold text-charcoal">
+                <h3 ref={focusSuccess} tabIndex={-1} className="mt-5 text-2xl font-semibold text-charcoal">
                   Demo appointment request received
                 </h3>
                 <p className="mt-2 text-warmgray">
@@ -237,7 +238,8 @@ export function AppointmentForm() {
             </Field>
 
             {/* Current patient radios */}
-            <Field label="Are you a current patient?">
+            <fieldset>
+              <legend className="mb-1.5 text-sm font-medium text-charcoal">Are you a current patient?</legend>
               <div className="flex gap-3">
                 {([
                   { value: "yes", label: "Yes" },
@@ -256,7 +258,7 @@ export function AppointmentForm() {
                   </label>
                 ))}
               </div>
-            </Field>
+            </fieldset>
 
             {/* Preferred day + time */}
             <div className="grid gap-5 sm:grid-cols-2">
@@ -326,6 +328,8 @@ export function AppointmentForm() {
               <label className="flex cursor-pointer items-start gap-3">
                 <input
                   type="checkbox"
+                  aria-invalid={Boolean(errors.consent)}
+                  aria-describedby={errors.consent ? "consent-error" : undefined}
                   className="mt-1 h-4 w-4 shrink-0 accent-teal"
                   {...register("consent", {
                     required:
@@ -338,7 +342,7 @@ export function AppointmentForm() {
                 </span>
               </label>
               {errors.consent && (
-                <p className="mt-1.5 text-sm text-red-500">
+                <p id="consent-error" role="alert" className="mt-1.5 text-sm text-red-700">
                   {errors.consent.message}
                 </p>
               )}
@@ -350,7 +354,7 @@ export function AppointmentForm() {
               className="w-full"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Sending…" : "Request Appointment"}
+              {isSubmitting ? "Preparing demo…" : "Try Appointment Request"}
             </Button>
           </motion.form>
         )}
@@ -370,14 +374,21 @@ function Field({
   error?: string;
   children: React.ReactNode;
 }) {
+  const id = useId();
+  const control = isValidElement(children) ? cloneElement(children as ReactElement<Record<string, unknown>>, {
+    id,
+    "aria-required": required || undefined,
+    "aria-invalid": Boolean(error),
+    "aria-describedby": error ? `${id}-error` : undefined,
+  }) : children;
   return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-charcoal">
+    <div className="block">
+      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-charcoal">
         {label}
         {required && <span className="text-teal"> *</span>}
-      </span>
-      {children}
-      {error && <span className="mt-1.5 block text-sm text-red-500">{error}</span>}
-    </label>
+      </label>
+      {control}
+      {error && <span id={`${id}-error`} role="alert" className="mt-1.5 block text-sm text-red-700">{error}</span>}
+    </div>
   );
 }

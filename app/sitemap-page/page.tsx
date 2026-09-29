@@ -50,7 +50,7 @@ const SECTIONS = [
 
 export default function SitemapPage() {
   return (
-    <main>
+    <>
       <PageHero
         label="Navigation"
         title="Site Map"
@@ -105,6 +105,6 @@ export default function SitemapPage() {
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }

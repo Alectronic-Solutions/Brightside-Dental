@@ -19,6 +19,7 @@
 
 @layer base {
   html {
+    position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
@@ -83,7 +84,7 @@
   }
 
   .section-y {
-    @apply py-24 md:py-32;
+    @apply py-16 sm:py-24 md:py-32;
   }
 
   /* uppercase small caption helper */
@@ -97,12 +98,12 @@
 
 /* Skip-to-content link — first focusable element in <body> */
 .skip-link {
-  position: absolute;
+  position: fixed;
   top: -9999px;
   left: 0;
   z-index: 9999;
   padding: 0.75rem 1.5rem;
-  background: var(--color-teal);
+  background: var(--color-teal-dark);
   color: #fff;
   font-weight: 600;
   text-decoration: none;
@@ -190,6 +191,19 @@ html {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
   animation: grain 8s steps(10) infinite;
   pointer-events: none;
+}
+
+/* Keep focused controls clear of the fixed header and service booking bar. */
+:focus { scroll-margin-block: 110px 100px; }
+@media (max-width: 767px) {
+  input, select, textarea { font-size: 16px; }
+  .hero-grain::before { animation: none; }
+}
+body:has(.service-booking-bar) footer {
+  padding-bottom: calc(88px + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+  body:has(.service-booking-bar) footer { padding-bottom: 0; }
 }
 
 /* Respect reduced motion preferences */

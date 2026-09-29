@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -19,6 +19,7 @@ interface CTABannerProps {
 }
 
 function ParallaxBackground() {
+  const reducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -28,9 +29,9 @@ function ParallaxBackground() {
 
   return (
     <div ref={sectionRef} className="absolute inset-0 overflow-hidden">
-      <motion.div className="absolute inset-x-0 -top-[35%] h-[170%]" style={{ y }}>
+      <motion.div className="absolute inset-x-0 -top-[35%] h-[170%]" style={{ y: reducedMotion ? 0 : y }}>
         <Image
-          src={`${BASE_PATH}/cta-teeth-figurine.jpg`}
+          src={`${BASE_PATH}/cta-teeth-figurine.webp`}
           alt=""
           aria-hidden="true"
           fill

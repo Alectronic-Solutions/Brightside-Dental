@@ -108,7 +108,7 @@ export default async function ServiceDetailPage({
       </PageHero>
 
       {/* Mobile sticky CTA bar — hidden on lg+ where sidebar shows */}
-      <div className="fixed bottom-0 inset-x-0 z-40 flex items-center gap-3 border-t border-subtle bg-white/95 px-4 py-3 backdrop-blur-sm lg:hidden">
+      <div className="service-booking-bar fixed bottom-0 inset-x-0 z-40 flex items-center gap-3 border-t border-subtle bg-white/95 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-sm lg:hidden">
         <Button href="/contact" size="lg" className="flex-1 group">
           Book This Service
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-[3px]" aria-hidden="true" />
