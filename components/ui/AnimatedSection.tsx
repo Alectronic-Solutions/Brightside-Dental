@@ -48,7 +48,7 @@ export function AnimatedSection({
 }
 
 /**
- * Stagger container — children using <AnimatedItem> animate in sequence.
+ * Stagger container: children using <AnimatedItem> animate in sequence.
  */
 export function AnimatedGroup({
   children,

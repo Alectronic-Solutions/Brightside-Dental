@@ -12,7 +12,7 @@ const OFFICE_PHOTOS = [
   { label: "Consultation Suite", image: IMAGES.office.consultation, h: "h-60" },
   { label: "Modern Equipment", image: IMAGES.office.equipment, h: "h-48" },
   { label: "Patient Lounge", image: IMAGES.office.waiting, h: "h-64" },
-  { label: "Front Entrance", image: IMAGES.office.exterior, h: "h-52" },
+  { label: "Digital Imaging", image: IMAGES.office.imaging, h: "h-52" },
   { label: "Smile Results", image: IMAGES.office.smile1, h: "h-56" },
   { label: "Happy Patients", image: IMAGES.office.smile2, h: "h-60" },
 ] as const;
@@ -35,7 +35,7 @@ export function GalleryGrid() {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter gallery by category">
+      <div className="flex flex-wrap justify-center gap-2" role="group" aria-label="Filter gallery by category">
         {TABS.map((tab) => (
           <button
             key={tab.id}
@@ -65,7 +65,7 @@ export function GalleryGrid() {
               className={`relative ${item.h} break-inside-avoid overflow-hidden rounded-xl border-hair border-subtle`}
             >
               <Image
-                src={item.image.src}
+                src={item.image.thumb}
                 alt={item.image.alt}
                 fill
                 className="object-cover transition-transform duration-500 hover:scale-105"

@@ -22,7 +22,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   "general-dentistry": {
     slug: "general-dentistry",
     intro:
-      "Consistent, preventive care is the difference between catching a small cavity at a cleaning and needing a root canal a year later. Our general dentistry visits are unhurried, thorough, and built around keeping you out of the chair more than in it.",
+      "Regular checkups are how a small cavity gets caught at a cleaning instead of turning into a root canal a year later. We take our time at these visits so problems are found while they are still small and inexpensive to fix.",
     steps: [
       {
         title: "Comprehensive exam",
@@ -32,7 +32,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       {
         title: "Professional cleaning",
         detail:
-          "A registered hygienist removes plaque and tartar above and below the gumline, polishes, and applies fluoride. We tailor depth and technique to sensitive teeth.",
+          "A registered hygienist removes plaque and tartar above and below the gumline, polishes, and applies fluoride. If your teeth are sensitive, tell us and we will adjust.",
       },
       {
         title: "Clear treatment plan",
@@ -42,21 +42,21 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       {
         title: "Same-day care when possible",
         detail:
-          "Need a filling or a crown? With CEREC same-day technology, many restorations are completed in the same visit. No temporary, no second trip.",
+          "With CEREC, many crowns and fillings are finished in a single visit, so you skip the temporary crown and the second appointment.",
       },
     ],
     forYou: [
       "Families looking for one practice for every age",
-      "Anyone overdue for a cleaning who wants a judgment-free reset",
-      "Patients who want fillings, crowns, and exams under one roof",
+      "Anyone who is overdue for a cleaning and a little embarrassed about it",
+      "Patients who want exams, fillings, and crowns at the same office",
       "People who value preventive care over emergency fixes",
     ],
-    beforeLabel: "Before cleaning",
-    afterLabel: "After cleaning and polish",
+    beforeLabel: "Before: tartar buildup and inflamed gums",
+    afterLabel: "After: professional cleaning, healthier gums",
     faqs: [
       {
         q: "How often should I come in for a checkup?",
-        a: "For most healthy adults, every six months. If you are managing gum disease, diabetes, or other risk factors, we may recommend every three to four months. We will set a cadence that fits your mouth, not a one-size-fits-all rule.",
+        a: "For most healthy adults, every six months. If you are managing gum disease, diabetes, or other risk factors, we may recommend every three to four months. We will recommend a schedule based on what we see.",
       },
       {
         q: "Are dental X-rays safe?",
@@ -64,23 +64,23 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       },
       {
         q: "What if I have not been to a dentist in years?",
-        a: "You are exactly who we built this practice for. There is no lecture and no judgment. Just a fresh start. We will go at your pace and prioritize what matters most first.",
+        a: "That is very common, and you will not get a lecture. We start with an exam, tell you what we find, and take care of the most important things first at a pace you are comfortable with.",
       },
       {
         q: "Do you treat children?",
-        a: "Absolutely. We see patients of all ages and make first visits fun and low-pressure. We will also coach you on home care for little ones between visits.",
+        a: "Yes. We see patients of all ages and keep first visits short and easy for kids. We can also show you how to help with brushing at home.",
       },
     ],
   },
   "cosmetic-dentistry": {
     slug: "cosmetic-dentistry",
     intro:
-      "A great cosmetic result does not look done. It looks like the best version of your own smile. We design every case around your face, your bite, and how you actually want to look when you laugh in a photo.",
+      "Good cosmetic work should not be obvious. We plan each case around your face and your bite, so the result still looks like you.",
     steps: [
       {
         title: "Smile consultation",
         detail:
-          "We listen first. What bothers you, what you have always wanted, and what feels natural to you. Then we photograph and map your smile.",
+          "We start by asking what bothers you about your smile and what you would like to change. Then we take photos and measurements.",
       },
       {
         title: "Digital smile preview",
@@ -88,28 +88,28 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
           "Using digital mockups, you will see a preview of your new smile before any work begins, so there are no surprises on reveal day.",
       },
       {
-        title: "Tailored treatment",
+        title: "Treatment",
         detail:
-          "Whitening, bonding, veneers, or a full makeover. We choose the least invasive path that gets you the result, and we color-match to your natural shade.",
+          "Depending on your goals, that could be whitening, bonding, veneers, or a combination. We choose the least invasive option that gets the result and match the color to your natural teeth.",
       },
       {
         title: "Reveal and refine",
         detail:
-          "We place and polish, then check the result in natural light and adjust until it feels right. Your comfort with the look is the finish line.",
+          "We place and polish, then check the result in natural light and adjust until it feels right. It is not finished until you are happy with it.",
       },
     ],
     forYou: [
       "Anyone hiding their smile in photos",
       "Patients with chips, gaps, or stained teeth",
       "Brides, grads, and anyone with a big day coming up",
-      "People who want a natural result, not a fake-looking one",
+      "People who want results that look natural",
     ],
-    beforeLabel: "Before treatment",
-    afterLabel: "After veneers and whitening",
+    beforeLabel: "Before: worn, chipped, and stained front teeth",
+    afterLabel: "After: porcelain veneers",
     faqs: [
       {
         q: "Will veneers look fake?",
-        a: "Not when they are done well. We use layered porcelain that mimics the translucency of natural enamel and shape each veneer to suit your face. The goal is a smile people notice without being able to say exactly why.",
+        a: "Not when they are done well. We use layered porcelain that mimics the translucency of natural enamel and shape each veneer to suit your face. Most people will not be able to tell you have them.",
       },
       {
         q: "How long does whitening last?",
@@ -117,7 +117,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       },
       {
         q: "Does cosmetic work damage my teeth?",
-        a: "We always start with the most conservative option. Whitening and bonding are non-invasive; veneers require minimal enamel reduction. We will never remove more tooth structure than the result truly requires.",
+        a: "We always start with the most conservative option. Whitening and bonding are non-invasive; veneers require minimal enamel reduction. We will never remove more tooth structure than the result needs.",
       },
       {
         q: "Can I finance a smile makeover?",
@@ -128,7 +128,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   "dental-implants": {
     slug: "dental-implants",
     intro:
-      "A missing tooth is more than a gap. It changes how you chew, how the neighboring teeth drift, and how your jawbone holds its shape over time. Implants are the closest thing modern dentistry has to giving you the tooth back.",
+      "A missing tooth affects how you chew, lets the neighboring teeth drift, and causes the jawbone to shrink over time. An implant replaces the root as well as the tooth, which is why it holds up better than a bridge or denture.",
     steps: [
       {
         title: "3D imaging and planning",
@@ -148,7 +148,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       {
         title: "Final crown",
         detail:
-          "We attach a custom crown color-matched to your other teeth. The result looks, feels, and functions like the tooth you lost, and is brushed and flossed exactly the same way.",
+          "We attach a custom crown color-matched to your other teeth. It matches your other teeth, and you brush and floss it the same way.",
       },
     ],
     forYou: [
@@ -157,8 +157,8 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Patients told they have lost bone and need a long-term fix",
       "People who want to chew and speak without thinking about it",
     ],
-    beforeLabel: "Before: missing tooth",
-    afterLabel: "After: implant and crown",
+    beforeLabel: "Before: missing upper teeth",
+    afterLabel: "After: implant-supported restoration",
     faqs: [
       {
         q: "How long do dental implants last?",
@@ -181,7 +181,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   invisalign: {
     slug: "invisalign",
     intro:
-      "Straightening your teeth should not mean a mouth full of metal for two years. Invisalign moves your teeth with a series of clear, custom aligners you can take out to eat, brush, and smile in photos.",
+      "Invisalign straightens teeth with a series of clear, custom aligners. You take them out to eat and brush, and most people will not notice you are wearing them.",
     steps: [
       {
         title: "Digital scan",
@@ -201,7 +201,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       {
         title: "Retain your result",
         detail:
-          "Once you are aligned, a custom retainer keeps everything in place. We make sure that hard-won straight smile stays straight.",
+          "Once your teeth are where they should be, a custom retainer keeps them there.",
       },
     ],
     forYou: [
@@ -210,8 +210,8 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Anyone with crowding, gaps, or mild bite issues",
       "People who tried braces years ago and have shifted back",
     ],
-    beforeLabel: "Before: crowding",
-    afterLabel: "After: aligned smile",
+    beforeLabel: "Before: crowded, overlapping teeth",
+    afterLabel: "After: straightened, aligned smile",
     faqs: [
       {
         q: "How long does Invisalign take?",
@@ -227,14 +227,14 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       },
       {
         q: "What happens if I lose an aligner?",
-        a: "Do not panic. Call us. Depending on where you are in the series, we will often have you move to the next set early or order a quick replacement. We keep your full treatment plan on file.",
+        a: "Call us. Depending on where you are in the series, we will often have you move to the next set early or order a quick replacement. We keep your full treatment plan on file.",
       },
     ],
   },
   "emergency-dentistry": {
     slug: "emergency-dentistry",
     intro:
-      "Dental emergencies do not wait for a convenient time. A cracked tooth, a lost crown, or a throbbing toothache at 7 a.m. needs care today, not a callback next week. We hold time open every day for exactly this.",
+      "A cracked tooth, a lost crown, or a bad toothache needs to be seen quickly. We keep appointment time open every weekday for emergencies, so most patients are seen the same day they call.",
     steps: [
       {
         title: "Call us right away",
@@ -249,7 +249,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       {
         title: "Diagnose the cause",
         detail:
-          "A focused exam and digital X-ray tell us exactly what is going on: a fracture, an infection, a lost filling. We treat the problem, not just the symptom.",
+          "A focused exam and digital X-ray tell us exactly what is going on: a fracture, an infection, a lost filling.",
       },
       {
         title: "Treat and plan ahead",
@@ -263,8 +263,8 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       "Lost fillings, crowns, or broken dentures",
       "Swelling, abscesses, or a tooth that is keeping you up at night",
     ],
-    beforeLabel: "Before: cracked tooth",
-    afterLabel: "After: repaired and restored",
+    beforeLabel: "Before: fractured front tooth",
+    afterLabel: "After: tooth rebuilt with bonded composite",
     faqs: [
       {
         q: "What counts as a dental emergency?",
@@ -276,11 +276,11 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
       },
       {
         q: "Can you really see me the same day?",
-        a: "In the vast majority of cases, yes. We intentionally hold open appointment time every weekday for emergencies. Call as early as you can and we will find you a spot.",
+        a: "Usually, yes. We intentionally hold open appointment time every weekday for emergencies. Call as early as you can and we will find you a spot.",
       },
       {
         q: "What if I do not have insurance?",
-        a: "Emergencies happen to everyone. We offer CareCredit and in-house payment plans, and we will always give you the cost up front so you can make a decision without pressure.",
+        a: "We offer CareCredit and in-house payment plans, and we will always give you the cost up front so you can make a decision without pressure.",
       },
     ],
   },

@@ -1,18 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Facebook,
-  Instagram,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-  Accessibility,
-  Star,
-  ArrowUp,
-} from "lucide-react";
+import { Mail, MapPin, Phone, Accessibility, ArrowUp } from "lucide-react";
 import { Logo } from "./Logo";
+import { SocialIcon3D, type SocialIconName } from "@/components/ui/SocialIcon3D";
 import { PRACTICE } from "@/lib/constants";
 
 const QUICK_LINKS = [
@@ -26,11 +17,12 @@ const QUICK_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-const SOCIALS = [
-  { href: "https://facebook.com", label: "Follow us on Facebook", Icon: Facebook },
-  { href: "https://instagram.com", label: "Follow us on Instagram", Icon: Instagram },
-  { href: PRACTICE.mapsUrl, label: "View our Google Business Profile", Icon: Star },
-];
+const SOCIALS = (
+  [
+    { href: PRACTICE.social.facebook, label: "Follow us on Facebook", icon: "facebook" },
+    { href: PRACTICE.social.instagram, label: "Follow us on Instagram", icon: "instagram" },
+  ] satisfies { href: string; label: string; icon: SocialIconName }[]
+).filter((social) => social.href);
 
 function BackToTop() {
   return (
@@ -51,35 +43,35 @@ export function Footer() {
       {/* Top teal accent */}
       <div className="h-px w-full bg-gradient-to-r from-transparent via-teal/50 to-transparent" />
 
-      <div className="container-page py-14 md:py-18">
+      <div className="container-page py-14 md:py-[72px]">
         {/* 1 col mobile → 2 col tablet → 4 col desktop */}
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Col 1 — brand */}
+        <div className="grid gap-10 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-4">
+          {/* Col 1: brand */}
           <div className="sm:col-span-2 lg:col-span-1 lg:pr-6">
             <Logo variant="light" />
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/60">
-              Modern, calm, judgment-free dental care for Lodi and San Joaquin
-              County. Accepting new patients.
+            <p className="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-white/60 sm:mx-0">
+              Family, cosmetic, implant, and emergency dentistry in Sacramento, CA.
+              Accepting new patients.
             </p>
-            <div className="mt-6 flex gap-3">
-              {SOCIALS.map(({ href, label, Icon }) => (
+            <div className="mt-6 flex justify-center gap-3 sm:justify-start">
+              {SOCIALS.map(({ href, label, icon }) => (
                 <a
                   key={label}
                   href={href}
                   aria-label={label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="grid h-10 w-10 place-items-center rounded-md border-hair border-subtle-dark text-white/70 transition-colors hover:border-teal hover:text-teal"
+                  className="grid h-12 w-12 place-items-center rounded-xl transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal"
                 >
-                  <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                  <SocialIcon3D name={icon} className="h-11 w-11" />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Col 2 — quick links */}
+          {/* Col 2: quick links */}
           <div>
-            <h3 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Quick Links</h3>
+            <h2 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Quick Links</h2>
             <ul className="mt-5 space-y-3 text-sm">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
@@ -95,10 +87,10 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 3 — hours */}
+          {/* Col 3: hours */}
           <div>
-            <h3 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Office Hours</h3>
-            <ul className="mt-5 space-y-3 text-sm">
+            <h2 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Office Hours</h2>
+            <ul className="mx-auto mt-5 max-w-[260px] space-y-3 text-sm sm:max-w-none">
               {Object.entries(PRACTICE.hours).map(([days, time]) => (
                 <li key={days} className="flex justify-between gap-4">
                   <span className="text-white/65">{days}</span>
@@ -108,22 +100,20 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4 — contact */}
+          {/* Col 4: contact */}
           <div>
-            <h3 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Visit Us</h3>
+            <h2 className="caption border-b border-white/[0.08] pb-2 text-teal-light/90">Visit Us</h2>
             <ul className="mt-5 space-y-4 text-sm">
-              <li className="flex gap-3">
+              <li className="flex justify-center gap-3 sm:justify-start">
                 <MapPin className="mt-0.5 h-[18px] w-[18px] shrink-0 text-teal" aria-hidden="true" />
                 <span className="text-white/75">
-                  {PRACTICE.addressLine1}
-                  <br />
-                  {PRACTICE.addressLine2}
+                  {PRACTICE.address}
                 </span>
               </li>
               <li>
                 <a
                   href={PRACTICE.phoneHref}
-                  className="flex items-center gap-3 text-white/75 transition-colors hover:text-white"
+                  className="flex items-center justify-center gap-3 text-white/75 transition-colors hover:text-white sm:justify-start"
                 >
                   <Phone className="h-[18px] w-[18px] shrink-0 text-teal" aria-hidden="true" />
                   {PRACTICE.phone}
@@ -132,7 +122,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${PRACTICE.email}`}
-                  className="flex items-center gap-3 break-all text-white/75 transition-colors hover:text-white"
+                  className="flex items-center justify-center gap-3 break-all text-white/75 transition-colors hover:text-white sm:justify-start"
                 >
                   <Mail className="h-[18px] w-[18px] shrink-0 text-teal" aria-hidden="true" />
                   {PRACTICE.email}
@@ -175,27 +165,22 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Center — compliance badges */}
+          {/* Center: compliance badges */}
           <div className="flex items-center gap-5">
-            <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck className="h-4 w-4 text-teal" aria-hidden="true" />
-              Demo · No patient records
-            </span>
-            <span className="inline-flex items-center gap-1.5">
+            <Link href="/accessibility" className="inline-flex items-center gap-1.5 transition-colors hover:text-teal">
               <Accessibility className="h-4 w-4 text-teal" aria-hidden="true" />
               Accessibility information
-            </span>
+            </Link>
           </div>
 
-          {/* Center-right — legal links */}
+          {/* Center-right: legal links */}
           <nav aria-label="Legal links" className="flex flex-wrap justify-center gap-x-5 gap-y-1.5">
             <Link href="/privacy-policy" className="transition-colors hover:text-teal">Privacy Policy</Link>
             <Link href="/terms-of-use" className="transition-colors hover:text-teal">Terms of Use</Link>
-            <Link href="/accessibility" className="transition-colors hover:text-teal">Accessibility</Link>
             <Link href="/sitemap-page" className="transition-colors hover:text-teal">Site Map</Link>
           </nav>
 
-          {/* Right — back to top */}
+          {/* Right: back to top */}
           <BackToTop />
         </div>
       </div>

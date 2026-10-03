@@ -6,13 +6,12 @@ import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { GoogleStars, GoogleG } from "@/components/reviews/ReviewCard";
 import { ReviewsGrid } from "@/components/reviews/ReviewsGrid";
 import { PRACTICE } from "@/lib/constants";
-import { TESTIMONIALS } from "@/lib/testimonials";
 import { IMAGES } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Patient Reviews",
   description:
-    "Read real patient reviews of Brightside Dental in Lodi, CA, filterable by general dentistry, cosmetic dentistry, implants, Invisalign, and emergency care.",
+    "Read patient reviews of Brightside Dental in Sacramento, CA, filterable by general dentistry, cosmetic dentistry, implants, Invisalign, and emergency care.",
   alternates: { canonical: "/reviews" },
 };
 
@@ -22,13 +21,13 @@ export default function ReviewsPage() {
       <PageHero
         label="Reviews"
         title="What patients say about Brightside"
-        subtitle={`${TESTIMONIALS.length} real reviews from real patients, no incentives and no scripts. Filter by service to see what to expect.`}
-        bgImage={{ src: IMAGES.office.waiting.src, alt: IMAGES.office.waiting.alt }}
+        subtitle="Reviews from our patients. Filter by service to read what others said about the same treatment."
+        bgImage={IMAGES.office.waiting.src}
       />
 
       <section className="bg-white section-y">
         <div className="container-page">
-          <AnimatedSection className="flex flex-col items-start justify-between gap-6 border-b border-subtle pb-10 sm:flex-row sm:items-center">
+          <AnimatedSection className="flex flex-col items-center gap-4 border-b border-subtle pb-10 text-center">
             <div className="flex items-center gap-3">
               <span className="text-4xl font-bold text-charcoal">{PRACTICE.googleRating}</span>
               <div>
@@ -57,8 +56,8 @@ export default function ReviewsPage() {
       </section>
 
       <CTABanner
-        heading="Ready to write your own review?"
-        subtext="Join hundreds of patients who trust Brightside Dental with their smiles."
+        heading="Ready to book a visit?"
+        subtext="New patients are welcome, and same-week appointments are usually available."
       />
     </>
   );

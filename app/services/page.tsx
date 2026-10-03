@@ -4,7 +4,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/sections/PageHero";
 import { CTABanner } from "@/components/sections/CTABanner";
-import { ServiceIcon } from "@/components/ui/ServiceIcon";
+import { ServiceIcon3D } from "@/components/ui/ServiceIcon3D";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { SERVICES } from "@/lib/constants";
 import { IMAGES } from "@/lib/images";
@@ -12,9 +13,9 @@ import { cn } from "@/lib/cn";
 
 
 export const metadata: Metadata = {
-  title: "Dental Services in Lodi, CA",
+  title: "Dental Services in Sacramento, CA",
   description:
-    "Explore Brightside Dental's services in Lodi, CA: general and cosmetic dentistry, dental implants, Invisalign, and same-day emergency care for the whole family.",
+    "Explore Brightside Dental's services in Sacramento, CA: general and cosmetic dentistry, dental implants, Invisalign, and same-day emergency care for the whole family.",
   alternates: { canonical: "/services" },
 };
 
@@ -26,111 +27,105 @@ const SERVICE_IMAGES = [
   IMAGES.services.emergency,
 ];
 
+// Three cards on the first desktop row, two wider ones on the second.
+const SPANS = [
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "lg:col-span-3",
+  "sm:col-span-2 lg:col-span-3",
+];
+
 export default function ServicesPage() {
   return (
     <>
       <PageHero
         label="Our Services"
-        title="Services built around your life"
-        subtitle="Comprehensive dental care under one roof. From the six-month cleaning that keeps things simple to the implant or smile makeover that changes everything. One team, every stage of life."
-        bgImage={{ src: IMAGES.services.general.src, alt: IMAGES.services.general.alt }}
+        title="Our dental services"
+        subtitle="Everything from six-month cleanings to implants and smile makeovers, handled by one team in our Sacramento office."
+        bgImage={IMAGES.services.general.src}
       />
 
       <section className="bg-offwhite section-y">
-        <div className="container-page space-y-6">
-          {SERVICES.map((service, i) => {
-            const dark = i % 2 === 1;
-            const img = SERVICE_IMAGES[i];
-            return (
-              <AnimatedSection key={service.slug} delay={i * 0.05}>
-                <Link
-                  href={`/services/${service.slug}`}
-                  className="group block"
+        <div className="container-page">
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">What we treat</SectionLabel>
+            <h2 className="text-balance text-display-sm font-bold text-charcoal">
+              Find the care you need
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl leading-relaxed text-warmgray">
+              Pick a service to see how a visit works, who it suits, and the
+              questions patients ask us most often.
+            </p>
+          </AnimatedSection>
+
+          <div className="mt-12 grid gap-5 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-6">
+            {SERVICES.map((service, i) => {
+              const img = SERVICE_IMAGES[i];
+              const wide = i >= 3;
+              return (
+                <AnimatedSection
+                  key={service.slug}
+                  delay={(i % 3) * 0.06}
+                  className={cn("flex", SPANS[i])}
                 >
-                  <article
-                    className={cn(
-                      "grid overflow-hidden rounded-2xl border-hair shadow-card transition-all duration-200 group-hover:-translate-y-1 group-hover:shadow-card-hover",
-                      "sm:grid-cols-[200px_1fr_auto] sm:items-stretch",
-                      dark
-                        ? "border-subtle-dark bg-navy"
-                        : "border-subtle bg-white",
-                    )}
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="group flex w-full flex-col overflow-hidden rounded-2xl border-hair border-subtle bg-white text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover focus-visible:-translate-y-1 focus-visible:shadow-card-hover"
                   >
-                    {/* Service image */}
-                    <div className="relative hidden sm:block">
+                    <div
+                      className={cn(
+                        "relative h-44 overflow-hidden sm:h-48",
+                        wide && "lg:h-56",
+                      )}
+                    >
                       <Image
-                        src={img.src}
+                        src={img.card}
                         alt={img.alt}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="200px"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes={
+                          wide
+                            ? "(min-width: 1024px) 560px, (min-width: 640px) 50vw, 100vw"
+                            : "(min-width: 1024px) 370px, (min-width: 640px) 50vw, 100vw"
+                        }
                       />
-                      {dark && (
-                        <div className="absolute inset-0 bg-navy/40" />
-                      )}
+                      <div
+                        aria-hidden
+                        className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-white via-white/40 to-transparent"
+                      />
                     </div>
 
-                    {/* text */}
-                    <div className="p-7 md:p-9">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={cn(
-                            "grid h-10 w-10 place-items-center rounded-lg",
-                            dark ? "bg-white/8 text-teal" : "bg-teal-light text-teal-dark",
-                          )}
-                        >
-                          <ServiceIcon
-                            name={service.icon}
-                            className="h-5 w-5"
-                            strokeWidth={1.6}
-                          />
-                        </div>
-                        <h2
-                          className={cn(
-                            "text-xl font-semibold sm:text-2xl",
-                            dark ? "text-white" : "text-charcoal",
-                          )}
-                        >
-                          {service.name}
-                        </h2>
-                      </div>
-                      <p
-                        className={cn(
-                          "mt-2 text-sm font-medium",
-                          dark ? "text-teal-light" : "text-teal-dark",
-                        )}
-                      >
+                    <div className="relative flex flex-1 flex-col items-center px-6 pb-8 sm:px-8">
+                      <ServiceIcon3D
+                        name={service.icon}
+                        className="-mt-14 h-24 w-24 drop-shadow-[0_10px_14px_rgba(14,31,61,0.10)] transition-transform duration-300 group-hover:-translate-y-1.5 sm:h-28 sm:w-28"
+                      />
+                      <h3 className="mt-3 text-xl font-semibold text-charcoal sm:text-[1.4rem]">
+                        {service.name}
+                      </h3>
+                      <p className="mt-1.5 text-sm font-medium text-teal-dark">
                         {service.tagline}
                       </p>
-                      <p
-                        className={cn(
-                          "mt-3 max-w-xl leading-relaxed",
-                          dark ? "text-white/65" : "text-warmgray",
-                        )}
-                      >
+                      <p className="mx-auto mt-3 max-w-sm leading-relaxed text-warmgray">
                         {service.description}
                       </p>
-                    </div>
-
-                    {/* cta */}
-                    <div className="flex items-center px-7 py-7 md:px-9">
-                      <span
-                        className={cn(
-                          "inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-medium",
-                          dark ? "text-teal-light" : "text-teal",
-                        )}
-                      >
+                      <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-medium text-teal">
                         Learn more
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        <span className="sr-only"> about {service.name}</span>
+                        <ArrowRight
+                          className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                          aria-hidden="true"
+                        />
                       </span>
                     </div>
-                  </article>
-                </Link>
-              </AnimatedSection>
-            );
-          })}
+                  </Link>
+                </AnimatedSection>
+              );
+            })}
+          </div>
 
-          <AnimatedSection delay={0.1} className="pt-4 text-center">
+          <AnimatedSection delay={0.1} className="pt-12 text-center sm:pt-14">
             <Link
               href="/faq"
               className="group inline-flex items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
@@ -147,7 +142,7 @@ export default function ServicesPage() {
 
       <CTABanner
         heading="Not sure which service you need?"
-        subtext="Tell us what is going on and we will point you in the right direction. No pressure, no obligation."
+        subtext="Tell us what is going on and we will suggest where to start. You do not have to commit to anything on the phone."
       />
     </>
   );

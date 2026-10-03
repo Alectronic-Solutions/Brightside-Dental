@@ -170,7 +170,7 @@ const SECTIONS = [
         These Terms are governed by and construed in accordance with the laws
         of the State of California, without regard to its conflict-of-law
         provisions. Any dispute arising under these Terms will be resolved
-        exclusively in the state or federal courts located in San Joaquin
+        exclusively in the state or federal courts located in Sacramento
         County, California.
       </p>
     ),
@@ -196,7 +196,7 @@ export default function TermsOfUsePage() {
         label="Legal"
         title="Terms of Use"
         subtitle={`Effective ${LAST_UPDATED}. By using our website you agree to these Terms. Please read them carefully before proceeding.`}
-        bgImage={{ src: IMAGES.office.reception.src, alt: IMAGES.office.reception.alt }}
+        bgImage={IMAGES.office.reception.src}
       />
 
       <div className="bg-white">
@@ -237,8 +237,7 @@ export default function TermsOfUsePage() {
                 <div className="grid gap-4 text-sm text-charcoal sm:grid-cols-2">
                   <div>
                     <p className="font-semibold text-navy">{PRACTICE.name}</p>
-                    <p>{PRACTICE.addressLine1}</p>
-                    <p>{PRACTICE.addressLine2}</p>
+                    <p>{PRACTICE.address}</p>
                   </div>
                   <div className="space-y-1">
                     <p>

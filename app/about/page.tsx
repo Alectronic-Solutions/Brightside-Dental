@@ -17,9 +17,9 @@ import { PRACTICE } from "@/lib/constants";
 import { IMAGES } from "@/lib/images";
 
 export const metadata: Metadata = {
-  title: "About Our Lodi Dental Practice",
+  title: "About Our Sacramento Dental Practice",
   description:
-    "Meet the team behind Brightside Dental in Lodi, CA. Led by Dr. Angela Chen, we have delivered calm, modern, judgment-free dental care to San Joaquin County since 2006.",
+    "Meet the team behind Brightside Dental in Sacramento, CA. Dr. Angela Chen opened the practice in 2006 and still sees patients here every week.",
   alternates: { canonical: "/about" },
 };
 
@@ -29,7 +29,7 @@ const TEAM = [
     name: "Dr. Angela Chen",
     title: "Lead Dentist and Founder",
     credentials:
-      "DDS, UC San Francisco School of Dentistry · 18 years practice · Member, ADA and CDA",
+      "DDS, UC San Francisco School of Dentistry · 20 years in practice · Member, ADA and CDA",
     bio: "Dr. Chen founded Brightside in 2006 with a focus on gentle, conservative care. She still personally calls patients the evening after major procedures to check in.",
   },
   {
@@ -37,14 +37,14 @@ const TEAM = [
     name: "Maria Reyes, RDH",
     title: "Lead Dental Hygienist",
     credentials: "Registered Dental Hygienist · 12 years experience",
-    bio: "Maria is the reason so many nervous patients keep coming back. She is patient, thorough, and has a gift for making cleanings genuinely relaxing.",
+    bio: "Nervous patients often ask for Maria by name. She explains what she is doing as she goes and stops whenever you need a break.",
   },
   {
     image: IMAGES.team.jordanTran,
     name: "Jordan Tran",
     title: "Patient Care Coordinator",
     credentials: "Insurance and financing specialist",
-    bio: "Jordan handles the part everyone dreads: insurance and billing. He will find your benefits and lay out the costs before you commit to anything.",
+    bio: "Jordan handles insurance and billing. He will check your benefits and go over the costs with you before you commit to anything.",
   },
 ];
 
@@ -52,27 +52,27 @@ const VALUES = [
   {
     Icon: HeartHandshake,
     title: "Comfort First",
-    body: "An anxiety-free environment with sedation and nitrous options, warm blankets, and a team that never rushes you. We treat the person, not just the tooth.",
+    body: "Nitrous and oral sedation are available if you get nervous, and we keep warm blankets on hand. Nobody will rush you through a visit.",
   },
   {
     Icon: ReceiptText,
     title: "No-Surprise Billing",
-    body: "You get an upfront treatment plan with a written estimate and your insurance applied before we schedule anything. No mystery charges, ever.",
+    body: "Before we schedule anything, you get a written treatment plan with your insurance already applied, so you know what you will owe.",
   },
   {
     Icon: MapPin,
     title: "Community Roots",
-    body: "We have served Lodi and San Joaquin County since 2006. This is our home too, and we treat our patients like the neighbors they are.",
+    body: "We have been in Sacramento since 2006, and most of our team lives here too. Plenty of our patients are people we also run into at the grocery store.",
   },
 ];
 
 const GALLERY = [
   { label: "Reception", image: IMAGES.office.reception, h: "h-52" },
-  { label: "Treatment Room", image: IMAGES.office.treatmentRoom, h: "h-68" },
+  { label: "Treatment Room", image: IMAGES.office.treatmentRoom, h: "h-[17rem]" },
   { label: "Consultation Suite", image: IMAGES.office.consultation, h: "h-60" },
   { label: "Modern Equipment", image: IMAGES.office.equipment, h: "h-48" },
   { label: "Patient Lounge", image: IMAGES.office.waiting, h: "h-64" },
-  { label: "Front Entrance", image: IMAGES.office.exterior, h: "h-52" },
+  { label: "Digital Imaging", image: IMAGES.office.imaging, h: "h-52" },
   { label: "Smile Results", image: IMAGES.office.smile1, h: "h-56" },
   { label: "Happy Patients", image: IMAGES.office.smile2, h: "h-60" },
 ];
@@ -81,7 +81,6 @@ const CERTS = [
   { label: "ADA", Icon: Award },
   { label: "CDA", Icon: Award },
   { label: "OSHA Compliant", Icon: ShieldCheck },
-  { label: "Demo Practice", Icon: ShieldCheck },
   { label: "Invisalign Preferred Provider", Icon: Award },
 ];
 
@@ -102,7 +101,7 @@ export default function AboutPage() {
           className="object-cover object-center"
           sizes="100vw"
         />
-        {/* Gradient overlay — dark on left, fades right */}
+        {/* Gradient overlay: dark on left, fades right */}
         <div
           aria-hidden
           className="absolute inset-0"
@@ -123,40 +122,39 @@ export default function AboutPage() {
 
         <div className="container-page relative grid items-center gap-12 pb-16 pt-28 sm:pt-36 md:pb-32 md:pt-44 lg:grid-cols-2">
           {/* Left: text */}
-          <AnimatedSection>
-            <SectionLabel tone="light">Our Story</SectionLabel>
-            <h1 className="mt-3 text-display font-bold text-white">
-              We opened Brightside Dental in 2006 with a single belief.
+          <AnimatedSection className="text-center lg:text-left">
+            <SectionLabel tone="light" className="justify-center lg:justify-start">Our Story</SectionLabel>
+            <h1 className="mt-3 text-balance text-display font-bold text-white">
+              A Sacramento dental office since 2006
             </h1>
-            <p className="mt-6 max-w-xl text-[1.05rem] leading-[1.75] text-white/65">
-              That going to the dentist should not feel like a punishment.
-              Two decades later, that belief still shapes everything: from how
-              we greet you at the door to how we explain a treatment plan in
-              plain language, with no pressure and no surprises.
+            <p className="mx-auto mt-6 max-w-xl text-[1.05rem] leading-[1.75] text-white/65 lg:mx-0">
+              Dr. Angela Chen opened Brightside in Sacramento in 2006. We keep the team small, explain treatment in plain
+              language, and give you a written estimate before anything is
+              scheduled.
             </p>
-            <div className="mt-10 flex flex-wrap gap-10 border-t border-white/10 pt-8">
+            <div className="mt-10 flex flex-wrap justify-center gap-10 border-t border-white/10 pt-8 lg:justify-start">
               <Stat value={`${PRACTICE.yearsInPractice} yrs`} label="In practice" />
               <Stat value={PRACTICE.patientsServed} label="Patients served" />
               <Stat value={`${PRACTICE.googleRating}★`} label="Google rating" />
             </div>
           </AnimatedSection>
 
-          {/* Right: photo collage — each image staggers in independently */}
+          {/* Right: photo collage: each image staggers in independently */}
           <PhotoCollage />
         </div>
       </section>
 
       {/* Meet the team */}
-      <section className="bg-offwhite section-y">
+      <section id="team" className="scroll-mt-24 bg-offwhite section-y">
         <div className="container-page">
-          <AnimatedSection className="max-w-2xl">
-            <SectionLabel>Meet the Team</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
-              The people who will know you by name
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">Meet the Team</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
+              The people you will see at every visit
             </h2>
             <p className="mt-4 text-lg text-warmgray">
-              A small, consistent team means you see familiar faces every visit,
-              not a rotating cast of strangers.
+              We keep the team small, so you see the same faces each time you
+              come in.
             </p>
           </AnimatedSection>
 
@@ -180,7 +178,7 @@ export default function AboutPage() {
                   <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
                 </div>
 
-                <div className="p-6">
+                <div className="p-6 text-center">
                   <h3 className="text-lg font-semibold text-charcoal">
                     {member.name}
                   </h3>
@@ -203,9 +201,9 @@ export default function AboutPage() {
       {/* Practice values */}
       <section className="bg-white section-y">
         <div className="container-page">
-          <AnimatedSection className="max-w-2xl">
-            <SectionLabel>What We Stand For</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">What We Stand For</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
               What we won&apos;t cut corners on
             </h2>
           </AnimatedSection>
@@ -215,9 +213,9 @@ export default function AboutPage() {
               <AnimatedSection
                 key={value.title}
                 delay={i * 0.08}
-                className="rounded-2xl border-hair border-subtle bg-offwhite p-7 transition-shadow hover:shadow-card"
+                className="rounded-2xl border-hair border-subtle bg-offwhite p-7 text-center transition-shadow hover:shadow-card"
               >
-                <value.Icon className="h-7 w-7 text-teal" strokeWidth={1.5} />
+                <value.Icon className="mx-auto h-7 w-7 text-teal" strokeWidth={1.5} />
                 <h3 className="mt-5 text-xl font-semibold text-charcoal">
                   {value.title}
                 </h3>
@@ -233,11 +231,11 @@ export default function AboutPage() {
       {/* Office gallery with real images */}
       <section className="bg-offwhite section-y">
         <div className="container-page">
-          <AnimatedSection className="flex flex-wrap items-end justify-between gap-4">
+          <AnimatedSection className="flex flex-col items-center gap-4 text-center">
             <div className="max-w-2xl">
-              <SectionLabel>Take a Look Around</SectionLabel>
-              <h2 className="text-3xl text-charcoal sm:text-4xl">
-                An office that feels nothing like a clinic
+              <SectionLabel className="justify-center">Take a Look Around</SectionLabel>
+              <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
+                Inside our Sacramento office
               </h2>
             </div>
             <Link
@@ -262,7 +260,7 @@ export default function AboutPage() {
                 className={`relative ${item.h} break-inside-avoid overflow-hidden rounded-xl border-hair border-subtle`}
               >
                 <Image
-                  src={item.image.src}
+                  src={item.image.thumb}
                   alt={item.image.alt}
                   fill
                   className="object-cover transition-transform duration-500 hover:scale-105"
@@ -304,8 +302,8 @@ export default function AboutPage() {
       </section>
 
       <CTABanner
-        heading="Come see the difference for yourself."
-        subtext="The best way to understand how we are different is to experience it. Book your first visit today."
+        heading="Meet the team in person"
+        subtext="Book a first visit, or call if you would like to ask us something before you commit."
         variant="teal"
       />
     </>

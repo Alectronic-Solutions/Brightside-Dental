@@ -18,18 +18,6 @@ const nextConfig = {
     // Keep the explicitly requested image qualities valid as Next tightens its
     // image configuration validation in v16.
     qualities: [75, 80, 85, 90],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "api.dicebear.com",
-        pathname: "/**",
-      },
-    ],
   },
 };
 

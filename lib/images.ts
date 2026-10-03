@@ -1,131 +1,195 @@
 /**
- * Centralized image configuration using Unsplash for high-quality placeholder photos.
- * All images are carefully curated to match a premium dental practice aesthetic.
+ * Centralized image configuration. Placeholder photos are sourced from Unsplash
+ * (free license) and self-hosted as WebP under public/images so pages don't
+ * depend on a third-party CDN or ship oversized originals.
  * Replace with real practice photos before launch.
  */
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export const IMAGES = {
-  hero: {
-    src: "https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=1200&q=85",
-    alt: "Brightside Dental modern treatment room with natural light",
-    width: 1200,
-    height: 900,
-  },
+  // Root-relative on purpose: Next resolves metadata URLs against metadataBase,
+  // which already includes the GitHub Pages sub-path.
   ogImage: {
-    src: "https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=1200&h=630&fit=crop&q=85",
+    src: "/og-image.jpg",
     alt: "Brightside Dental modern treatment room with natural light",
     width: 1200,
     height: 630,
   },
-  heroSecondary: {
-    src: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=85",
-    alt: "Patient smiling after dental treatment",
-    width: 800,
-    height: 600,
-  },
 
   team: {
     drChen: {
-      src: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=85",
+      src: `${BASE_PATH}/images/team/angela-chen.webp`,
       alt: "Dr. Angela Chen, Lead Dentist and Founder",
-      width: 400,
-      height: 400,
+      width: 800,
+      height: 533,
     },
     mariaReyes: {
-      src: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=85",
+      src: `${BASE_PATH}/images/team/maria-reyes.webp`,
       alt: "Maria Reyes, Lead Dental Hygienist",
-      width: 400,
-      height: 400,
+      width: 800,
+      height: 1200,
     },
     jordanTran: {
-      src: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=85",
+      src: `${BASE_PATH}/images/team/jordan-tran.webp`,
       alt: "Jordan Tran, Patient Care Coordinator",
-      width: 400,
-      height: 400,
+      width: 800,
+      height: 1200,
     },
   },
 
+  // `src` is 1600px for full-bleed backgrounds; `thumb` is 800px for grid tiles.
   office: {
     reception: {
-      src: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=600&q=85",
-      alt: "Brightside Dental modern reception area",
-      width: 600,
-      height: 400,
+      src: `${BASE_PATH}/images/office/reception.webp`,
+      thumb: `${BASE_PATH}/images/office/reception-thumb.webp`,
+      alt: "Front desk coordinator greeting a patient at check-in",
+      width: 1600,
+      height: 1067,
     },
     treatmentRoom: {
-      src: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&q=85",
+      src: `${BASE_PATH}/images/office/treatment-room.webp`,
+      thumb: `${BASE_PATH}/images/office/treatment-room-thumb.webp`,
       alt: "Clean and modern treatment room",
-      width: 600,
-      height: 500,
+      width: 1600,
+      height: 1070,
     },
     consultation: {
-      src: "https://images.unsplash.com/photo-1576671081837-49000212a370?w=600&q=85",
-      alt: "Consultation suite with comfortable seating",
-      width: 600,
-      height: 450,
+      src: `${BASE_PATH}/images/office/consultation.webp`,
+      thumb: `${BASE_PATH}/images/office/consultation-thumb.webp`,
+      alt: "Dentist reviewing a smile design on screen with a patient",
+      width: 1600,
+      height: 1067,
     },
-    exterior: {
-      src: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=600&q=85",
-      alt: "Brightside Dental office exterior",
-      width: 600,
-      height: 400,
+    imaging: {
+      src: `${BASE_PATH}/images/office/imaging.webp`,
+      thumb: `${BASE_PATH}/images/office/imaging-thumb.webp`,
+      alt: "Dentist walking a patient through a digital scan of her teeth",
+      width: 1600,
+      height: 1067,
     },
     equipment: {
-      src: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=600&q=85",
-      alt: "Modern dental equipment and technology",
-      width: 600,
-      height: 480,
+      src: `${BASE_PATH}/images/office/equipment.webp`,
+      thumb: `${BASE_PATH}/images/office/equipment-thumb.webp`,
+      alt: "Modern treatment room with a dental chair and digital display",
+      width: 1600,
+      height: 1067,
     },
     waiting: {
-      src: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=85",
-      alt: "Comfortable patient waiting area",
-      width: 600,
-      height: 420,
+      src: `${BASE_PATH}/images/office/waiting.webp`,
+      thumb: `${BASE_PATH}/images/office/waiting-thumb.webp`,
+      alt: "Bright patient lounge with an indoor tree and built-in seating",
+      width: 1600,
+      height: 1067,
     },
     smile1: {
-      src: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=600&q=85",
-      alt: "Beautiful smile after cosmetic treatment",
-      width: 600,
-      height: 450,
+      src: `${BASE_PATH}/images/office/smile-1.webp`,
+      thumb: `${BASE_PATH}/images/office/smile-1-thumb.webp`,
+      alt: "Woman laughing with a bright, natural smile",
+      width: 1600,
+      height: 1067,
     },
     smile2: {
-      src: "https://images.unsplash.com/photo-1571772996211-2f02c9727629?w=600&q=85",
-      alt: "Happy patient after dental visit",
-      width: 600,
-      height: 460,
+      src: `${BASE_PATH}/images/office/smile-2.webp`,
+      thumb: `${BASE_PATH}/images/office/smile-2-thumb.webp`,
+      alt: "Dentist chatting with a relaxed patient before a checkup",
+      width: 1600,
+      height: 1067,
     },
   },
 
+  // Self-hosted in public/images/services (sourced from Unsplash, free license).
   services: {
     general: {
-      src: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800&q=85",
-      alt: "General dentistry checkup and cleaning",
-      width: 800,
-      height: 550,
+      src: `${BASE_PATH}/images/services/general-dentistry.webp`,
+      card: `${BASE_PATH}/images/services/general-dentistry-card.webp`,
+      alt: "Hygienist examining a smiling patient's teeth during a routine checkup",
+      width: 1600,
+      height: 1067,
     },
     cosmetic: {
-      src: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=85",
-      alt: "Cosmetic dentistry smile makeover",
-      width: 800,
-      height: 550,
+      src: `${BASE_PATH}/images/services/cosmetic-dentistry.webp`,
+      card: `${BASE_PATH}/images/services/cosmetic-dentistry-card.webp`,
+      alt: "Close-up of a bright, natural-looking smile after cosmetic treatment",
+      width: 1600,
+      height: 1280,
     },
     implants: {
-      src: "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=800&q=85",
-      alt: "Dental implant procedure",
-      width: 800,
-      height: 550,
+      src: `${BASE_PATH}/images/services/dental-implants.webp`,
+      card: `${BASE_PATH}/images/services/dental-implants-card.webp`,
+      alt: "Gloved hand holding a titanium dental implant with a porcelain crown",
+      width: 1600,
+      height: 1200,
     },
     invisalign: {
-      src: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=800&q=85",
-      alt: "Invisalign clear aligners",
-      width: 800,
-      height: 550,
+      src: `${BASE_PATH}/images/services/invisalign.webp`,
+      card: `${BASE_PATH}/images/services/invisalign-card.webp`,
+      alt: "Woman fitting a clear aligner over her teeth",
+      width: 1600,
+      height: 1200,
     },
     emergency: {
-      src: "https://images.unsplash.com/photo-1550831107-1553da8c8464?w=800&q=85",
-      alt: "Emergency dental care",
-      width: 800,
-      height: 550,
+      src: `${BASE_PATH}/images/services/emergency-dentistry.webp`,
+      card: `${BASE_PATH}/images/services/emergency-dentistry-card.webp`,
+      alt: "Woman holding a cold compress to her cheek for a toothache",
+      width: 1600,
+      height: 1067,
     },
   },
+
+  // Real clinical cases from Wikimedia Commons, cropped into aligned 16:10
+  // pairs (1200x750). CC BY and CC BY-SA require the credit to stay visible.
+  // Replace with the practice's own consented patient photos before launch.
+  beforeAfter: {
+    "general-dentistry": {
+      before: `${BASE_PATH}/images/before-after/general-dentistry-before.webp`,
+      after: `${BASE_PATH}/images/before-after/general-dentistry-after.webp`,
+      credit: {
+        author: "Onetimeuseaccount",
+        license: "CC0",
+        href: "https://commons.wikimedia.org/wiki/File:Gingivitis-before-and-after-3.jpg",
+      },
+    },
+    "cosmetic-dentistry": {
+      before: `${BASE_PATH}/images/before-after/cosmetic-dentistry-before.webp`,
+      after: `${BASE_PATH}/images/before-after/cosmetic-dentistry-after.webp`,
+      credit: {
+        author: "Yvul",
+        license: "CC BY-SA 4.0",
+        href: "https://commons.wikimedia.org/wiki/File:Faccette_estetiche_confronto_prima_e_dopo.jpg",
+      },
+    },
+    "dental-implants": {
+      before: `${BASE_PATH}/images/before-after/dental-implants-before.webp`,
+      after: `${BASE_PATH}/images/before-after/dental-implants-after.webp`,
+      credit: {
+        author: "GrupoMedicodental",
+        license: "CC BY 4.0",
+        href: "https://commons.wikimedia.org/wiki/File:Caso_real_implantes_dentales_jesus_palma_ortiz_1.jpg",
+      },
+    },
+    invisalign: {
+      before: `${BASE_PATH}/images/before-after/invisalign-before.webp`,
+      after: `${BASE_PATH}/images/before-after/invisalign-after.webp`,
+      credit: {
+        license: "public domain",
+        href: "https://commons.wikimedia.org/wiki/File:Dental_patient_pre-_and_post-alignment.jpg",
+      },
+    },
+    "emergency-dentistry": {
+      before: `${BASE_PATH}/images/before-after/emergency-dentistry-before.webp`,
+      after: `${BASE_PATH}/images/before-after/emergency-dentistry-after.webp`,
+      credit: {
+        author: "Bin im Garten",
+        license: "CC BY-SA 4.0",
+        href: "https://commons.wikimedia.org/wiki/File:Zahnfraktur_Zahn_21_2017-11-05_02.JPG",
+      },
+    },
+  } as Record<string, BeforeAfterPhotos>,
 };
+
+export interface BeforeAfterPhotos {
+  before: string;
+  after: string;
+  credit: { author?: string; license: string; href: string };
+}

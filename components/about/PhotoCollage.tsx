@@ -25,7 +25,7 @@ export function PhotoCollage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE, delay }}
           >
-            <Image src={img.src} alt={img.alt} fill className="object-cover" sizes="240px" />
+            <Image src={img.thumb} alt={img.alt} fill className="object-cover" sizes="240px" />
           </motion.div>
         ))}
       </div>
@@ -38,7 +38,7 @@ export function PhotoCollage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE, delay }}
           >
-            <Image src={img.src} alt={img.alt} fill className={`object-cover ${cls}`} sizes="240px" />
+            <Image src={img.thumb} alt={img.alt} fill className={`object-cover ${cls}`} sizes="240px" />
           </motion.div>
         ))}
       </div>

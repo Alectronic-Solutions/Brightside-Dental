@@ -54,8 +54,8 @@ export default function SitemapPage() {
       <PageHero
         label="Navigation"
         title="Site Map"
-        subtitle="A complete list of every page on the Brightside Dental website so you can find exactly what you need."
-        bgImage={{ src: IMAGES.office.exterior.src, alt: IMAGES.office.exterior.alt }}
+        subtitle="Every page on the Brightside Dental website."
+        bgImage={IMAGES.office.waiting.src}
       />
 
       <div className="bg-white">

@@ -20,7 +20,7 @@ export function Logo({ variant = "dark", className }: LogoProps) {
         className,
       )}
     >
-      {/* Inline SVG tooth mark — no emoji, no broken image */}
+      {/* Inline SVG tooth mark: no emoji, no broken image */}
       <svg
         aria-hidden="true"
         width="36"

@@ -14,30 +14,61 @@ interface AccordionProps {
   items: AccordionItemData[];
   /** index open by default, or null for all closed */
   defaultOpen?: number | null;
+  /** "center" renders each item as a centered card instead of a ruled list */
+  align?: "left" | "center";
 }
 
-export function Accordion({ items, defaultOpen = 0 }: AccordionProps) {
+export function Accordion({
+  items,
+  defaultOpen = 0,
+  align = "left",
+}: AccordionProps) {
   const [open, setOpen] = useState<number | null>(defaultOpen);
+  const centered = align === "center";
 
   return (
-    <div className="divide-y divide-[rgba(0,0,0,0.08)] border-y-hair border-subtle">
+    <div
+      className={
+        centered
+          ? "grid gap-3"
+          : "divide-y divide-[rgba(0,0,0,0.08)] border-y-hair border-subtle"
+      }
+    >
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
-          <div key={item.q}>
+          <div
+            key={item.q}
+            className={cn(
+              centered &&
+                "rounded-xl border-hair bg-white transition-shadow duration-300",
+              centered &&
+                (isOpen
+                  ? "border-teal/40 shadow-card"
+                  : "border-subtle hover:shadow-card"),
+            )}
+          >
             <h3>
               <button
                 type="button"
                 onClick={() => setOpen(isOpen ? null : i)}
                 aria-expanded={isOpen}
-                className="flex w-full items-center justify-between gap-4 py-5 text-left"
+                className={cn(
+                  "flex w-full items-center gap-4",
+                  centered
+                    ? "relative justify-center px-12 py-5 text-center sm:px-16 sm:py-6"
+                    : "justify-between py-5 text-left",
+                )}
               >
-                <span className="text-base font-medium text-charcoal sm:text-lg">
+                <span className="text-balance text-base font-medium text-charcoal sm:text-lg">
                   {item.q}
                 </span>
                 <span
                   className={cn(
-                    "grid h-8 w-8 shrink-0 place-items-center rounded-md border-hair transition-colors",
+                    "grid shrink-0 place-items-center rounded-md border-hair transition-colors",
+                    centered
+                      ? "absolute right-3 top-1/2 h-7 w-7 -translate-y-1/2 sm:right-5 sm:h-8 sm:w-8"
+                      : "h-8 w-8",
                     isOpen
                       ? "border-teal bg-teal text-white"
                       : "border-subtle text-teal",
@@ -61,7 +92,14 @@ export function Accordion({ items, defaultOpen = 0 }: AccordionProps) {
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="max-w-2xl pb-6 leading-relaxed text-warmgray">
+                  <p
+                    className={cn(
+                      "leading-relaxed text-warmgray",
+                      centered
+                        ? "mx-auto max-w-xl px-6 pb-6 text-center sm:px-10 sm:pb-7"
+                        : "max-w-2xl pb-6",
+                    )}
+                  >
                     {item.a}
                   </p>
                 </motion.div>

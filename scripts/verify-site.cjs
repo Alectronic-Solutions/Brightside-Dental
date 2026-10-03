@@ -48,13 +48,18 @@ async page => {
   await page.goto(base);
   await page.getByRole('button',{name:'Open menu',exact:true}).waitFor();
   const mobileVideos = await page.locator('video').count();
+  const mobilePlaying = await page.locator('video').first().evaluate(v => new Promise(resolve => {
+    if (!v.paused) return resolve(true);
+    v.addEventListener('playing', () => resolve(true), {once:true});
+    setTimeout(() => resolve(!v.paused), 5000);
+  }));
   await page.screenshot({path:'.playwright-cli/mobile-home.png'});
   await page.setViewportSize({width:1280,height:900});
   await page.reload();
   await page.getByRole('button',{name:'Pause background video',exact:true}).click();
   const paused = await page.locator('video').evaluateAll(videos => videos.every(v => v.paused));
   await page.screenshot({path:'.playwright-cli/desktop-home.png'});
-  const result = {routeChecks:routes.length*5, failures, errors, focusRestored, invalid, successFocused, after, before, team, mobileVideos, paused};
-  if (failures.length || errors.length || !focusRestored || invalid !== 5 || !successFocused || after !== '0' || before !== '100' || team !== 'true' || mobileVideos !== 0 || !paused) throw new Error(JSON.stringify(result));
+  const result = {routeChecks:routes.length*5, failures, errors, focusRestored, invalid, successFocused, after, before, team, mobileVideos, mobilePlaying, paused};
+  if (failures.length || errors.length || !focusRestored || invalid !== 5 || !successFocused || after !== '0' || before !== '100' || team !== 'true' || mobileVideos < 1 || !mobilePlaying || !paused) throw new Error(JSON.stringify(result));
   return result;
 }

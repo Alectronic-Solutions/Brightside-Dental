@@ -10,20 +10,20 @@ const FEATURED = TESTIMONIALS.slice(0, 6);
 
 export function Testimonials() {
   return (
-    <section className="bg-white section-y">
+    <section className="bg-offwhite section-y">
       <div className="container-page">
-        <AnimatedSection className="max-w-2xl">
-          <SectionLabel>Patient Stories</SectionLabel>
-          <h2 className="text-3xl text-charcoal sm:text-[2.25rem]">
+        <AnimatedSection className="mx-auto max-w-2xl text-center">
+          <SectionLabel className="justify-center">Patient Stories</SectionLabel>
+          <h2 className="text-balance text-3xl text-charcoal sm:text-[2.25rem]">
             What our patients are saying
           </h2>
           <p className="mt-4 text-lg text-warmgray">
-            Straight from Google — unedited, and nobody was paid to write them.
+            What patients have said about their visits.
           </p>
         </AnimatedSection>
 
         {/* Rating summary */}
-        <AnimatedSection delay={0.05} className="mt-8 flex items-center gap-3">
+        <AnimatedSection delay={0.05} className="mt-8 flex items-center justify-center gap-3">
           <span className="text-3xl font-bold text-charcoal">{PRACTICE.googleRating}</span>
           <div>
             <GoogleStars count={5} />
@@ -34,7 +34,7 @@ export function Testimonials() {
           </div>
         </AnimatedSection>
 
-        {/* Static card grid — nothing moves, so nothing can jump */}
+        {/* Static card grid: nothing moves, so nothing can jump */}
         <AnimatedSection delay={0.1} className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED.map((t, i) => (
             <ReviewCard key={i} t={t} />

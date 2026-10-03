@@ -31,7 +31,16 @@ export function CountUp({
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!inView || reducedMotion) return;
+    // Server HTML carries the final value; once hydrated, park at 0 while still
+    // off-screen so the count-up doesn't flash the final number first.
+    if (reducedMotion) {
+      setValue(to);
+      return;
+    }
+    if (!inView) {
+      setValue(0);
+      return;
+    }
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Accordion } from "@/components/ui/Accordion";
 import { BeforeAfter } from "@/components/ui/BeforeAfter";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
-import { ServiceIcon } from "@/components/ui/ServiceIcon";
+import { ServiceIcon3D } from "@/components/ui/ServiceIcon3D";
 import { SERVICES, getService, PRACTICE, SITE_URL } from "@/lib/constants";
 import { getServiceContent } from "@/lib/service-content";
 import { IMAGES } from "@/lib/images";
@@ -25,8 +25,8 @@ export async function generateMetadata({
   const service = getService(slug);
   if (!service) return {};
   return {
-    title: `${service.name} in Lodi, CA`,
-    description: `${service.description} ${service.name} at Brightside Dental in Lodi, CA. ${service.tagline}.`,
+    title: `${service.name} in Sacramento, CA`,
+    description: `${service.description} ${service.name} at Brightside Dental in Sacramento, CA. ${service.tagline}.`,
     alternates: { canonical: `/services/${service.slug}` },
   };
 }
@@ -100,14 +100,14 @@ export default async function ServiceDetailPage({
         label="Services"
         title={service.name}
         subtitle={service.tagline}
-        bgImage={heroImage}
+        bgImage={heroImage.src}
       >
         <Button href="#what-to-expect" variant="ghost">
           Explore this service
         </Button>
       </PageHero>
 
-      {/* Mobile sticky CTA bar — hidden on lg+ where sidebar shows */}
+      {/* Mobile sticky CTA bar: hidden on lg+ where sidebar shows */}
       <div className="service-booking-bar fixed bottom-0 inset-x-0 z-40 flex items-center gap-3 border-t border-subtle bg-white/95 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-sm lg:hidden">
         <Button href="/contact" size="lg" className="flex-1 group">
           Book This Service
@@ -124,7 +124,7 @@ export default async function ServiceDetailPage({
 
       <section className="bg-offwhite pb-24 pt-16 md:py-24 lg:section-y">
         <div className="container-page grid gap-12 lg:grid-cols-[280px_1fr] lg:gap-16">
-          {/* Sticky sidebar — desktop only */}
+          {/* Sticky sidebar: desktop only */}
           <aside className="hidden lg:block lg:sticky lg:top-24 lg:h-fit">
             <div className="rounded-2xl border-hair border-subtle bg-white p-6 shadow-card">
               <p className="caption text-teal-dark">On this page</p>
@@ -175,14 +175,10 @@ export default async function ServiceDetailPage({
           <div className="min-w-0">
             <AnimatedSection>
               <div className="flex items-center gap-3">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-teal-light text-teal-dark">
-                  <ServiceIcon
-                    name={service.icon}
-                    className="h-6 w-6"
-                    strokeWidth={1.6}
-                    aria-hidden="true"
-                  />
-                </span>
+                <ServiceIcon3D
+                  name={service.icon}
+                  className="h-14 w-14 shrink-0 sm:h-16 sm:w-16"
+                />
                 <h2 className="text-2xl font-semibold text-charcoal sm:text-3xl">
                   {service.name}
                 </h2>
@@ -193,7 +189,7 @@ export default async function ServiceDetailPage({
             </AnimatedSection>
 
             {/* What to expect */}
-            <div id="what-to-expect" className="scroll-mt-28 pt-16">
+            <div id="what-to-expect" className="pt-16">
               <AnimatedSection>
                 <h3 className="text-xl font-semibold text-charcoal sm:text-2xl">
                   What to expect
@@ -223,7 +219,7 @@ export default async function ServiceDetailPage({
             </div>
 
             {/* Who it's for */}
-            <div id="who-its-for" className="scroll-mt-28 pt-16">
+            <div id="who-its-for" className="pt-16">
               <AnimatedSection>
                 <h3 className="text-xl font-semibold text-charcoal sm:text-2xl">
                   Who this is for
@@ -245,26 +241,27 @@ export default async function ServiceDetailPage({
             </div>
 
             {/* Before / after */}
-            <div id="before-after" className="scroll-mt-28 pt-16">
+            <div id="before-after" className="pt-16">
               <AnimatedSection>
                 <h3 className="text-xl font-semibold text-charcoal sm:text-2xl">
                   Before &amp; after
                 </h3>
                 <p className="mt-3 max-w-2xl text-warmgray">
-                  Drag the handle to compare. Representative results. Your
-                  treatment plan is tailored to you.
+                  Drag the handle to compare. These are representative
+                  results, and your own plan will depend on your teeth.
                 </p>
                 <div className="mt-8">
                   <BeforeAfter
                     beforeLabel={content.beforeLabel}
                     afterLabel={content.afterLabel}
+                    photos={IMAGES.beforeAfter[slug]}
                   />
                 </div>
               </AnimatedSection>
             </div>
 
             {/* FAQs */}
-            <div id="faqs" className="scroll-mt-28 pt-16">
+            <div id="faqs" className="pt-16">
               <AnimatedSection>
                 <h3 className="text-xl font-semibold text-charcoal sm:text-2xl">
                   Frequently asked questions
@@ -276,7 +273,7 @@ export default async function ServiceDetailPage({
             </div>
 
             {/* Related */}
-            <div id="related" className="scroll-mt-28 pt-16">
+            <div id="related" className="pt-16">
               <AnimatedSection>
                 <h3 className="text-xl font-semibold text-charcoal sm:text-2xl">
                   Related services
@@ -286,16 +283,12 @@ export default async function ServiceDetailPage({
                     <Link
                       key={r.slug}
                       href={`/services/${r.slug}`}
-                      className="group flex items-center gap-4 rounded-xl border-hair border-subtle bg-white p-5 transition-all hover:-translate-y-1 hover:shadow-card-hover"
+                      className="group flex min-w-0 items-center gap-4 rounded-xl border-hair border-subtle bg-white p-5 transition-all hover:-translate-y-1 hover:shadow-card-hover"
                     >
-                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-teal-light text-teal-dark">
-                        <ServiceIcon
-                          name={r.icon}
-                          className="h-5 w-5"
-                          strokeWidth={1.6}
-                          aria-hidden="true"
-                        />
-                      </span>
+                      <ServiceIcon3D
+                        name={r.icon}
+                        className="h-12 w-12 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5"
+                      />
                       <span className="min-w-0 flex-1">
                         <span className="block font-semibold text-charcoal">
                           {r.name}
@@ -318,7 +311,7 @@ export default async function ServiceDetailPage({
               </h3>
               <p className="mx-auto mt-3 max-w-md text-white/70">
                 Book your {service.name.toLowerCase()} appointment today.
-                Same-week openings available.
+                Same-week openings are usually available.
               </p>
               <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button href="/contact" className="group w-full sm:w-auto">

@@ -52,10 +52,10 @@ export default function AccessibilityPage() {
   return (
     <>
       <PageHero
-        label="Our Commitment"
+        label="Accessibility"
         title="Accessibility Statement"
-        subtitle={`Effective ${LAST_UPDATED}. We are committed to making every part of the Brightside Dental experience accessible to all patients.`}
-        bgImage={{ src: IMAGES.office.waiting.src, alt: IMAGES.office.waiting.alt }}
+        subtitle={`Effective ${LAST_UPDATED}. We want our website and our office to work for every patient, including people who use assistive technology.`}
+        bgImage={IMAGES.office.waiting.src}
       />
 
       <div className="bg-white">
@@ -121,7 +121,7 @@ export default function AccessibilityPage() {
                 Physical Office Accessibility
               </h2>
               <p className="mb-5 text-warmgray">
-                Our Lodi office is designed to be physically accessible for all
+                Our Sacramento office is designed to be physically accessible for all
                 patients.
               </p>
               <ul className="space-y-3">

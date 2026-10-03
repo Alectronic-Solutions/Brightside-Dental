@@ -1,29 +1,29 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { MapPin, Phone, Mail, Clock, Navigation, MapPinned } from "lucide-react";
+import { Navigation } from "lucide-react";
 import { AppointmentForm } from "@/components/contact/AppointmentForm";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Button } from "@/components/ui/Button";
+import { ContactIcon3D } from "@/components/ui/ContactIcon3D";
+import { InsuranceBadges } from "@/components/ui/InsuranceBadges";
 import { PRACTICE } from "@/lib/constants";
 import { IMAGES } from "@/lib/images";
 
 export const metadata: Metadata = {
-  title: "Contact & Book an Appointment in Lodi, CA",
+  title: "Contact & Book an Appointment in Sacramento, CA",
   description:
-    "Book your appointment at Brightside Dental in Lodi, CA. Request a visit online, find our hours and location at 1420 S Lower Sacramento Rd, or call (209) 366-4287.",
+    "Book your appointment at Brightside Dental in Sacramento, CA. Request a visit online, find our hours and location, or call (209) 366-4287.",
   alternates: { canonical: "/contact" },
 };
 
-const INSURERS = ["Delta Dental", "Cigna", "Aetna", "MetLife", "BlueCross"];
-
 const SERVICE_AREAS = [
-  "Lodi",
-  "Stockton",
-  "Galt",
-  "Woodbridge",
-  "Acampo",
-  "Lockeford",
-  "Victor",
+  "Sacramento",
+  "Elk Grove",
+  "Roseville",
+  "Folsom",
+  "West Sacramento",
+  "Rancho Cordova",
+  "Citrus Heights",
 ];
 
 export default function ContactPage() {
@@ -33,7 +33,8 @@ export default function ContactPage() {
       <section className="relative overflow-hidden bg-navy pb-12 pt-28 md:pt-40">
         <Image
           src={IMAGES.office.reception.src}
-          alt="Brightside Dental welcoming reception area"
+          alt=""
+          aria-hidden="true"
           fill
           className="object-cover object-center opacity-20"
           priority
@@ -45,55 +46,50 @@ export default function ContactPage() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(50% 60% at 20% 50%, rgba(45,158,143,0.18), transparent 70%)",
+              "radial-gradient(55% 65% at 50% 50%, rgba(45,158,143,0.18), transparent 70%)",
           }}
         />
-        <div className="container-page relative">
-          <SectionLabel tone="light">Contact</SectionLabel>
-          <h1 className="mt-3 max-w-2xl text-display-sm font-bold text-white">
-            Explore the booking experience.
+        <div className="container-page relative text-center">
+          <SectionLabel tone="light" className="justify-center">Contact</SectionLabel>
+          <h1 className="mx-auto mt-3 max-w-2xl text-balance text-display-sm font-bold text-white">
+            Book an appointment
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-white/70">
-            This interactive demo shows the booking flow. It does not submit,
-            store, or send patient information.
+          <p className="mx-auto mt-5 max-w-xl text-balance text-lg text-white/70">
+            Send a request below and we will call to confirm a time, usually
+            within the hour during office hours. In pain right now? Call us
+            directly.
           </p>
         </div>
       </section>
 
       <section className="bg-offwhite section-y">
-        <div className="container-page grid gap-10 lg:grid-cols-2 lg:gap-14">
-          {/* Left column */}
-          <div className="space-y-6">
-            {/* Map */}
-            <div className="overflow-hidden rounded-2xl border-hair border-subtle shadow-card">
-              <div className="relative h-64 overflow-hidden">
-                <iframe
-                  title="Brightside Dental location — 1420 S Lower Sacramento Rd, Lodi, CA"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=-121.2816%2C38.105%2C-121.2616%2C38.125&layer=mapnik&marker=38.115%2C-121.2716"
-                  className="h-full w-full border-0"
-                  loading="lazy"
-                  aria-label="Map showing Brightside Dental at 1420 S Lower Sacramento Rd, Lodi, CA"
-                />
-              </div>
-              <div className="bg-white p-4">
-                <Button
-                  href={PRACTICE.mapsUrl}
-                  variant="outline"
-                  className="w-full"
-                >
-                  <Navigation className="h-4 w-4" aria-hidden="true" />
-                  Get Directions in Google Maps
-                </Button>
-              </div>
+        {/* On phones the left column dissolves (display: contents) so the
+            order classes put call/email first, then the form, then the rest. */}
+        <div className="container-page grid gap-6 lg:grid-cols-2 lg:gap-14">
+          <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
+            {/* Contact info */}
+            <div className="order-1 grid gap-4 sm:grid-cols-2 lg:order-none lg:grid-cols-1 xl:grid-cols-2">
+              <ContactCard
+                href={PRACTICE.phoneHref}
+                icon="phone"
+                label="Call us"
+                value={PRACTICE.phone}
+              />
+              <ContactCard
+                href={`mailto:${PRACTICE.email}`}
+                icon="mail"
+                label="Email us"
+                value={PRACTICE.email}
+              />
             </div>
 
             {/* Hours */}
-            <div className="rounded-2xl border-hair border-subtle bg-white p-6 shadow-card">
-              <div className="flex items-center gap-2 text-charcoal">
-                <Clock className="h-5 w-5 text-teal" aria-hidden="true" />
+            <div className="order-3 rounded-2xl border-hair border-subtle bg-white p-6 shadow-card lg:order-none">
+              <div className="flex flex-col items-center gap-1 text-center text-charcoal">
+                <ContactIcon3D name="clock" className="h-14 w-14" />
                 <h2 className="text-lg font-semibold">Office Hours</h2>
               </div>
-              <table className="mt-4 w-full text-sm">
+              <table className="mx-auto mt-4 w-full max-w-sm text-sm">
                 <tbody className="divide-y divide-[rgba(0,0,0,0.08)]">
                   {Object.entries(PRACTICE.hours).map(([days, time]) => (
                     <tr key={days}>
@@ -107,65 +103,42 @@ export default function ContactPage() {
               </table>
             </div>
 
-            {/* Contact info */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <a
-                href={PRACTICE.phoneHref}
-                className="group flex items-center gap-3 rounded-2xl border-hair border-subtle bg-white p-5 shadow-card transition-shadow hover:shadow-card-hover"
-              >
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-teal-light text-teal-dark">
-                  <Phone className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-xs font-medium uppercase tracking-wide text-warmgray">
-                    Call us
-                  </span>
-                  <span className="block font-semibold text-charcoal group-hover:text-teal-dark">
-                    {PRACTICE.phone}
-                  </span>
-                </span>
-              </a>
-              <a
-                href={`mailto:${PRACTICE.email}`}
-                className="group flex items-center gap-3 rounded-2xl border-hair border-subtle bg-white p-5 shadow-card transition-shadow hover:shadow-card-hover"
-              >
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-teal-light text-teal-dark">
-                  <Mail className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-xs font-medium uppercase tracking-wide text-warmgray">
-                    Email us
-                  </span>
-                  <span className="block truncate font-semibold text-charcoal group-hover:text-teal-dark">
-                    {PRACTICE.email}
-                  </span>
-                </span>
-              </a>
+            {/* Map: flexes on desktop so this column ends level with the form */}
+            <div className="order-4 flex flex-col overflow-hidden rounded-2xl border-hair border-subtle shadow-card lg:order-none lg:flex-1">
+              <div className="relative h-64 lg:h-auto lg:min-h-40 lg:flex-1">
+                <iframe
+                  title={`Map of ${PRACTICE.address}`}
+                  src={PRACTICE.mapEmbedUrl}
+                  className="absolute inset-0 h-full w-full border-0"
+                  loading="lazy"
+                />
+              </div>
+              <div className="bg-white p-4">
+                <Button
+                  href={PRACTICE.mapsUrl}
+                  variant="outline"
+                  className="w-full"
+                >
+                  <Navigation className="h-4 w-4" aria-hidden="true" />
+                  View Sacramento in Google Maps
+                </Button>
+              </div>
             </div>
 
-            {/* Insurance badge row */}
-            <div className="rounded-2xl border-hair border-subtle bg-white p-6 shadow-card">
-              <p className="text-sm font-medium text-charcoal">
-                We accept most major PPO plans
+            {/* Insurance */}
+            <div className="order-5 rounded-2xl border-hair border-subtle bg-white p-6 text-center shadow-card lg:order-none">
+              <h2 className="text-lg font-semibold text-charcoal">
+                Most major PPO plans accepted
+              </h2>
+              <p className="mx-auto mt-1.5 max-w-sm text-sm leading-relaxed text-warmgray">
+                We verify your benefits before your first visit, at no charge.
               </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {INSURERS.map((name) => (
-                  <span
-                    key={name}
-                    className="rounded-md border-hair border-subtle bg-offwhite px-3 py-1.5 text-xs font-medium text-warmgray"
-                  >
-                    {name}
-                  </span>
-                ))}
-                <span className="rounded-md bg-teal-light px-3 py-1.5 text-xs font-medium text-teal-dark">
-                  + more
-                </span>
-              </div>
+              <InsuranceBadges className="mt-5" />
             </div>
           </div>
 
-          {/* Right column — form */}
-          <div>
+          {/* Form */}
+          <div className="order-2 min-w-0 lg:order-none lg:[&>div]:h-full">
             <AppointmentForm />
           </div>
         </div>
@@ -175,22 +148,19 @@ export default function ContactPage() {
       <section className="bg-white py-16 md:py-20">
         <div className="container-page">
           <div className="rounded-2xl border-hair border-subtle bg-offwhite p-8 md:p-10">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-teal-light text-teal-dark">
-                <MapPinned className="h-5 w-5" aria-hidden="true" />
-              </span>
+            <div className="flex flex-col items-center gap-4 text-center">
+              <ContactIcon3D name="pin" className="h-20 w-20" />
               <div>
-                <SectionLabel>Local to Lodi</SectionLabel>
+                <SectionLabel className="justify-center">Local to Sacramento</SectionLabel>
                 <h2 className="mt-2 text-xl font-semibold text-charcoal sm:text-2xl">
                   Serving the following areas
                 </h2>
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-warmgray">
-                  Patients drive from across San Joaquin County for our same-week
-                  availability, in-network pricing, and no-surprise billing. If
-                  you are within 30 minutes of Lodi, we are likely your closest
-                  top-rated dental practice.
+                <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-warmgray">
+                  We see patients from Sacramento and the nearby towns below. If you
+                  live within about 30 minutes of the office, we are an easy
+                  drive.
                 </p>
-                <ul className="mt-5 flex flex-wrap gap-2" aria-label="Areas we serve">
+                <ul className="mt-5 flex flex-wrap justify-center gap-2" aria-label="Areas we serve">
                   {SERVICE_AREAS.map((area) => (
                     <li
                       key={area}
@@ -206,5 +176,35 @@ export default function ContactPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function ContactCard({
+  href,
+  icon,
+  label,
+  value,
+}: {
+  href: string;
+  icon: "phone" | "mail";
+  label: string;
+  value: string;
+}) {
+  return (
+    <a
+      href={href}
+      className="group flex min-w-0 flex-col items-center rounded-2xl border-hair border-subtle bg-white p-5 text-center shadow-card transition-shadow hover:shadow-card-hover"
+    >
+      <ContactIcon3D
+        name={icon}
+        className="h-16 w-16 transition-transform duration-300 group-hover:-translate-y-0.5"
+      />
+      <span className="mt-2 block text-xs font-medium uppercase tracking-wide text-warmgray">
+        {label}
+      </span>
+      <span className="mt-0.5 block max-w-full font-semibold text-charcoal [overflow-wrap:anywhere] group-hover:text-teal-dark xl:text-[15px]">
+        {value}
+      </span>
+    </a>
   );
 }

@@ -9,7 +9,8 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
+    // Crawlers only read robots.txt at a domain root, so this file takes effect
+    // once the site moves from the GitHub Pages sub-path to its own domain.
     sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
   };
 }

@@ -18,18 +18,18 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Brightside Dental | Lodi, CA",
+    default: "Brightside Dental | Sacramento, CA",
     template: "%s | Brightside Dental",
   },
   description:
-    "Brightside Dental in Lodi, CA offers general, cosmetic, and emergency dental care. Accepting new patients. Book online today.",
+    "Brightside Dental in Sacramento, CA offers general, cosmetic, and emergency dental care. Accepting new patients. Book online today.",
   keywords: [
-    "dentist Lodi CA",
-    "dental practice Lodi",
-    "Invisalign Lodi",
-    "emergency dentist San Joaquin County",
-    "cosmetic dentist Lodi",
-    "dental implants Lodi CA",
+    "dentist Sacramento CA",
+    "dental practice Sacramento",
+    "Invisalign Sacramento",
+    "emergency dentist Sacramento County",
+    "cosmetic dentist Sacramento",
+    "dental implants Sacramento CA",
   ],
   authors: [{ name: PRACTICE.name }],
   icons: {
@@ -45,9 +45,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: PRACTICE.name,
-    title: "Brightside Dental | Lodi, CA",
+    title: "Brightside Dental | Sacramento, CA",
     description:
-      "General, cosmetic, and emergency dental care in Lodi, CA. Accepting new patients. Same-week appointments available.",
+      "General, cosmetic, and emergency dental care in Sacramento, CA. Accepting new patients. Same-week appointments available.",
     images: [
       {
         url: IMAGES.ogImage.src,
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Brightside Dental | Lodi, CA",
+    title: "Brightside Dental | Sacramento, CA",
     description:
-      "General, cosmetic, and emergency dental care in Lodi, CA. Accepting new patients.",
+      "General, cosmetic, and emergency dental care in Sacramento, CA. Accepting new patients.",
     images: [IMAGES.ogImage.src],
   },
   robots: {
@@ -80,25 +80,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// No aggregateRating here: Google ignores review markup a business publishes
+// about itself, and stale hardcoded counts can trigger a manual action.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["LocalBusiness", "Dentist"],
-  name: "Brightside Dental",
+  name: PRACTICE.name,
   url: SITE_URL,
-  telephone: "+12093664287",
+  image: `${SITE_URL}${IMAGES.ogImage.src}`,
+  telephone: PRACTICE.phoneHref.replace("tel:", ""),
+  email: PRACTICE.email,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "1420 S Lower Sacramento Rd",
-    addressLocality: "Lodi",
-    addressRegion: "CA",
-    postalCode: "95242",
+    addressLocality: PRACTICE.postalAddress.city,
+    addressRegion: PRACTICE.postalAddress.region,
     addressCountry: "US",
   },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 38.115,
-    longitude: -121.2716,
-  },
+  // Keep in sync with PRACTICE.hours.
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
@@ -113,11 +111,6 @@ const jsonLd = {
       closes: "14:00",
     },
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "312",
-  },
   priceRange: "$$",
   paymentAccepted: "Cash, Credit Card, CareCredit, Insurance",
 };

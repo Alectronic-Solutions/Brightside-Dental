@@ -30,10 +30,7 @@ export const GoogleStars = ({ count = 5 }: { count?: number }) => (
 export function ReviewCard({ t }: { t: Testimonial }) {
   return (
     <figure className="flex h-full flex-col rounded-2xl border-hair border-subtle bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_4px_12px_rgba(0,0,0,0.04)] transition-shadow duration-300 hover:shadow-[0_2px_6px_rgba(0,0,0,0.06),0_10px_28px_rgba(0,0,0,0.06)]">
-      <div className="flex items-center justify-between">
-        <GoogleStars count={t.rating} />
-        <GoogleG />
-      </div>
+      <GoogleStars count={t.rating} />
 
       <blockquote className="mt-4 flex-1 text-[0.97rem] leading-[1.75] text-charcoal/85">
         &ldquo;{t.quote}&rdquo;
@@ -42,10 +39,10 @@ export function ReviewCard({ t }: { t: Testimonial }) {
       <figcaption className="mt-6 flex items-center gap-3 border-t border-subtle pt-5">
         <Image
           src={t.image}
-          alt={`${t.name}, verified Google reviewer`}
+          alt=""
           width={44}
           height={44}
-          className="h-11 w-11 shrink-0 rounded-full object-cover ring-1 ring-black/5"
+          className="h-11 w-11 shrink-0 rounded-full bg-teal-light object-cover ring-1 ring-black/5"
         />
         <div>
           <p className="font-semibold text-charcoal">{t.name}</p>

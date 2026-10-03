@@ -1,90 +1,81 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import {
-  CalendarCheck,
-  FileText,
-  Stethoscope,
-  RefreshCw,
-  CreditCard,
-  Wallet,
-  Download,
-  Lock,
-  FolderOpen,
-  CalendarClock,
-  Receipt,
-  MessageSquare,
-} from "lucide-react";
 import { PageHero } from "@/components/sections/PageHero";
 import { CTABanner } from "@/components/sections/CTABanner";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
-import { Accordion } from "@/components/ui/Accordion";
 import { Button } from "@/components/ui/Button";
+import { PatientIcon3D, type PatientIconName } from "@/components/ui/PatientIcon3D";
 import { IMAGES } from "@/lib/images";
+import { PRACTICE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "New Patients | Welcome to Brightside Dental",
   description:
-    "New to Brightside Dental in Lodi, CA? Learn what to expect on your first visit, our accepted insurance plans, CareCredit financing, and how to access the patient portal.",
+    "New to Brightside Dental in Sacramento, CA? Learn what to expect on your first visit, our accepted insurance plans, CareCredit financing, and how to access the patient portal.",
   alternates: { canonical: "/new-patients" },
 };
 
-const TIMELINE = [
+const TIMELINE: { icon: PatientIconName; title: string; detail: string }[] = [
   {
-    Icon: CalendarCheck,
+    icon: "calendar",
     title: "Book online or call",
     detail: "Pick a time that works for you. We confirm every request within one hour during office hours.",
   },
   {
-    Icon: FileText,
+    icon: "clipboard",
     title: "Fill out forms",
     detail: "We'll email you a secure link to complete your paperwork before you arrive. No clipboard in the waiting room.",
   },
   {
-    Icon: Stethoscope,
+    icon: "exam",
     title: "Your first appointment",
-    detail: "A full exam, digital X-rays, a cleaning, and a clear treatment plan. All explained in plain language.",
+    detail: "A full exam, digital X-rays, and a cleaning. Then we go over anything we found and what it would cost.",
   },
   {
-    Icon: RefreshCw,
+    icon: "reminder",
     title: "Ongoing care",
-    detail: "Automatic reminders, easy rescheduling, and patient-portal access keep your care effortless from here on.",
+    detail: "After that, you get appointment reminders by text and can reschedule or see your records in the patient portal.",
   },
 ];
 
-const INSURANCE = [
+const PLANS = [
+  { name: "Delta Dental", note: "Most PPO plans" },
+  { name: "Cigna", note: "PPO plans" },
+  { name: "Aetna", note: "Dental PPO" },
+  { name: "MetLife", note: "PPO plans" },
+  { name: "BlueCross BlueShield", note: "Most dental PPO plans" },
+  { name: "United Concordia", note: "PPO and TRICARE Dental" },
+];
+
+const COVERAGE_NOTES = [
   {
-    q: "Delta Dental",
-    a: "We're in-network with most Delta Dental PPO plans. Preventive visits (cleanings, exams, X-rays) are typically covered at 100%.",
+    title: "We file your claims",
+    detail: "Claims go straight to your insurer from our office, so you are not waiting on a reimbursement check.",
   },
   {
-    q: "Cigna",
-    a: "Cigna PPO plans are accepted. We'll verify your annual maximum and remaining benefits before treatment so there are no surprises.",
+    title: "Benefits checked first",
+    detail: "Before any treatment we confirm your annual maximum and how much of it you have left.",
   },
   {
-    q: "Aetna",
-    a: "Aetna dental PPO is welcome here. Many plans cover two cleanings per year fully, plus a share of restorative work.",
-  },
-  {
-    q: "MetLife",
-    a: "We accept MetLife PPO plans and will file your claims directly so you don't have to chase reimbursement.",
-  },
-  {
-    q: "BlueCross BlueShield",
-    a: "Most BCBS dental PPO plans are accepted. Coverage varies by employer plan. We will confirm your specifics ahead of your visit.",
-  },
-  {
-    q: "United Concordia",
-    a: "United Concordia PPO plans, including TRICARE Dental, are accepted. We're proud to care for military families in San Joaquin County.",
+    title: "Cleanings often covered",
+    detail: "Many PPO plans pay for two cleanings a year in full, along with exams and X-rays.",
   },
 ];
 
-const PORTAL_FEATURES = [
-  { Icon: FolderOpen, label: "View your records & X-rays" },
-  { Icon: CalendarClock, label: "Request & reschedule appointments" },
-  { Icon: Receipt, label: "Pay bills securely online" },
-  { Icon: MessageSquare, label: "Message the office anytime" },
+const BRING_LIST = [
+  "A photo ID",
+  "Your dental insurance card",
+  "A list of the medications you take",
+  "Your previous dentist's name, so we can request recent X-rays",
+];
+
+const PORTAL_FEATURES: { icon: PatientIconName; label: string }[] = [
+  { icon: "folder", label: "Records and X-rays" },
+  { icon: "calendar", label: "Book or reschedule" },
+  { icon: "receipt", label: "Pay a bill online" },
+  { icon: "chat", label: "Message the office" },
 ];
 
 export default function NewPatientsPage() {
@@ -92,82 +83,128 @@ export default function NewPatientsPage() {
     <>
       <PageHero
         label="New Patients"
-        title="Welcome to Brightside. Let's make this easy."
-        subtitle="Your first visit sets the tone for everything that follows. We have stripped out the friction: the long forms, the unclear costs, the rushed exams. Your first appointment will feel calm, clear, and unhurried."
-        bgImage={{ src: IMAGES.office.reception.src, alt: IMAGES.office.reception.alt }}
+        title="New patient information"
+        subtitle="How to book, what to fill out ahead of time, and what happens at your first appointment. We go over costs with you before any treatment is scheduled."
+        bgImage={IMAGES.office.reception.src}
         variant="centered"
-      />
+      >
+        <Button href="/contact" size="lg">
+          Book Your First Visit
+        </Button>
+        <Button href={PRACTICE.phoneHref} size="lg" variant="ghost">
+          Call {PRACTICE.phone}
+        </Button>
+      </PageHero>
 
       {/* First visit timeline */}
       <section className="bg-offwhite section-y">
         <div className="container-page">
-          <AnimatedSection className="max-w-2xl">
-            <SectionLabel>Your First Visit</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
-              From booking to your brightest smile, in four steps
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">Your First Visit</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
+              Becoming a patient, step by step
             </h2>
+            <p className="mx-auto mt-4 max-w-xl leading-relaxed text-warmgray">
+              Plan on about an hour for the first appointment. Everything
+              before it can be done from your phone.
+            </p>
           </AnimatedSection>
 
-          <div className="relative mt-14">
-            {/* connecting line on desktop */}
+          <div className="relative mt-12 sm:mt-16">
+            {/* dashed connector running behind the icons on desktop */}
             <div
               aria-hidden
-              className="absolute left-0 right-0 top-7 hidden h-px bg-[rgba(0,0,0,0.08)] lg:block"
+              className="pointer-events-none absolute left-[12.5%] right-[12.5%] top-[60px] hidden border-t-hair border-dashed border-teal/40 lg:block"
             />
-            <div className="grid gap-10 lg:grid-cols-4 lg:gap-6">
-              {TIMELINE.map((step, i) => (
-                <AnimatedSection
-                  key={step.title}
-                  delay={i * 0.08}
-                  className="relative"
-                >
-                  <div className="relative z-10 grid h-14 w-14 place-items-center rounded-xl border-hair border-subtle bg-white text-teal shadow-card">
-                    <step.Icon className="h-6 w-6" strokeWidth={1.6} />
-                    <span className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-teal text-xs font-semibold text-white">
-                      {i + 1}
-                    </span>
-                  </div>
-                  <h3 className="mt-5 text-lg font-semibold text-charcoal">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 leading-relaxed text-warmgray">
-                    {step.detail}
-                  </p>
-                </AnimatedSection>
-              ))}
-            </div>
+            <ol className="mx-auto grid max-w-md gap-10 sm:max-w-none sm:grid-cols-2 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-4 lg:gap-6">
+            {TIMELINE.map((step, i) => (
+              <AnimatedSection
+                as="li"
+                key={step.title}
+                delay={i * 0.08}
+                className="relative text-center"
+              >
+                <div className="relative z-10 mx-auto w-fit bg-offwhite px-4">
+                  <PatientIcon3D
+                    name={step.icon}
+                    className="h-20 w-20 drop-shadow-[0_10px_14px_rgba(14,31,61,0.10)] sm:h-[104px] sm:w-[104px] lg:h-[120px] lg:w-[120px]"
+                  />
+                </div>
+                <p className="caption mt-3 text-teal-dark sm:mt-4">Step {i + 1}</p>
+                <h3 className="mt-1.5 text-lg font-semibold text-charcoal sm:text-xl">
+                  {step.title}
+                </h3>
+                <p className="mx-auto mt-2 max-w-xs leading-relaxed text-warmgray">
+                  {step.detail}
+                </p>
+              </AnimatedSection>
+            ))}
+            </ol>
           </div>
         </div>
       </section>
 
-      {/* Insurance accordion */}
-      <section className="bg-white section-y">
-        <div className="container-page grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
-          <AnimatedSection>
-            <SectionLabel>Insurance</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
+      {/* Insurance */}
+      <section id="insurance" className="scroll-mt-24 bg-white section-y">
+        <div className="container-page">
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <PatientIcon3D name="shield" className="mx-auto mb-4 h-20 w-20 sm:h-24 sm:w-24" />
+            <SectionLabel className="justify-center">Insurance</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
               Do you accept my insurance?
             </h2>
-            <p className="mt-4 leading-relaxed text-warmgray">
-              We are in-network with most major PPO plans and file claims for
-              you directly. Do not see yours below? Call us. We work with most
-              PPO plans and will verify your benefits before you book.
+            <p className="mx-auto mt-4 max-w-xl leading-relaxed text-warmgray">
+              We are in-network with most major PPO plans. If yours is not
+              listed, call us and we will check your benefits before you book.
             </p>
-            <Button href="/contact" variant="outline" className="mt-6">
-              Verify My Benefits
-            </Button>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.1}>
-            <Accordion items={INSURANCE} defaultOpen={null} />
-            <p className="mt-6 text-sm text-warmgray">
-              Do not see yours? Call us. We work with most PPO plans.
-            </p>
+          <AnimatedSection
+            as="ul"
+            delay={0.08}
+            className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-3 sm:mt-12 sm:gap-4 lg:grid-cols-3"
+          >
+            {PLANS.map((plan) => (
+              <li
+                key={plan.name}
+                className="flex flex-col items-center justify-center rounded-xl border-hair border-subtle bg-offwhite px-3 py-5 text-center transition-colors duration-200 hover:border-teal/40 hover:bg-teal-light/60 sm:px-5 sm:py-7"
+              >
+                <span className="text-[0.95rem] font-semibold leading-snug text-charcoal sm:text-lg">
+                  {plan.name}
+                </span>
+                <span className="mt-1 text-xs text-warmgray sm:text-sm">
+                  {plan.note}
+                </span>
+              </li>
+            ))}
+          </AnimatedSection>
+
+          <AnimatedSection
+            delay={0.12}
+            className="mx-auto mt-10 grid max-w-4xl gap-8 sm:mt-14 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-[rgba(0,0,0,0.08)]"
+          >
+            {COVERAGE_NOTES.map((note) => (
+              <div key={note.title} className="text-center sm:px-6">
+                <h3 className="font-semibold text-charcoal">{note.title}</h3>
+                <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-warmgray">
+                  {note.detail}
+                </p>
+              </div>
+            ))}
+          </AnimatedSection>
+
+          <AnimatedSection
+            delay={0.16}
+            className="mt-10 flex flex-col items-center gap-4 sm:mt-12"
+          >
+            <Button href="/contact" variant="outline">
+              Verify My Benefits
+            </Button>
             <Link
               href="/faq"
-              className="group mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
+              className="group inline-flex items-center gap-1.5 text-sm font-medium text-teal-dark transition-colors hover:text-teal"
             >
-              Have more questions? See all FAQs
+              More questions? See all FAQs
               <ArrowRight
                 className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-[3px]"
                 aria-hidden="true"
@@ -178,123 +215,158 @@ export default function NewPatientsPage() {
       </section>
 
       {/* Financing */}
-      <section className="bg-teal-light section-y">
+      <section id="financing" className="scroll-mt-24 bg-teal-light section-y">
         <div className="container-page">
-          <AnimatedSection className="max-w-2xl">
-            <SectionLabel>Financing</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
-              Care you need, on a plan that fits
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">Financing</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
+              Ways to pay over time
             </h2>
             <p className="mt-4 text-lg text-charcoal/70">
-              Cost should never be the reason you put off treatment. We offer two
-              flexible ways to spread it out.
+              If you would rather not pay for treatment all at once, there are
+              two options.
             </p>
           </AnimatedSection>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            <AnimatedSection className="rounded-2xl border-hair border-subtle bg-white p-8 shadow-card">
-              <CreditCard className="h-8 w-8 text-teal" strokeWidth={1.5} />
-              <h3 className="mt-5 text-xl font-semibold text-charcoal">
+          <div className="mx-auto mt-20 grid max-w-5xl gap-16 md:mt-24 md:grid-cols-2 md:gap-6">
+            <AnimatedSection className="flex flex-col items-center rounded-2xl border-hair border-subtle bg-white px-6 pb-9 text-center shadow-card sm:px-10">
+              <PatientIcon3D name="card" className="-mt-14 h-28 w-28 drop-shadow-[0_10px_14px_rgba(14,31,61,0.10)]" />
+              <h3 className="mt-3 text-xl font-semibold text-charcoal sm:text-2xl">
                 CareCredit
               </h3>
-              <p className="mt-3 leading-relaxed text-warmgray">
+              <p className="mx-auto mt-3 max-w-sm leading-relaxed text-warmgray">
                 A healthcare credit line you can use for any treatment we
                 provide. Apply in minutes. Most decisions are instant.
               </p>
-              <p className="mt-5 text-2xl font-semibold text-teal-dark">
-                0% interest for 12 months
-              </p>
-              <p className="text-sm text-warmgray">
-                on qualifying treatment plans
-              </p>
+              <div className="mt-auto w-full pt-7">
+                <div className="border-t-hair border-subtle pt-6">
+                  <p className="text-3xl font-semibold tracking-tighter2 text-teal-dark">
+                    0% interest
+                  </p>
+                  <p className="mt-1 text-sm text-warmgray">
+                    for 12 months on qualifying treatment plans
+                  </p>
+                </div>
+              </div>
             </AnimatedSection>
 
             <AnimatedSection
               delay={0.08}
-              className="rounded-2xl border-hair border-subtle bg-navy p-8 shadow-card"
+              className="flex flex-col items-center rounded-2xl bg-navy px-6 pb-9 text-center shadow-card sm:px-10"
             >
-              <Wallet className="h-8 w-8 text-teal" strokeWidth={1.5} />
-              <h3 className="mt-5 text-xl font-semibold text-white">
+              <PatientIcon3D name="coins" className="-mt-14 h-28 w-28 drop-shadow-[0_10px_14px_rgba(0,0,0,0.25)]" />
+              <h3 className="mt-3 text-xl font-semibold text-white sm:text-2xl">
                 In-House Payment Plans
               </h3>
-              <p className="mt-3 leading-relaxed text-white/70">
-                No third party, no hard credit check. We split your treatment
-                into manageable monthly payments, handled right here.
+              <p className="mx-auto mt-3 max-w-sm leading-relaxed text-white/70">
+                We run these plans ourselves, so there is no outside lender and
+                no hard credit check. The cost of your treatment is split into
+                monthly payments.
               </p>
-              <p className="mt-5 text-2xl font-semibold text-teal-light">
-                $99 down, low monthly payments
-              </p>
-              <p className="text-sm text-white/60">
-                tailored to your treatment plan
-              </p>
+              <div className="mt-auto w-full pt-7">
+                <div className="border-t-hair border-subtle-dark pt-6">
+                  <p className="text-3xl font-semibold tracking-tighter2 text-teal">
+                    $99 down
+                  </p>
+                  <p className="mt-1 text-sm text-white/60">
+                    then monthly payments over the length of your treatment
+                  </p>
+                </div>
+              </div>
             </AnimatedSection>
           </div>
         </div>
       </section>
 
-      {/* New patient forms */}
+      {/* Before you arrive */}
       <section className="bg-white section-y">
         <div className="container-page">
-          <AnimatedSection className="overflow-hidden rounded-2xl border-hair border-subtle bg-offwhite">
-            <div className="grid gap-8 p-8 md:grid-cols-[1fr_auto] md:items-center md:p-10">
-              <div>
-                <SectionLabel>Before You Arrive</SectionLabel>
-                <h2 className="text-2xl font-semibold text-charcoal sm:text-3xl">
-                  New patient forms
-                </h2>
-                <p className="mt-3 max-w-xl leading-relaxed text-warmgray">
-                  Preview the appointment experience with fictional information.
-                  Patient intake forms would be provided through a secure service
-                  in a live practice.
-                </p>
-                <p className="mt-4 flex items-start gap-2 text-sm text-warmgray">
-                  <Lock className="mt-0.5 h-4 w-4 shrink-0 text-teal" />
-                  This demo does not collect patient records or provide medical
-                  intake forms. No emails are sent.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3">
-                <Button href="/contact" size="lg">
-                  <Download className="h-4 w-4" />
-                  Preview Demo Form
-                </Button>
-                <Button href="/contact" size="lg" variant="outline">
-                  Email Me a Secure Link
-                </Button>
-              </div>
-            </div>
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">Before You Arrive</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
+              Paperwork and what to bring
+            </h2>
           </AnimatedSection>
+
+          <div className="mx-auto mt-10 grid max-w-5xl gap-5 sm:mt-14 md:grid-cols-2 md:gap-6">
+            <AnimatedSection className="flex flex-col items-center rounded-2xl border-hair border-subtle bg-offwhite px-6 py-9 text-center sm:px-10 sm:py-11">
+              <PatientIcon3D name="clipboard" className="h-20 w-20 sm:h-24 sm:w-24" />
+              <h3 className="mt-4 text-xl font-semibold text-charcoal sm:text-2xl">
+                New patient forms
+              </h3>
+              <p className="mx-auto mt-3 max-w-sm leading-relaxed text-warmgray">
+                Once your visit is booked, we email you a secure link to fill
+                out your health history and insurance details at home. It takes
+                about ten minutes.
+              </p>
+              <p className="mx-auto mt-5 inline-flex max-w-sm items-center gap-2.5 text-left text-sm text-charcoal/80">
+                <PatientIcon3D name="lock" className="h-8 w-8 shrink-0" />
+                <span>Sent through our secure patient system, not regular email.</span>
+              </p>
+              <div className="mt-auto pt-7">
+                <Button href="/contact">Book Your First Visit</Button>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection
+              delay={0.08}
+              className="flex flex-col items-center rounded-2xl border-hair border-subtle bg-offwhite px-6 py-9 text-center sm:px-10 sm:py-11"
+            >
+              <PatientIcon3D name="folder" className="h-20 w-20 sm:h-24 sm:w-24" />
+              <h3 className="mt-4 text-xl font-semibold text-charcoal sm:text-2xl">
+                What to bring
+              </h3>
+              <ul className="mt-5 w-full max-w-sm divide-y divide-[rgba(0,0,0,0.08)] border-y-hair border-subtle text-left">
+                {BRING_LIST.map((item) => (
+                  <li key={item} className="flex items-baseline gap-3 py-3 text-[0.95rem] text-charcoal/85">
+                    <span aria-hidden className="h-1.5 w-1.5 shrink-0 -translate-y-0.5 rounded-full bg-teal" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </AnimatedSection>
+          </div>
         </div>
       </section>
 
       {/* Patient portal */}
-      <section className="bg-offwhite pb-20 md:pb-28">
+      <section className="bg-offwhite pb-16 sm:pb-24 md:pb-28">
         <div className="container-page">
-          <AnimatedSection className="overflow-hidden rounded-2xl bg-navy">
-            <div className="grid gap-10 p-8 md:grid-cols-2 md:items-center md:p-12">
-              <div>
-                <SectionLabel tone="light">Patient Portal</SectionLabel>
-                <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+          <AnimatedSection className="relative overflow-hidden rounded-2xl bg-navy">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(60% 80% at 85% 50%, rgba(45,158,143,0.22), rgba(14,31,61,0) 70%)",
+              }}
+            />
+            <div className="relative grid gap-10 px-5 py-10 sm:p-10 md:grid-cols-[1fr_1.1fr] md:items-center md:p-12 lg:p-14">
+              <div className="text-center md:text-left">
+                <SectionLabel tone="light" className="justify-center md:justify-start">Patient Portal</SectionLabel>
+                <h2 className="text-balance text-2xl font-semibold text-white sm:text-3xl">
                   Manage your care from anywhere
                 </h2>
-                <p className="mt-4 leading-relaxed text-white/70">
-                  Everything you need, in one secure place. No phone tag, no
-                  paperwork. Access it from your phone, day or night.
+                <p className="mx-auto mt-4 max-w-md leading-relaxed text-white/70 md:mx-0">
+                  Check your records, request an appointment, pay a bill, or
+                  send the office a message from your phone or computer.
                 </p>
-                <Button href="/contact" className="mt-7">
-                  Access Patient Portal
-                  <span aria-hidden>→</span>
+                <Button href={PRACTICE.patientPortalUrl || "/contact"} className="mt-7">
+                  {PRACTICE.patientPortalUrl ? "Log In to the Portal" : "Ask About Portal Access"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
               </div>
 
-              <ul className="grid gap-3 sm:grid-cols-2">
+              <ul className="grid grid-cols-2 gap-3 sm:gap-4">
                 {PORTAL_FEATURES.map((f) => (
                   <li
                     key={f.label}
-                    className="flex items-start gap-3 rounded-xl border-hair border-subtle-dark bg-white/5 p-4"
+                    className="flex flex-col items-center rounded-xl border-hair border-subtle-dark bg-white/[0.04] px-3 pb-5 pt-4 text-center sm:px-4 sm:pb-6"
                   >
-                    <f.Icon className="mt-0.5 h-5 w-5 shrink-0 text-teal" />
-                    <span className="text-sm text-white/85">{f.label}</span>
+                    <PatientIcon3D name={f.icon} className="h-16 w-16 sm:h-20 sm:w-20" />
+                    <span className="mt-2 text-sm leading-snug text-white/85 sm:text-[0.95rem]">
+                      {f.label}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -305,7 +377,7 @@ export default function NewPatientsPage() {
 
       <CTABanner
         heading="Ready to become a patient?"
-        subtext="Booking takes two minutes, and we'll confirm within the hour. We can't wait to meet you."
+        subtext="Request a time online and we will call to confirm, usually within the hour during office hours."
         variant="minimal"
       />
     </>

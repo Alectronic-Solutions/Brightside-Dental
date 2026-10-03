@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Star, CalendarCheck, Users, ArrowRight } from "lucide-react";
+import { Star, CalendarCheck, Users, ArrowRight, Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { SectionLabel } from "@/components/ui/SectionLabel";
 import { PRACTICE } from "@/lib/constants";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -16,14 +17,14 @@ const fadeUp = {
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
-const HERO_CLIPS = [
-  { webm: "hero-dental.webm", mp4: "hero-dental.mp4" },
-  { webm: "hero-dental-2.webm", mp4: "hero-dental-2.mp4" },
-  { webm: "hero-dental-3.webm", mp4: "hero-dental-3.mp4" },
-] as const;
+// Each clip also has a 576x720 center crop for phones: a portrait screen only
+// ever shows the middle of the 1280x720 frame, so the "-mobile" encodes keep
+// the same framing at about a third of the download.
+const HERO_CLIPS = ["hero-dental", "hero-dental-2", "hero-dental-3"] as const;
+const MOBILE_VIDEO_QUERY = "(max-width: 767px)";
 
 // How much of the tail of each clip to cut off by starting the crossfade early,
-// so viewers never see a clip's ending — just a smooth dissolve into the next one.
+// so viewers never see a clip's ending, only a smooth dissolve into the next one.
 const CROSSFADE_S = 1.1;
 
 // How far ahead of the crossfade to start buffering the next clip, so it's
@@ -47,11 +48,9 @@ function HeroVideoBackground() {
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const mobile = window.matchMedia("(max-width: 767px)");
     const connection = (navigator as Navigator & { connection?: ConnectionInfo }).connection;
     const shouldUsePoster = () =>
       query.matches ||
-      mobile.matches ||
       connection?.saveData === true ||
       connection?.effectiveType === "slow-2g" ||
       connection?.effectiveType === "2g";
@@ -59,11 +58,7 @@ function HeroVideoBackground() {
     setReducedMotion(shouldUsePoster());
     const handleChange = () => setReducedMotion(shouldUsePoster());
     query.addEventListener("change", handleChange);
-    mobile.addEventListener("change", handleChange);
-    return () => {
-      query.removeEventListener("change", handleChange);
-      mobile.removeEventListener("change", handleChange);
-    };
+    return () => query.removeEventListener("change", handleChange);
   }, []);
 
   useEffect(() => {
@@ -91,8 +86,36 @@ function HeroVideoBackground() {
     if (!current) return;
 
     let switching = false;
+    let pendingNext: HTMLVideoElement | null = null;
 
     const nextIndex = (activeClip + 1) % HERO_CLIPS.length;
+
+    const swap = () => {
+      setActiveClip(nextIndex);
+      // Let the crossfade finish before resetting this clip for its next turn.
+      fadeTimer.current = setTimeout(() => {
+        current.pause();
+        current.currentTime = 0;
+      }, CROSSFADE_S * 1000 + 100);
+    };
+
+    // Start the next clip and fade to it once it has a frame to show. Mobile
+    // Safari often ignores preload, so the next clip may still be buffering.
+    // In that case the current clip holds its last frame until it's ready.
+    const advance = () => {
+      const nextVideo = videoRefs.current[nextIndex];
+      if (switching || !nextVideo) return false;
+      switching = true;
+      nextVideo.currentTime = 0;
+      nextVideo.play().catch(() => {});
+      if (nextVideo.readyState >= 2) {
+        swap();
+      } else {
+        pendingNext = nextVideo;
+        nextVideo.addEventListener("playing", swap, { once: true });
+      }
+      return true;
+    };
 
     const handleTimeUpdate = () => {
       const { duration, currentTime } = current;
@@ -104,31 +127,24 @@ function HeroVideoBackground() {
         );
       }
 
-      if (switching) return;
-      if (duration - currentTime <= CROSSFADE_S) {
-        const nextVideo = videoRefs.current[nextIndex];
-        if (!nextVideo || nextVideo.readyState < 2) return;
-        switching = true;
-        if (nextVideo) {
-          nextVideo.currentTime = 0;
-          nextVideo.play().catch(() => {});
-        }
-        setActiveClip(nextIndex);
-        // Let the crossfade finish before resetting this clip for its next turn.
-        fadeTimer.current = setTimeout(() => {
-          current.pause();
-          current.currentTime = 0;
-        }, CROSSFADE_S * 1000 + 100);
-      }
+      if (switching || duration - currentTime > CROSSFADE_S) return;
+      const nextVideo = videoRefs.current[nextIndex];
+      if (nextVideo && nextVideo.readyState >= 2) advance();
+    };
+
+    const handleEnded = () => {
+      if (advance() || switching) return;
+      current.currentTime = 0;
+      current.play().catch(() => {});
     };
 
     current.play().catch(() => {});
     current.addEventListener("timeupdate", handleTimeUpdate);
-    const restart = () => { current.currentTime = 0; current.play().catch(() => {}); };
-    current.addEventListener("ended", restart);
+    current.addEventListener("ended", handleEnded);
     return () => {
       current.removeEventListener("timeupdate", handleTimeUpdate);
-      current.removeEventListener("ended", restart);
+      current.removeEventListener("ended", handleEnded);
+      pendingNext?.removeEventListener("playing", swap);
     };
   }, [reducedMotion, activeClip, paused, visible]);
 
@@ -166,9 +182,15 @@ function HeroVideoBackground() {
           if (!shouldPreload) return null;
           return (
             <video
-              key={clip.mp4}
+              key={clip}
               ref={(el) => {
                 videoRefs.current[index] = el;
+                // iOS only allows scripted play() on muted inline video, and
+                // checks the DOM property rather than React's prop.
+                if (el) {
+                  el.muted = true;
+                  el.defaultMuted = true;
+                }
               }}
               muted
               aria-hidden="true"
@@ -183,14 +205,30 @@ function HeroVideoBackground() {
                 transitionDuration: `${CROSSFADE_S * 1000}ms`,
               }}
             >
-              {shouldPreload && <source src={`${BASE_PATH}/videos/${clip.webm}`} type="video/webm" />}
-              {shouldPreload && <source src={`${BASE_PATH}/videos/${clip.mp4}`} type="video/mp4" />}
+              <source media={MOBILE_VIDEO_QUERY} src={`${BASE_PATH}/videos/${clip}-mobile.webm`} type="video/webm" />
+              <source media={MOBILE_VIDEO_QUERY} src={`${BASE_PATH}/videos/${clip}-mobile.mp4`} type="video/mp4" />
+              <source src={`${BASE_PATH}/videos/${clip}.webm`} type="video/webm" />
+              <source src={`${BASE_PATH}/videos/${clip}.mp4`} type="video/mp4" />
             </video>
           );
         })}
       </motion.div>
-      <button type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused} className="absolute bottom-24 right-5 z-20 min-h-11 rounded-md bg-navy/90 px-4 text-sm text-white">
-        {paused ? "Play background video" : "Pause background video"}
+      {/* Icon-only under the nav on phones, where the hero content fills the
+          bottom of the frame; labeled bottom-right from sm up. */}
+      <button
+        type="button"
+        onClick={() => setPaused(value => !value)}
+        aria-label={paused ? "Play background video" : "Pause background video"}
+        className="absolute right-4 top-[72px] z-20 grid h-10 w-10 place-items-center rounded-full border-hair border-white/20 bg-navy/60 text-white/80 backdrop-blur-sm transition-colors hover:text-white sm:bottom-24 sm:right-5 sm:top-auto sm:flex sm:h-auto sm:min-h-11 sm:w-auto sm:gap-2 sm:rounded-md sm:bg-navy/90 sm:px-4 sm:text-sm sm:text-white"
+      >
+        {paused ? (
+          <Play className="h-4 w-4" aria-hidden="true" />
+        ) : (
+          <Pause className="h-4 w-4" aria-hidden="true" />
+        )}
+        <span className="hidden sm:inline" aria-hidden="true">
+          {paused ? "Play background video" : "Pause background video"}
+        </span>
       </button>
     </div>
   );
@@ -202,13 +240,13 @@ export function Hero() {
       {/* Background video (parallax) */}
       <HeroVideoBackground />
 
-      {/* Cinematic scrim — concentrated behind the text column, easing clear over the video */}
+      {/* Cinematic scrim: darkest behind the centered text, easing clear toward the edges */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(100deg, rgba(9,20,40,0.97) 0%, rgba(9,20,40,0.93) 30%, rgba(9,20,40,0.75) 48%, rgba(9,20,40,0.35) 68%, rgba(9,20,40,0.08) 88%)",
+            "radial-gradient(75% 70% at 50% 48%, rgba(9,20,40,0.9) 0%, rgba(9,20,40,0.78) 45%, rgba(9,20,40,0.5) 80%, rgba(9,20,40,0.35) 100%)",
         }}
       />
       {/* Bottom-up scrim for CTA/trust-bar contrast */}
@@ -226,7 +264,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(45% 55% at 82% 35%, rgba(45,158,143,0.16), transparent 65%)",
+            "radial-gradient(50% 45% at 50% 30%, rgba(45,158,143,0.16), transparent 65%)",
         }}
       />
       {/* Vignette for filmic depth */}
@@ -256,21 +294,21 @@ export function Hero() {
           initial={false}
           animate="show"
           variants={{ show: { transition: { staggerChildren: 0.1 } } }}
-          className="flex max-w-2xl flex-col"
+          className="mx-auto flex max-w-2xl flex-col items-center text-center"
         >
           <motion.div variants={fadeUp}>
-            <span className="inline-flex w-fit items-center rounded-md border border-teal/30 bg-teal/20 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-white backdrop-blur-sm">
-              Lodi&apos;s Highest-Rated Dental Practice
-            </span>
+            <SectionLabel tone="light" className="mb-0 justify-center [text-shadow:0_1px_12px_rgba(0,0,0,0.4)]">
+              Sacramento&apos;s Highest-Rated Dental Practice
+            </SectionLabel>
           </motion.div>
 
           <motion.h1
             variants={fadeUp}
-            className="mt-4 max-w-[18ch] text-display font-bold text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]"
+            className="mt-4 max-w-[18ch] text-balance text-display font-bold text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]"
           >
-            Your smile deserves more than a{" "}
+            Honest dental care for{" "}
             <span className="relative inline-block">
-              routine checkup
+              Sacramento families
               <span
                 aria-hidden
                 className="absolute -bottom-0.5 left-0 h-[3px] w-full rounded-full bg-gradient-to-r from-teal via-teal to-teal/40"
@@ -283,14 +321,14 @@ export function Hero() {
             variants={fadeUp}
             className="mt-5 max-w-[52ch] text-[0.98rem] leading-[1.75] text-white/80 [text-shadow:0_1px_12px_rgba(0,0,0,0.4)] sm:mt-7 sm:text-[1.05rem]"
           >
-            No lecture about flossing, no surprise bill at checkout — just
-            straightforward dental care from a team that explains what&apos;s
-            happening and why. Accepting new patients now.
+            We explain what&apos;s going on and what it costs before any work
+            starts, so you can decide with the full picture. Accepting new
+            patients now.
           </motion.p>
 
           <motion.div
             variants={fadeUp}
-            className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center"
+            className="mt-8 flex w-full flex-col gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center sm:justify-center"
           >
             <Button href="/contact" size="lg" className="group">
               Book an Appointment
@@ -304,8 +342,8 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* Trust stats — frosted glass bar */}
-          <motion.div variants={fadeUp} className="mt-10 sm:mt-14">
+          {/* Trust stats: frosted glass bar */}
+          <motion.div variants={fadeUp} className="mt-10 w-full sm:mt-14">
             <div className="flex items-stretch divide-x divide-white/[0.12] overflow-hidden rounded-2xl border border-white/[0.12] bg-white/[0.04] backdrop-blur-sm">
               <TrustStat
                 icon={<Star className="h-4 w-4 fill-teal text-teal" aria-hidden="true" />}
@@ -340,7 +378,7 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Bottom gradient fade into next section — darkens first so no seam shows against the video */}
+      {/* Bottom gradient fade into next section: darkens first so no seam shows against the video */}
       <div
         aria-hidden
         className="absolute inset-x-0 bottom-0 h-40"
@@ -363,7 +401,7 @@ function TrustStat({
   label: string;
 }) {
   return (
-    <div className="flex flex-1 flex-col gap-2 px-2.5 py-4 sm:px-6 sm:py-5">
+    <div className="flex flex-1 flex-col items-center gap-2 px-2.5 py-4 text-center sm:px-6 sm:py-5">
       <span className="text-[0.62rem] font-medium uppercase tracking-[0.06em] text-white/45 sm:text-[0.68rem] sm:tracking-[0.09em]">
         {label}
       </span>

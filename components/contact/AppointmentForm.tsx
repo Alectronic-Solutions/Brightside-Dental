@@ -10,7 +10,6 @@ import { cn } from "@/lib/cn";
 
 interface FormValues {
   fullName: string;
-  dob: string;
   phone: string;
   email: string;
   currentPatient: "yes" | "no";
@@ -22,17 +21,49 @@ interface FormValues {
   consent: boolean;
 }
 
+/**
+ * Where requests go. Set NEXT_PUBLIC_FORM_ENDPOINT to any form service that
+ * accepts a JSON POST (Formspree, Basin, Getform, a serverless function...).
+ * Without it, the form opens the visitor's email app with the request filled
+ * in and addressed to the office, so requests still arrive.
+ */
+const FORM_ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "";
+
+const DAY_LABELS: Record<FormValues["preferredDay"], string> = {
+  "mon-thu": "Mon to Thu",
+  friday: "Friday",
+  either: "Any weekday",
+};
+
 const inputBase =
   "w-full rounded-md border-hair bg-white px-4 py-3 text-charcoal placeholder:text-warmgray/60 transition-colors focus:outline-none focus:ring-2 focus:ring-teal/40 min-h-[48px]";
 
-function makeConfirmationCode() {
-  return "BD-" + Math.random().toString(36).slice(2, 6).toUpperCase();
+function serviceLabel(value: string) {
+  if (value === "general-checkup") return "General checkup";
+  if (value === "not-sure") return "Not sure yet";
+  return SERVICES.find((s) => s.slug === value)?.name ?? value;
 }
 
+function summarize(data: FormValues) {
+  return [
+    `Name: ${data.fullName}`,
+    `Phone: ${data.phone}`,
+    `Email: ${data.email}`,
+    `Current patient: ${data.currentPatient === "yes" ? "Yes" : "No"}`,
+    `Preferred day: ${DAY_LABELS[data.preferredDay]}`,
+    `Preferred time: ${data.preferredTime === "morning" ? "Morning" : "Afternoon"}`,
+    `Service: ${serviceLabel(data.service)}`,
+    `Insurance: ${data.insurance || "Not provided"}`,
+    "",
+    data.message ? `Message:\n${data.message}` : "",
+  ].join("\n");
+}
+
+type SentVia = "service" | "email";
+
 export function AppointmentForm() {
-  const [submitted, setSubmitted] = useState(false);
-  const [confirmationCode, setConfirmationCode] = useState("");
-  const [submittedEmail, setSubmittedEmail] = useState("");
+  const [sentVia, setSentVia] = useState<SentVia | null>(null);
+  const [sendError, setSendError] = useState(false);
   const focusSuccess = useCallback((node: HTMLHeadingElement | null) => { node?.focus(); }, []);
   const {
     register,
@@ -49,19 +80,59 @@ export function AppointmentForm() {
   });
 
   const onSubmit = async (data: FormValues) => {
-    await new Promise((r) => setTimeout(r, 900));
-    setConfirmationCode(makeConfirmationCode());
-    setSubmittedEmail(data.email);
-    setSubmitted(true);
+    setSendError(false);
+    const subject = `Appointment request: ${data.fullName}`;
+
+    if (FORM_ENDPOINT) {
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            _subject: subject,
+            name: data.fullName,
+            phone: data.phone,
+            email: data.email,
+            currentPatient: data.currentPatient,
+            preferredDay: DAY_LABELS[data.preferredDay],
+            preferredTime: data.preferredTime,
+            service: serviceLabel(data.service),
+            insurance: data.insurance,
+            message: data.message,
+          }),
+        });
+        if (!res.ok) throw new Error(`Form service responded ${res.status}`);
+        setSentVia("service");
+      } catch {
+        setSendError(true);
+      }
+      return;
+    }
+
+    window.location.href = `mailto:${PRACTICE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(summarize(data))}`;
+    setSentVia("email");
   };
 
   const fieldError = (name: keyof FormValues) =>
     errors[name] ? "border-red-400 focus:ring-red-300" : "border-subtle";
 
+  const nextSteps =
+    sentVia === "email"
+      ? [
+          { Icon: Mail, text: "Your email app should have opened with your request filled in. Press send to get it to us." },
+          { Icon: Clock, text: "We reply during office hours, usually within the hour." },
+          { Icon: Phone, text: "We will call or text to confirm a time that works for you." },
+        ]
+      : [
+          { Icon: Clock, text: "We review requests during office hours, usually within the hour." },
+          { Icon: Phone, text: "We will call or text to confirm a time that works for you." },
+          { Icon: Mail, text: "New patients get a secure link to fill out forms before the visit." },
+        ];
+
   return (
     <div className="rounded-2xl border-hair border-subtle bg-offwhite p-6 shadow-card sm:p-8">
       <AnimatePresence mode="wait">
-        {submitted ? (
+        {sentVia ? (
           <motion.div
             key="success"
             initial={{ opacity: 0, y: 16 }}
@@ -69,7 +140,6 @@ export function AppointmentForm() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="py-4"
           >
-            {/* Check + headline */}
             <div className="flex flex-col items-center text-center">
               <motion.span
                 initial={{ scale: 0 }}
@@ -79,87 +149,47 @@ export function AppointmentForm() {
               >
                 <Check className="h-8 w-8" strokeWidth={2.5} />
               </motion.span>
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <h3 ref={focusSuccess} tabIndex={-1} className="mt-5 text-2xl font-semibold text-charcoal">
-                  Demo appointment request received
-                </h3>
-                <p className="mt-2 text-warmgray">
-                  In this demo, no confirmation is sent to{" "}
-                  <span className="font-medium text-charcoal">{submittedEmail}</span>
-                </p>
-              </motion.div>
+              <h3 ref={focusSuccess} tabIndex={-1} className="mt-5 text-2xl font-semibold text-charcoal">
+                {sentVia === "email" ? "Almost done" : "Request received"}
+              </h3>
+              <p className="mt-2 max-w-sm text-warmgray">
+                {sentVia === "email"
+                  ? "Send the email that just opened and your request will reach our front desk."
+                  : "Thanks. Our front desk has your request."}
+              </p>
             </div>
 
-            {/* Confirmation card */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-7 rounded-xl border-hair border-teal/30 bg-teal-light px-6 py-5"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-wider text-teal-dark/60">
-                  Confirmation
-                </span>
-                <span className="font-mono text-lg font-semibold text-teal-dark">
-                  {confirmationCode}
-                </span>
-              </div>
-              <p className="mt-2 text-sm text-teal-dark/70">
-                This is a demo-only reference number. No appointment was created.
-              </p>
-            </motion.div>
-
-            {/* What happens next */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-6 space-y-3"
-            >
+            <div className="mt-7 space-y-3">
               <p className="text-xs font-medium uppercase tracking-wider text-warmgray">
-                In a live implementation
+                What happens next
               </p>
-              {[
-                { Icon: Clock, text: "The practice would review the request and check availability." },
-                { Icon: Phone, text: "The team would call or text to confirm an appointment time." },
-                { Icon: Mail, text: "A secure system would send follow-up forms and reminders." },
-              ].map(({ Icon, text }, i) => (
-                <div key={i} className="flex items-start gap-3 rounded-lg border-hair border-subtle bg-white p-4">
+              {nextSteps.map(({ Icon, text }) => (
+                <div key={text} className="flex items-start gap-3 rounded-lg border-hair border-subtle bg-white p-4">
                   <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md bg-teal/10 text-teal">
                     <Icon className="h-4 w-4" strokeWidth={1.8} />
                   </span>
                   <p className="text-sm leading-relaxed text-warmgray">{text}</p>
                 </div>
               ))}
-            </motion.div>
+            </div>
 
-            {/* Contact fallback */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.4 }}
-              className="mt-6 text-center text-sm text-warmgray"
-            >
-              Want to see a real scheduling integration?{" "}
+            <p className="mt-6 text-center text-sm text-warmgray">
+              {sentVia === "email" ? "Email app didn't open? " : "Need us sooner? "}
+              Call{" "}
               <a href={PRACTICE.phoneHref} className="font-medium text-teal-dark hover:underline">
                 {PRACTICE.phone}
               </a>
-            </motion.p>
+            </p>
 
             <div className="mt-7 text-center">
               <Button
                 variant="outline"
                 onClick={() => {
                   reset();
-                  setSubmitted(false);
+                  setSentVia(null);
                 }}
               >
-              Try the demo again
+                Send another request
               </Button>
             </div>
           </motion.div>
@@ -178,7 +208,12 @@ export function AppointmentForm() {
                 Request an appointment
               </h2>
               <p className="mt-1 text-sm text-warmgray">
-                Interactive demo only — submitting this form does not send or store any information.
+                Tell us when works and we will call to confirm a time. For a
+                dental emergency, call{" "}
+                <a href={PRACTICE.phoneHref} className="font-medium text-teal-dark hover:underline">
+                  {PRACTICE.phone}
+                </a>
+                .
               </p>
             </div>
 
@@ -193,15 +228,8 @@ export function AppointmentForm() {
               />
             </Field>
 
-            {/* DOB + phone */}
+            {/* Phone + email */}
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Date of Birth">
-                <input
-                  type="date"
-                  className={cn(inputBase, "border-subtle")}
-                  {...register("dob")}
-                />
-              </Field>
               <Field
                 label="Phone Number"
                 required
@@ -218,24 +246,22 @@ export function AppointmentForm() {
                   })}
                 />
               </Field>
+              <Field label="Email Address" required error={errors.email?.message}>
+                <input
+                  type="email"
+                  autoComplete="email"
+                  placeholder="jane@example.com"
+                  className={cn(inputBase, fieldError("email"))}
+                  {...register("email", {
+                    required: "Please enter your email",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Please enter a valid email",
+                    },
+                  })}
+                />
+              </Field>
             </div>
-
-            {/* Email */}
-            <Field label="Email Address" required error={errors.email?.message}>
-              <input
-                type="email"
-                autoComplete="email"
-                placeholder="jane@example.com"
-                className={cn(inputBase, fieldError("email"))}
-                {...register("email", {
-                  required: "Please enter your email",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Please enter a valid email",
-                  },
-                })}
-              />
-            </Field>
 
             {/* Current patient radios */}
             <fieldset>
@@ -267,9 +293,9 @@ export function AppointmentForm() {
                   className={cn(inputBase, "border-subtle")}
                   {...register("preferredDay")}
                 >
-                  <option value="mon-thu">Mon–Thu</option>
+                  <option value="mon-thu">Mon to Thu</option>
                   <option value="friday">Friday</option>
-                  <option value="either">Either</option>
+                  <option value="either">Any weekday</option>
                 </select>
               </Field>
               <Field label="Preferred Time">
@@ -332,13 +358,13 @@ export function AppointmentForm() {
                   aria-describedby={errors.consent ? "consent-error" : undefined}
                   className="mt-1 h-4 w-4 shrink-0 accent-teal"
                   {...register("consent", {
-                    required:
-                      "Please acknowledge the notice to continue",
+                    required: "Please check this box so we can contact you",
                   })}
                 />
                 <span className="text-sm text-warmgray">
-                  I understand this is a demo form. Do not enter medical, insurance,
-                  or other sensitive information.
+                  I agree to be contacted by phone, text, or email about this
+                  request. I will not include insurance ID numbers or detailed
+                  medical history here.
                 </span>
               </label>
               {errors.consent && (
@@ -348,13 +374,23 @@ export function AppointmentForm() {
               )}
             </div>
 
+            {sendError && (
+              <p role="alert" className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+                Your request did not go through. Please try again, or call us at{" "}
+                <a href={PRACTICE.phoneHref} className="font-semibold underline">
+                  {PRACTICE.phone}
+                </a>
+                .
+              </p>
+            )}
+
             <Button
               type="submit"
               size="lg"
               className="w-full"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Preparing demo…" : "Try Appointment Request"}
+              {isSubmitting ? "Sending…" : "Send Request"}
             </Button>
           </motion.form>
         )}

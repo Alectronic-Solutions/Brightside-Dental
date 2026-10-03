@@ -1,12 +1,20 @@
+// Kept to city level on purpose: the site shows the general area, not a
+// street address.
+const ADDRESS = {
+  city: "Sacramento",
+  region: "CA",
+} as const;
+
 export const PRACTICE = {
   name: "Brightside Dental",
   phone: "(209) 366-4287",
   phoneHref: "tel:+12093664287",
-  address: "1420 S Lower Sacramento Rd, Lodi, CA 95242",
-  addressLine1: "1420 S Lower Sacramento Rd",
-  addressLine2: "Lodi, CA 95242",
-  mapsUrl:
-    "https://www.google.com/maps/dir/?api=1&destination=1420+S+Lower+Sacramento+Rd+Lodi+CA+95242",
+  postalAddress: ADDRESS,
+  address: `${ADDRESS.city}, ${ADDRESS.region}`,
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=Sacramento+CA",
+  /** City-wide OpenStreetMap view with no pin, to match the general address. */
+  mapEmbedUrl:
+    "https://www.openstreetmap.org/export/embed.html?bbox=-121.5600%2C38.4900%2C-121.3600%2C38.6700&layer=mapnik",
   hours: {
     "Mon–Thu": "8:00 AM – 5:00 PM",
     Friday: "8:00 AM – 2:00 PM",
@@ -18,6 +26,15 @@ export const PRACTICE = {
   yearsInPractice: 20,
   patientsServed: "8,400+",
   founded: 2006,
+  /** Patient portal login URL. While blank, the portal button links to the
+   *  contact page instead. */
+  patientPortalUrl: "",
+  /** Social profiles. Point at the platform home pages until the practice has
+   *  real accounts; the footer only renders icons for entries that have a URL. */
+  social: {
+    facebook: "https://www.facebook.com/",
+    instagram: "https://www.instagram.com/",
+  },
 } as const;
 
 export type ServiceIcon =
@@ -40,17 +57,17 @@ export const SERVICES: Service[] = [
     slug: "general-dentistry",
     name: "General Dentistry",
     icon: "tooth",
-    tagline: "Comprehensive care for the whole family",
+    tagline: "Checkups, cleanings, and fillings for every age",
     description:
-      "From routine cleanings to fillings and crowns, we keep your smile healthy year-round.",
+      "Routine cleanings and exams, plus fillings and crowns when you need them.",
   },
   {
     slug: "cosmetic-dentistry",
     name: "Cosmetic Dentistry",
     icon: "sparkles",
-    tagline: "Smile transformations that feel natural",
+    tagline: "Whitening, veneers, and bonding that look natural",
     description:
-      "Veneers, whitening, bonding, and smile makeovers designed to look like you. Only better.",
+      "Veneers, whitening, bonding, and smile makeovers planned around your face, so the result still looks like you.",
   },
   {
     slug: "dental-implants",
@@ -58,7 +75,7 @@ export const SERVICES: Service[] = [
     icon: "anchor",
     tagline: "A permanent fix that feels like your own tooth",
     description:
-      "Replace missing teeth with implants that look, feel, and function like natural teeth.",
+      "Replace a missing tooth with an implant and crown that you brush and floss like the rest of your teeth.",
   },
   {
     slug: "invisalign",
@@ -66,7 +83,7 @@ export const SERVICES: Service[] = [
     icon: "smile",
     tagline: "Straighten your teeth without anyone noticing you're doing it",
     description:
-      "Clear aligner therapy for teens and adults. Virtually invisible, fully removable.",
+      "Clear aligners for teens and adults. They are hard to spot, and you take them out to eat.",
   },
   {
     slug: "emergency-dentistry",
@@ -74,7 +91,7 @@ export const SERVICES: Service[] = [
     icon: "zap",
     tagline: "Same-day appointments available",
     description:
-      "Toothache, broken tooth, lost crown? We keep time open every day for dental emergencies.",
+      "Toothache, broken tooth, lost crown? We hold emergency slots open every day we are open.",
   },
 ];
 

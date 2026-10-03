@@ -44,8 +44,8 @@ function ParallaxBackground() {
 }
 
 export function CTABanner({
-  heading = "Ready for a smile you are proud of?",
-  subtext = "New patients welcome. Same-week appointments available. No insurance? No problem.",
+  heading = "Book your first visit",
+  subtext = "New patients are welcome, and same-week appointments are usually available. If you don't have insurance, ask us about payment plans.",
   variant = "default",
 }: CTABannerProps) {
   const isTeal = variant === "teal";
@@ -63,7 +63,7 @@ export function CTABanner({
       {/* Dark scrim so text stays legible over the photo */}
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-navy/85" />
 
-      {/* Layered glows — default only */}
+      {/* Layered glows: default only */}
       {variant === "default" && (
         <div
           aria-hidden
@@ -75,7 +75,7 @@ export function CTABanner({
         />
       )}
 
-      {/* Teal variant — navy overlay glow */}
+      {/* Teal variant: navy overlay glow */}
       {isTeal && (
         <div
           aria-hidden
@@ -87,7 +87,7 @@ export function CTABanner({
         />
       )}
 
-      {/* Minimal variant — single soft centered glow */}
+      {/* Minimal variant: single soft centered glow */}
       {isMinimal && (
         <div
           aria-hidden
@@ -99,7 +99,7 @@ export function CTABanner({
         />
       )}
 
-      {/* Subtle grid — default and contact only */}
+      {/* Subtle grid: default and contact only */}
       {!isMinimal && (
         <div
           aria-hidden
@@ -112,13 +112,13 @@ export function CTABanner({
         />
       )}
 
-      {/* Minimal variant — subtle top border */}
+      {/* Minimal variant: subtle top border */}
       {isMinimal && (
         <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-white/10" />
       )}
 
       <AnimatedSection className="container-page relative text-center">
-        {/* Decorative teal line — default only */}
+        {/* Decorative teal line: default only */}
         {variant === "default" && (
           <div className="mx-auto mb-8 h-px w-12 bg-gradient-to-r from-transparent via-teal to-transparent" />
         )}

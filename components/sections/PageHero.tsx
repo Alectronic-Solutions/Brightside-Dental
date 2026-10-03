@@ -15,17 +15,17 @@ interface PageHeroProps {
   subtitle?: string;
   children?: ReactNode;
   variant?: PageHeroVariant;
-  /** Optional Unsplash/CDN image to use as a subtle background texture */
-  bgImage?: { src: string; alt: string };
+  /** Optional photo URL used as a faint, decorative background texture */
+  bgImage?: string;
 }
 
 const GLOW: Record<PageHeroVariant, string> = {
   default:
-    "radial-gradient(55% 60% at 70% 30%, rgba(45,158,143,0.16), rgba(14,31,61,0) 70%)",
+    "radial-gradient(60% 65% at 50% 35%, rgba(45,158,143,0.16), rgba(14,31,61,0) 72%)",
   centered:
     "radial-gradient(60% 70% at 50% 50%, rgba(45,158,143,0.18), rgba(14,31,61,0) 75%)",
   contact:
-    "radial-gradient(55% 65% at 15% 80%, rgba(45,158,143,0.22), rgba(14,31,61,0) 70%)",
+    "radial-gradient(60% 70% at 50% 80%, rgba(45,158,143,0.2), rgba(14,31,61,0) 72%)",
 };
 
 const GRID: Record<PageHeroVariant, string> = {
@@ -64,10 +64,10 @@ export function PageHero({
     >
       {/* Optional background photo at low opacity */}
       {bgImage && (
-        <div className="absolute inset-0">
+        <div aria-hidden className="absolute inset-0">
           <Image
-            src={bgImage.src}
-            alt={bgImage.alt}
+            src={bgImage}
+            alt=""
             fill
             priority
             quality={80}
@@ -77,7 +77,7 @@ export function PageHero({
         </div>
       )}
 
-      {/* Radial teal glow — position varies by variant */}
+      {/* Radial teal glow: position varies by variant */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -94,15 +94,7 @@ export function PageHero({
         }}
       />
 
-      {/* Contact variant — vertical teal accent bar */}
-      {variant === "contact" && (
-        <span
-          aria-hidden
-          className="absolute left-0 top-1/2 h-16 w-1 -translate-y-1/2 rounded-r-full bg-teal"
-        />
-      )}
-
-      {/* Bottom fade to page bg — skip on centered (clip-path handles the cut) */}
+      {/* Bottom fade to page bg: skip on centered (clip-path handles the cut) */}
       {variant !== "centered" && (
         <div
           aria-hidden
@@ -119,20 +111,22 @@ export function PageHero({
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className={isCentered ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}
+          className="mx-auto max-w-3xl text-center"
         >
-          {label && <SectionLabel tone="light">{label}</SectionLabel>}
-          <h1 className="mt-3 text-display-sm font-bold text-white">{title}</h1>
+          {label && (
+            <SectionLabel tone="light" className="justify-center">
+              {label}
+            </SectionLabel>
+          )}
+          <h1 className="mt-3 text-balance text-display-sm font-bold text-white">{title}</h1>
           {subtitle && (
-            <p
-              className={`mt-4 text-[0.97rem] leading-[1.75] text-white/65 sm:mt-5 sm:text-[1.05rem] ${
-                isCentered ? "mx-auto max-w-2xl" : "max-w-2xl"
-              }`}
-            >
+            <p className="mx-auto mt-4 max-w-2xl text-[0.97rem] leading-[1.75] text-white/65 sm:mt-5 sm:text-[1.05rem]">
               {subtitle}
             </p>
           )}
-          {children && <div className="mt-7 sm:mt-8">{children}</div>}
+          {children && (
+            <div className="mt-7 flex flex-wrap justify-center gap-3 sm:mt-8">{children}</div>
+          )}
         </motion.div>
       </div>
     </section>

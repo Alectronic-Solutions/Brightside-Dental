@@ -1,6 +1,10 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { PRACTICE } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Page Not Found",
+};
 
 export default function NotFound() {
   return (
@@ -28,12 +32,12 @@ export default function NotFound() {
         </span>
 
         <p className="caption mt-8 text-teal-light">Error 404</p>
-        <h1 className="display mt-2 text-4xl text-white sm:text-5xl">
+        <h1 className="mt-2 text-4xl font-bold text-white sm:text-5xl">
           This page took a sick day
         </h1>
         <p className="mt-4 text-lg text-white/70">
-          We could not find the page you were looking for, but your smile is
-          still our top priority. Let&apos;s get you back on track.
+          We could not find that page. It may have moved, or the link may
+          have a typo.
         </p>
 
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -47,12 +51,12 @@ export default function NotFound() {
 
         <p className="mt-8 text-sm text-white/50">
           Need us now? Call{" "}
-          <Link
+          <a
             href={PRACTICE.phoneHref}
             className="font-medium text-teal-light hover:text-white"
           >
             {PRACTICE.phone}
-          </Link>
+          </a>
         </p>
       </div>
     </section>

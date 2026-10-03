@@ -14,7 +14,7 @@ import { IMAGES } from "@/lib/images";
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Take a look around Brightside Dental in Lodi, CA. See our office, meet the team, and browse smile transformations across our services.",
+    "Take a look around Brightside Dental in Sacramento, CA. See our office, meet the team, and view before-and-after examples for each service.",
   alternates: { canonical: "/gallery" },
 };
 
@@ -24,20 +24,20 @@ export default function GalleryPage() {
       <PageHero
         label="Gallery"
         title="A closer look at Brightside Dental"
-        subtitle="Take a walk through our office, meet the people who will be taking care of you, and see the kind of results our patients leave with."
-        bgImage={{ src: IMAGES.office.consultation.src, alt: IMAGES.office.consultation.alt }}
+        subtitle="Photos of our office and team, plus before-and-after examples for each service."
+        bgImage={IMAGES.office.consultation.src}
       />
 
       <section className="bg-white section-y">
         <div className="container-page">
-          <AnimatedSection className="max-w-2xl">
-            <SectionLabel>Around the Practice</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">Around the Practice</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
               A closer look at the space and the people in it
             </h2>
             <p className="mt-4 text-lg text-warmgray">
-              Filter by office or team to see where — and with whom — you will
-              be spending your visit.
+              Filter by office or team to see where you&apos;ll be and who
+              you&apos;ll be seeing during your visit.
             </p>
           </AnimatedSection>
 
@@ -49,28 +49,30 @@ export default function GalleryPage() {
 
       <section className="bg-offwhite section-y">
         <div className="container-page">
-          <AnimatedSection className="max-w-2xl">
-            <SectionLabel>Smile Transformations</SectionLabel>
-            <h2 className="text-3xl text-charcoal sm:text-4xl">
+          <AnimatedSection className="mx-auto max-w-2xl text-center">
+            <SectionLabel className="justify-center">Smile Transformations</SectionLabel>
+            <h2 className="text-balance text-3xl text-charcoal sm:text-4xl">
               Drag to see the difference
             </h2>
             <p className="mt-4 text-lg text-warmgray">
-              A look at the kind of change each service is built to deliver.
+              Representative results for each of our services.
             </p>
           </AnimatedSection>
 
-          <div className="mt-12 grid gap-8 md:grid-cols-2">
+          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 [&>*]:min-w-0">
             {SERVICES.map((service, i) => {
               const content = getServiceContent(service.slug);
-              if (!content) return null;
+              if (!content || !IMAGES.beforeAfter[service.slug]) return null;
               return (
                 <AnimatedSection key={service.slug} delay={i * 0.06}>
                   <BeforeAfter
                     beforeLabel={content.beforeLabel}
                     afterLabel={content.afterLabel}
+                    photos={IMAGES.beforeAfter[service.slug]}
+                    sizes="(min-width: 768px) 50vw, 100vw"
                   />
-                  <div className="mt-4 flex items-center justify-between">
-                    <div>
+                  <div className="mt-4 flex flex-col items-center gap-2 text-center">
+                    <div className="w-full">
                       <h3 className="text-lg font-semibold text-charcoal">
                         {service.name}
                       </h3>
@@ -95,8 +97,8 @@ export default function GalleryPage() {
       </section>
 
       <CTABanner
-        heading="See it for yourself"
-        subtext="The best way to know if we're the right fit is to come in and meet the team."
+        heading="Come by and meet us"
+        subtext="Book a first visit and see the office in person."
       />
     </>
   );

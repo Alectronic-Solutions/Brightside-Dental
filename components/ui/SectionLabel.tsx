@@ -8,7 +8,7 @@ interface SectionLabelProps {
 }
 
 /**
- * A small uppercase tracking label rendered as a plain <p> — deliberately NOT
+ * A small uppercase tracking label rendered as a plain <p>, deliberately NOT
  * a floating pill above headings. Used as an eyebrow that sits inline with the
  * surrounding type rather than as a separate badge.
  */
