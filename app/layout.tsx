@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { PRACTICE, SITE_URL } from "@/lib/constants";
 import { IMAGES } from "@/lib/images";
+import DemoNotice from "./DemoNotice";
 
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -64,9 +65,10 @@ export const metadata: Metadata = {
       "General, cosmetic, and emergency dental care in Sacramento, CA. Accepting new patients.",
     images: [IMAGES.ogImage.src],
   },
+  // Fictional business: keep it out of search (see DemoNotice).
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
   alternates: {
     canonical: SITE_URL,
@@ -80,41 +82,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-// No aggregateRating here: Google ignores review markup a business publishes
-// about itself, and stale hardcoded counts can trigger a manual action.
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "Dentist"],
-  name: PRACTICE.name,
-  url: SITE_URL,
-  image: `${SITE_URL}${IMAGES.ogImage.src}`,
-  telephone: PRACTICE.phoneHref.replace("tel:", ""),
-  email: PRACTICE.email,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: PRACTICE.postalAddress.city,
-    addressRegion: PRACTICE.postalAddress.region,
-    addressCountry: "US",
-  },
-  // Keep in sync with PRACTICE.hours.
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
-      opens: "08:00",
-      closes: "17:00",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Friday",
-      opens: "08:00",
-      closes: "14:00",
-    },
-  ],
-  priceRange: "$$",
-  paymentAccepted: "Cash, Credit Card, CareCredit, Insurance",
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -122,17 +89,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
       <body>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <Navbar />
         <main id="main-content" tabIndex={-1}>{children}</main>
         <Footer />
+        <DemoNotice />
       </body>
     </html>
   );
